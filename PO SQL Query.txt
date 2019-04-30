@@ -1,0 +1,24 @@
+select 
+	a.POCo, 
+	a.PO, 
+	a.POItem,
+	c.Name as Vendor, 
+	a.Description, 
+	a.UM, 
+	a.OrigUnits, 
+	a.OrigUnitCost, 
+	a.OrigCost, 
+	left(a.Phase,8) as Phase
+
+from 
+	POIT as a
+	join POHD as b on 
+		a.POCo = b.POCo and
+		a.PO = b.PO
+	join APVM as c on
+		b.VendorGroup = c.VendorGroup and
+		b.Vendor = c.Vendor
+	 
+where 
+	a.POCo in ('209','206','8','12','11','10')
+
