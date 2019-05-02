@@ -42,7 +42,7 @@ I propose that once way to reduce the amount of time and the expense of choosing
 ### Datasets and Inputs
 _(approx. 2-3 paragraphs)_
 
-The dataset that I will use from this project 
+The [dataset](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/PO_Dataset.csv) that I will use for this project is a CSV list of purchase order items that I have exported from the SQL server database of my company's ERP system. This file contains the following 
 
 *In this section, the dataset(s) and/or input(s) being considered for the project should be thoroughly described, such as how they relate to the problem and why they should be used. Information such as how the dataset or input is (was) obtained, and the characteristics of the dataset or input, should be included with relevant references and citations as necessary It should be clear how the dataset(s) or input(s) will be used in the project and whether their use is appropriate given the context of the problem.*
 
