@@ -68,7 +68,6 @@
 01-32-33,photographic documentation
 01-32-50,bim modeling
 01-33-23,submittal printing & drafting
-01-45-12, DO NOT USE - DEACTIVATED
 01-45-41,scaffolding engineering
 01-45-42,crane engineering
 01-45-43,safety consultant
@@ -90,7 +89,6 @@
 01-52-25,small tools & repairs
 01-52-30,property rental
 01-52-40,temporary warehouse
-01-52-52, DO NOT USE - DEACTIVATED
 01-54-13,elevator operator
 01-54-16,man hoist
 01-54-17,material hoist
@@ -104,7 +102,6 @@
 01-54-31,forklift
 01-54-32,evacuation box
 01-54-33,material outrigger platforms
-01-55-13, DO NOT USE - DEACTIVATED
 01-55-19,temporary parking
 01-55-26,traffic control
 01-55-27,traffic signs
@@ -115,7 +112,6 @@
 01-56-33,temporary security barriers
 01-56-39,temporary tree protection
 01-56-40,guard rails
-01-57-18, DO NOT USE - DEACTIVATED
 01-57-19,silt baskets
 01-57-20,street cleaning
 01-57-30,security
@@ -134,10 +130,6 @@
 01-71-40,power pole relocation
 01-74-13,progressive clean-up
 01-74-15,garbage chute
-01-74-23, DO NOT USE - DEACTIVATED
-01-74-24, DO NOT USE - DEACTIVATED
-01-74-30, DO NOT USE - DEACTIVATED
-01-74-31, DO NOT USE - DEACTIVATED
 01-76-20,protect finishes
 01-76-21,protect finishes - commercial
 01-77-20,deficiencies
@@ -149,7 +141,6 @@
 01-78-39,project record documents
 02-24-13,environmental review
 02-24-15,site effluent water testing
-02-41-01, DO NOT USE - DEACTIVATED
 02-41-10,demolition & abatement trade contract
 02-41-13,selective site demolition
 02-41-14,asphalt removal
@@ -159,18 +150,13 @@
 02-41-30,scanning & xray
 02-41-91,selective historic demolition
 02-43-13,house moving
-02-61-01, DO NOT USE - DEACTIVATED
-02-61-13, DO NOT USE - DEACTIVATED
 02-65-10,underground storage tank removal
-02-70-10, DO NOT USE - DEACTIVATED
-02-80-01, DO NOT USE - DEACTIVATED
 02-80-10,hazmat general abatement trade contract
 02-80-11,asbestos abatement
 02-80-12,lead abatement
 02-80-13,lead-based paint abatement
 02-80-14,lighting ballasts & lamps pcb/mercury abatement
 02-80-15,mold abatement
-03-11-01, DO NOT USE - DEACTIVATED
 03-11-10,formwork trade contract
 03-11-13,forming structural
 03-11-16,forming architectural
@@ -179,7 +165,6 @@
 03-11-32,forming equipment pads
 03-15-10,concrete accessories
 03-15-13,waterstops
-03-21-01, DO NOT USE - DEACTIVATED
 03-21-10,reinforcing steel trade contract
 03-21-11,reinforcing steel
 03-21-30,concrete dowels
@@ -195,7 +180,6 @@
 03-31-45,concrete material - landscape
 03-31-46,concrete material - sog
 03-31-47,concrete slurry
-03-35-01, DO NOT USE - DEACTIVATED
 03-35-10,finishing concrete trade contract
 03-35-23,finishing exposed aggregate
 03-35-29,finishing grooved
@@ -215,7 +199,6 @@
 03-37-20,placing boom equipment
 03-38-10,post-tensioning
 03-41-10,structural precast
-03-45-01, DO NOT USE - DEACTIVATED
 03-45-10,precast concrete trade contract
 03-45-13,architectural precast
 03-45-50,precast caps
@@ -235,30 +218,25 @@
 03-90-10,concrete test & design
 04-05-10,brick ledge angles
 04-05-19,masonry reinforcing steel
-04-21-01, DO NOT USE - DEACTIVATED
 04-21-13,brick masonry
 04-21-14,thin-brick masonry
 04-21-19,clay tile masonry
-04-22-01, DO NOT USE - DEACTIVATED
 04-22-10,masonry & brick trade contract
 04-22-13,concrete unit masonry
 04-22-23,architectural concrete unit masonry
 04-22-40,grout elevator door frames
 04-23-13,glass unit masonry
 04-43-13,stone masonry veneer
-05-10-01, DO NOT USE - DEACTIVATED
 05-10-10,structural & misc. steel trade contract
 05-10-13,structural steel
 05-20-10,steel joists
 05-30-10,metal decking
-05-50-01, DO NOT USE - DEACTIVATED
 05-50-10,miscellaneous steel
 05-50-11,metal canopies
 05-50-12,metal trellis
 05-50-13,steel bollards
 05-50-14,trench drain
 05-51-10,steel stairs
-05-52-01, DO NOT USE - DEACTIVATED
 05-52-10,alum. rails & guardrails trade contract
 05-52-13,stair rails
 05-52-20,guardrails
@@ -271,11 +249,7 @@
 05-70-11,stainless steel trim
 05-70-12,stainless steel railings
 05-70-20,ornamental metal
-06-10-01, DO NOT USE - DEACTIVATED
-06-10-02, DO NOT USE - DEACTIVATED
 06-10-10,framing trade contract - supply & install
-06-10-50, DO NOT USE - DEACTIVATED
-06-10-51, DO NOT USE - DEACTIVATED
 06-10-52,framing material - supply
 06-10-53,framing interior - miscellaneous
 06-10-54,framing walls
@@ -296,7 +270,6 @@
 06-10-83,prep roof parapet & cant blocking
 06-10-84,install window wood frame
 06-11-10,framing trade contract - install
-06-13-01, DO NOT USE - DEACTIVATED
 06-13-23,heavy timber
 06-15-19,framing wood decking
 06-18-13,glued-laminated beams
@@ -304,15 +277,12 @@
 06-18-20,glued-laminated connections
 06-20-14,exterior moldings
 06-20-15,exterior wood trim
-06-22-01, DO NOT USE - DEACTIVATED
 06-22-10,millwork trade contract
 06-42-13,wood paneling
 06-42-16,flush wood paneling
 06-42-19,plastic-laminate-faced wood paneling
 06-43-13,framing wood stairs
 06-43-16,finishing wood stair rail
-06-46-01, DO NOT USE - DEACTIVATED
-06-46-02, DO NOT USE - DEACTIVATED
 06-46-10,finish carpentry trade contract
 06-46-13,finishing wood door casings
 06-46-14,finishing window casings
@@ -329,7 +299,6 @@
 06-46-33,finishing window sills
 06-46-40,finishing molding ceilings
 06-46-41,finishing thresholds
-06-46-60, DO NOT USE - DEACTIVATED
 07-01-50,patching existing roofing
 07-10-10,below grade waterproofing trade contract
 07-11-13,dampproofing
@@ -732,7 +701,6 @@
 23-50-15,dryer booster fans
 23-50-20,heating systems - commercial
 23-60-10,air conditioning systems
-23-60-11, DO NOT USE - DEACTIVATED
 23-70-10,hvac equipment
 23-83-10,radiant floor heat - woodframe
 23-83-11,radiant floor heat - concrete
@@ -936,4 +904,3 @@
 83-10-21,contingency - u1 market escalation
 90-10-10,allocated overhead
 95-10-10,beginning balances
-,
