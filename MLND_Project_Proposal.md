@@ -79,9 +79,20 @@ As a result, I will use F1-score as the main metric to evaluate the model's perf
 
 
 ### Project Design
-_(approx. 1 page)_
 
+The project workflow will be:
 
+1. **Continued data exploration**
+I have already done some data explorationw while creating this proposal, I still need to look more in depth into the description text field and perform any cleaning required.
 
-*In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might be required before being used, or which algorithms will be considered for your implementation. The workflow and discussion that you provide should align with the qualities of the previous sections. Additionally, you are encouraged to include small visualizations, pseudocode, or diagrams to aid in describing the project design, but it is not required. The discussion should clearly outline your intended workflow of the capstone project.*
+1. **Decide how to handle text and numeric features**
+I think the most difficult challenge in the project will be how to handle the description field and combine that with the numerical data to make an accurate prediction.  Two options are: To Convert the text to vectors using a process like bag of words or word embeddings and then include them in the input of a single model. Or creating two different models, one that evaluates the description and one that uses the other fields, then combine their resulting predictions.
 
+1. **Create a baseline model** 
+To start with I will use a relatively simple to understand Random Forest model which are generally known to give good performance for supervised classification problems like this one.
+
+1. **Test additional models**
+Once I have a baseline model and know it's performance I can test several other models to see if there is a better fit for the data with higher performance. Models I will try include Adaboost, a Neural Network, and SVM.
+
+1. **Tune Hyper-Parameters**
+Lasly, using the best model, I will tune the hyper-parameters of the model to continue to achive the highest performance that I can get.
