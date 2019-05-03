@@ -1,10 +1,8 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Proposal
-Daniel Kelly  
-April 30, 2019
+Daniel Kelly
+dan_kelly@telus.net
 
-## Proposal
-_(approx. 2-3 pages)_
 ## Predicting Budget Cost Codes Based on Purchase Order Information
 
 ### Domain Background
