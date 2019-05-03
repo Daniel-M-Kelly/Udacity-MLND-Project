@@ -1,0 +1,355 @@
+Cost Code,Description
+00-10-17,geotechnical consultant
+00-61-13,subtrade bonds
+01-30-12,project manager
+01-30-14,project coordinator
+01-30-23,finishing superintendent
+01-30-30,foreman
+01-30-31,flagperson
+01-30-33,labourer
+01-30-40,safety manager
+01-30-41,cso
+01-30-42,first aid attendent
+01-30-51,deficiency technician
+01-31-40,cartage
+01-32-33,photographic documentation
+01-32-50,bim modeling
+01-33-23,submittal printing & drafting
+01-45-41,scaffolding engineering
+01-45-42,crane engineering
+01-51-13,temporary power
+01-51-23,temporary heating
+01-51-24,temporary ventilation
+01-51-26,temporary lighting
+01-51-33,temporary telephone
+01-51-36,temporary water
+01-52-13,field offices & sheds
+01-52-16,first aid supplies
+01-52-17,safety equipment & supplies
+01-52-19,temporary toilets
+01-52-20,temporary office equipment & supplies
+01-52-21,radios
+01-52-22,field office supplies
+01-52-23,field supplies
+01-52-24,lock-up
+01-52-25,small tools & repairs
+01-52-40,temporary warehouse
+01-54-13,elevator operator
+01-54-16,man hoist
+01-54-19,mobile crane
+01-54-20,tower crane
+01-54-21,self erecting crane
+01-54-23,staging & scaffolding
+01-54-24,temporary stairway
+01-54-30,bobcat
+01-54-31,forklift
+01-55-19,temporary parking
+01-55-26,traffic control
+01-55-27,traffic signs
+01-56-26,temporary fencing
+01-56-29,temporary protective walkways
+01-56-30,temporary walkways supporting trailers
+01-56-33,temporary security barriers
+01-56-39,temporary tree protection
+01-56-40,guard rails
+01-57-20,street cleaning
+01-57-30,security
+01-57-40,weather enclosures
+01-57-41,winter conditions
+01-57-60,street permits
+01-57-62,sidewalk rental
+01-58-13,project signage
+01-71-23,site & building layout
+01-71-24,legal survey
+01-74-13,progressive clean-up
+01-76-20,protect finishes
+01-77-20,deficiencies
+01-77-21,deficiencies - commercial
+02-24-13,environmental review
+02-41-13,selective site demolition
+02-41-19,selective demolition
+02-41-20,demolition
+02-41-30,scanning & xray
+02-80-10,hazmat general abatement trade contract
+03-11-10,formwork trade contract
+03-11-30,forming miscellaneous
+03-11-31,forming stairs & landings
+03-15-10,concrete accessories
+03-15-13,waterstops
+03-21-11,reinforcing steel
+03-21-30,concrete dowels
+03-30-53,concrete material - miscellaneous
+03-31-26,concrete material - waterproof concrete
+03-31-40,concrete material - footings
+03-31-41,concrete material - below-grade verticals
+03-31-42,concrete materials - below-grade horizontals
+03-31-43,concrete material - above grade verticals
+03-31-44,concrete material - above grade horizontals
+03-31-45,concrete material - landscape
+03-31-46,concrete material - sog
+03-35-10,finishing concrete trade contract
+03-35-50,finishing sealer
+03-36-10,finishing slab restoration
+03-45-13,architectural precast
+03-45-50,precast caps
+03-48-60,precast miscellaneous
+03-53-10,concrete topping trade contract
+03-53-13,concrete topping
+03-60-10,grouting
+03-80-10,concrete cutting
+03-80-11,concrete coring
+03-90-10,concrete test & design
+04-21-13,brick masonry
+04-22-10,masonry & brick trade contract
+04-43-13,stone masonry veneer
+05-10-10,structural & misc. steel trade contract
+05-50-10,miscellaneous steel
+05-50-11,metal canopies
+05-52-10,alum. rails & guardrails trade contract
+05-52-20,guardrails
+05-52-21,balcony railings and guardrails
+05-52-22,suite stair rails
+05-52-24,frosted glass privacy screens
+05-70-10,stainless steel countertops & backsplash
+05-70-11,stainless steel trim
+05-70-12,stainless steel railings
+05-70-20,ornamental metal
+06-10-52,framing material - supply
+06-10-60,framing back framing
+06-10-63,framing exterior - miscellaneous
+06-10-68,framing soffits & canopy
+06-10-80,rough-in backing & blocking
+06-10-81,rough-in window backing
+06-10-82,rough-in door backing
+06-10-83,prep roof parapet & cant blocking
+06-13-23,heavy timber
+06-22-10,millwork trade contract
+06-42-13,wood paneling
+06-46-10,finish carpentry trade contract
+06-46-13,finishing wood door casings
+06-46-18,finishing wood base - commercial
+06-46-19,finishing wood base - suites
+06-46-23,finishing chair rails
+06-46-33,finishing window sills
+06-46-40,finishing molding ceilings
+06-46-41,finishing thresholds
+07-11-13,dampproofing
+07-13-14,waterproofing bituminous sheet vertical surfaces
+07-13-26,waterproofing self adhering sheet
+07-14-13,waterproofing hot fluid-applied horizontal surfaces
+07-14-16,waterproofing cold fluid-applied horizontal surfaces
+07-14-17,waterproofing cold fluid-applied vertical surfaces
+07-14-20,pool membrane
+07-14-22,waterproof elevator pit
+07-18-13,pedestrian traffic coatings
+07-21-13,rigid insulation
+07-21-19,spray foam insulation
+07-21-29,mineral spray insulation
+07-32-10,roofing tiles
+07-42-13,metal wall panels
+07-44-56,stucco exterior walls - concrete
+07-44-60,eifs panels
+07-46-46,hardi plank/panel
+07-50-10,roofing & waterproofing trade contract
+07-50-11,hot fluid-applied membrane roofing
+07-62-10,flashing & sheet metal
+07-71-23,gutters & downspouts
+07-72-33,roof hatches
+07-76-13,roof pavers
+07-76-16,patios pavers
+07-81-10,sprayed fireproofing
+07-84-10,firestopping trade contract
+07-92-10,sealants & caulking trade contract
+07-92-11,sealants & caulking - exterior
+08-11-13,metal doors & frames
+08-14-11,wood doors & frames
+08-14-16,wood interior sgle dble swing door
+08-14-29,wood suite entry sgle dble door
+08-14-41,wood pocket door
+08-14-43,wood tall doors
+08-14-77,wood bypass door
+08-31-16,access panel
+08-32-10,interior glass sliding doors
+08-32-11,interior glass sliding panels
+08-33-23,rolling overhead doors
+08-34-80,fire rated overhead doors
+08-40-10,curtain wall & storefront trade contract
+08-41-13,aluminum-framed entrances & storefronts
+08-41-26,all-glass entrances & storefronts
+08-43-13,aluminum-framed storefronts
+08-43-26,all-glass storefronts
+08-44-11,glazed timber curtain wall
+08-44-13,glazed aluminum curtain wall
+08-44-26,structural glass curtain wall
+08-51-13,aluminum windows
+08-53-13,vinyl windows
+08-63-10,aluminum skylights
+08-71-10,door finish hardware - residential grade
+08-71-11,door finish hardware - commercial grade
+08-71-13,auto door operators
+08-74-20,miscellaneous access control hardware
+08-81-20,interior glass partitions
+08-83-13,mirrors
+08-83-20,mirror frames
+08-88-10,miscellaneous glazing trade contract
+08-88-41,wired glass
+08-88-70,miscellaneous glazing
+09-21-10,steel stud & drywall trade contract
+09-21-16,drywall & steel stud - concrete
+09-21-17,drywall & steel stud - commercial
+09-21-20,drywall - woodframe
+09-21-24,drywall suspended ceiling
+09-24-24,cement plaster ceilings
+09-25-11,venetian plaster walls
+09-30-10,tiling trade contract
+09-30-30,interior stone tile - floors
+09-30-40,ceramic tile - suites
+09-30-41,ceramic tile - floors
+09-30-42,ceramic tiles - walls
+09-30-43,ceramic tiles - kitchen backsplash
+09-30-60,ceramic tile - commercial
+09-54-43,stretched-fabric ceiling systems
+09-60-10,flooring trade contract
+09-62-19,laminate flooring
+09-64-33,wood flooring
+09-64-70,floor prep for finishes
+09-65-13,resilient base
+09-65-16,resilient sheet flooring
+09-65-18,resilient plank flooring
+09-68-15,tile carpeting - commercial
+09-72-16,fabric wall coverings
+09-72-30,protective wall panels
+09-91-10,painting trade contract
+09-91-13,painting exterior
+09-91-23,painting interior - residential
+09-91-30,painting parkade
+09-91-31,sog sealer
+09-91-40,painting interior - commercial
+09-96-46,intumescent paint
+09-97-10,special coatings
+09-99-10,final cleaning trade contract
+09-99-11,final cleaning - commercial
+09-99-20,final cleaning - exterior glass
+10-14-10,signage trade contract
+10-14-70,specialty signage
+10-21-13,metal toilet partitions & screens
+10-26-13,corner guards
+10-28-13,common washroom accessory - single
+10-28-14,common washroom accessory - multi
+10-28-15,common washroom accesories - commercial
+10-28-16,toilet & bath accessories
+10-28-19,shower & tub doors
+10-28-20,frameless glass shower door & surround
+10-31-10,prefabricated fireplaces
+10-31-11,fireplace - lobby
+10-32-10,fireplace mantel
+10-41-10,fire safety plan
+10-51-13,metal lockers
+10-51-16,wood lockers
+10-51-43,wire mesh storage lockers
+10-55-23,postal specialties
+10-57-23,wire shelving closet organizers
+10-57-24,wood closet organizers
+11-13-10,loading dock equipment
+11-24-23,window washing equipment
+11-24-24,fall arrest roof anchors
+11-26-13,commercial kitchen
+11-31-10,appliance trade contract
+11-31-13,kitchen appliances
+11-31-24,garbage compactor
+11-31-30,appliance installation
+11-31-40,appliance upgrade
+12-21-13,metal horizontal blinds
+12-21-23,roller blinds
+12-35-10,cabinet trade contract
+12-35-30,manufactured cabinets & casework
+12-36-10,countertops trade contract
+12-36-23,laminate countertops
+12-36-40,stone countertops
+12-51-10,furniture
+12-93-10,lockers & bike racks trade contract
+12-93-13,bicycle racks
+13-11-10,pools & spa
+13-24-16,steam room
+13-34-19,metal building systems
+14-10-10,dumbwaiter
+14-21-23,traction passenger elevators
+14-24-23,hydraulic passenger elevators
+14-42-13,Inclined wheelchair lifts
+14-91-82,chutes & collectors
+21-10-13,fire protection system - concrete
+21-10-14,fire protection system - commercial
+22-10-10,plumbing rough-in - parkade
+22-10-12,plumbing rough-in fixture - woodframe
+22-10-13,plumbing rough-in - concrete
+22-10-20,plumbing rough-in - commercial
+22-40-15,plumbing fixtures & trims
+22-40-20,plumbing finish - commercial
+22-70-10,geothermal piping & manifold
+22-80-10,mechanical trade contract
+23-30-10,air & vent system - parkade
+23-30-12,air & vent system - concrete
+23-50-20,heating systems - commercial
+23-60-10,air conditioning systems
+26-05-10,hydro charges
+26-20-10,electrical rough-in - below grade
+26-20-12,electrical rough-in - concrete
+26-20-13,electrical rough-in - commercial
+26-20-20,electrical finishing - commercial
+26-20-23,electrical finishing - concrete
+26-51-11,supply light fixture - common area
+26-51-12,supply light fixture - suites
+26-51-14,supply light fixtures
+26-56-10,supply light fixture - exterior & landscape
+26-60-10,tel/cable hook-up fees
+26-80-10,electrical trade contract
+27-10-10,communications
+27-32-23,elevator telephones
+27-41-10,A/V trade contract
+28-10-12,security system
+28-10-13,security system - commercial
+31-11-10,site preparation
+31-13-13,selective tree & shrub removal
+31-13-16,selective tree & shrub trimming
+31-22-13,site grading
+31-22-20,sog preparation
+31-23-16,structure excavation
+31-23-17,detail footing excavation
+31-23-18,trench excavation
+31-23-19,dewatering
+31-23-23,import fill to slab base
+31-23-24,import fill to below-grade walls
+31-23-25,import structural fill
+31-23-28,road base gravel
+31-23-29,crushed rock
+31-23-32,controlled density fill
+31-25-11,water filtration system
+31-25-12,erosion & sediment control
+31-41-50,shotcrete & anchors
+31-41-60,shoring removal
+31-45-21,rapid impact compaction
+31-60-10,soils improvement
+31-68-13,tie-down anchors
+31-81-21,foundation drainage
+31-81-23,drainage rock
+31-81-24,catch basins & manholes
+31-81-25,filter cloth
+32-14-16,unit pavers
+32-14-23,asphaltic concrete paving
+32-14-50,hard landscaping
+32-16-23,city sidewalks
+32-16-24,city lane
+32-17-23,exterior parking line painting
+32-31-13,chain link fences & gates
+32-40-15,site furnishings
+32-40-30,landscape concrete
+32-50-10,water feature
+32-93-43,trees
+32-93-50,soft landscaping
+32-94-34,fiberglass planter
+33-05-10,civil trade contract
+33-05-16,general site utilities
+33-10-10,site water utility
+33-70-10,power & communication utilities
+82-10-10,reimbursables
+83-10-10,contingency - owner
