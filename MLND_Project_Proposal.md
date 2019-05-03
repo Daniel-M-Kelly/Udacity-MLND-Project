@@ -8,7 +8,6 @@ _(approx. 2-3 pages)_
 ## Predicting Budget Cost Codes Based on Purchase Order Information
 
 ### Domain Background
-_(approx. 1-2 paragraphs)_
 
 I currently work for a Construction Management company.
 One critical funtion of a Construction Management company is creating and tracking the budget of a construction project during the entire lifecycle of the construction project. During the construction of the project the budget information may be used by developers/clients to track the performance of the architect, construction managment team, and subcontractors. It can also be used to identify when a project may go over budget and require additional financing from their lender.
@@ -24,10 +23,7 @@ For consistency, an organization will define a master list of every possible cos
 The projects that my company manages range in budget from between $1,000,000 and $200,000,000 with between 100 and 900 cost codes depending on their size and scope.
 
 
-*In this section, provide brief details on the background information of the domain from which the project is proposed. Historical information relevant to the project should be included. It should be clear how or why a problem in the domain can or should be solved. Related academic research should be appropriately cited in this section, including why that research is relevant. Additionally, a discussion of your personal motivation for investigating a particular problem in the domain is encouraged but not required.*
-
 ### Problem Statement
-_(approx. 1 paragraph)_
 
 Currently Project Coordinators on the construction site must review and assign a cost code to each item on a purchase order so it can be accounted for in the correct location of the construction project's budget. The Project Manager then reviews and confirms or modifies the correct cost code is selected for an item before commiting it to the budget.
 
@@ -39,61 +35,53 @@ I propose that once way to reduce the amount of time and the expense of choosing
 
 Using this prediciton, I could present the end-user with a top 5 suggestions for the cost code that a purchases order item should belong to, therefore, reducing the amount of they need to spend looking for the correct code and increasing the accuracy of their cost coding.
 
-*In this section, clearly describe the problem that is to be solved. The problem described should be well defined and should have at least one relevant potential solution. Additionally, describe the problem thoroughly such that it is clear that the problem is quantifiable (the problem can be expressed in mathematical or logical terms) , measurable (the problem can be measured by some metric and clearly observed), and replicable (the problem can be reproduced and occurs more than once).*
 
 ### Datasets and Inputs
-_(approx. 2-3 paragraphs)_
 
-The [dataset](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/PO_Dataset.csv) that I will use for this project is a CSV list of purchase order items that I have exported from the SQL server database of my company's ERP system and obtained permission to use. This file contains over 39,000 examples of purchase order items, their accompanying information and their corresponding cost codes. These purchase order items have been previously entered into the company's ERP system and had their cost codes selected manually over the course of over 5 years and several construction projects. This labeled data will be split up and used as the training, validation, and test sets for the model. 
+The [dataset](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/raw_data/PO_Dataset.csv) that I will use for this project is a CSV list of purchase order items that I have exported from the SQL server database of my company's ERP system and obtained permission to use. This file contains over 39,000 examples of purchase order items, their accompanying information and their corresponding cost codes. These purchase order items have been previously entered into the company's ERP system and had their cost codes selected manually over the course of over 5 years and several construction projects. This labeled data will be split up and used as the training, validation, and test sets for the model. 
 
 As previously mentioned the raw export contains over 39,000 records, however through some data exploration, documented in [this workbook](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/PO_Dataset_Exploration.ipynb), I found that there were some records that would not be helpful for achiving an accurate model. For example, there were some items with negative cost amounts which would correspond with credits that we had received from a supplier for items. These records are not relevant to the purchase of new items.
 
-The [clean dataset](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Clean_PO_Dataset.csv) that I created as a result of the data exploration and cleaning resulted in a file containing approximately 28,000 records.
+The [clean dataset](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/clean_data/Clean_PO_Dataset.csv) that I created as a result of the data exploration and cleaning resulted in a file containing approximately 28,000 records.
 
-*In this section, the dataset(s) and/or input(s) being considered for the project should be thoroughly described, such as how they relate to the problem and why they should be used. Information such as how the dataset or input is (was) obtained, and the characteristics of the dataset or input, should be included with relevant references and citations as necessary It should be clear how the dataset(s) or input(s) will be used in the project and whether their use is appropriate given the context of the problem.*
 
 ### Solution Statement
-_(approx. 1 paragraph)_
 
 I believe a solution to the problem of having employees spending time manually is to use a predictive model that takes input from the purchase order item such as vendor name, product name, quantity ordered, unit cost, and cost, then outputs the top 5 suggested cost codes for the item. This process would happen for each purchase order item entered on project and the goal would be to have a model that is accurate enough where employees can save time by selecting suggested cost codes rather than searching through an entire list of codes available.
 
 Furthermore, a longer-term goal would be have this model reach a point where the accuracy of it's predictions is high enough where the model can be used to autonomously code costs associated with a project, without input from an employee. I envision this working in steps, where this project with the model making suggestions that the user selects is the first step. The second step would be where a higher accuracy model predicts and selects the most likely cost code and the employee confirms or changes the code as required. The final step would be where the model predicts and codes the cost directly into the budget and the employee would only be required to make a change if they noticed a problem or possibly if there is a low confidence prediction. 
 
-*In this section, clearly describe a solution to the problem. The solution should be applicable to the project domain and appropriate for the dataset(s) or input(s) given. Additionally, describe the solution thoroughly such that it is clear that the solution is quantifiable (the solution can be expressed in mathematical or logical terms) , measurable (the solution can be measured by some metric and clearly observed), and replicable (the solution can be reproduced and occurs more than once).*
 
 ### Benchmark Model
-_(approximately 1-2 paragraphs)_
 
 Currently the processes for selecting cost codes for a purchase order items is entirely manual. We do not have statistics for how accurate the initial cost coding is, or how often Project Managers change cost codes when they are reviewing them.
 Additionally, we also have no documented data on relationships between the information on a purchase order and the cost codes. 
 Therefore, without any additional data on what the correlation is between a cost code and the information in the purchase order, I believe that the most relevant benchmark model would be to use a model that always predicts the most commonly used cost code. After doing data exploration and clean up, the most commonly used cost code was used 4,157 times out of a total of 28,446 records so a model that always predicted a this cost code would have an accuracy of almost 15%. 
 
 
-*In this section, provide the details for a benchmark model or result that relates to the domain, problem statement, and intended solution. Ideally, the benchmark model or result contextualizes existing methods or known information in the domain and problem given, which could then be objectively compared to the solution. Describe how the benchmark model or result is measurable (can be measured by some metric and clearly observed) with thorough detail.*
-
 ### Evaluation Metrics
-_(approx. 1-2 paragraphs)_
 
 This is a supervised classification problem where we are trying to predict what cost code a purchase order item belongs to.
 I believe that the best evaluation for this metric is an F1-Score. I based this decision on my findings in the data exploration workbook. 
 
-The conclusion of my findings is that the dataset is very unbalanced. The most used cost code appears 4,157 times, whereas the mean useage of a code is 97 times with a median of 5.5. This means that there are a small number of codes that are used a large number of times, but most codes are used reletively rarely.
+The conclusion of my findings is that the dataset is very unbalanced. The most used cost code appears 4,157 times, whereas the mean useage of a code is 97 times with a median of 5.5. This means that there are a small number of codes that are used a large number of times, but most codes are used reletively rarely.  
 
-This imbalance makes accuracy  poor measure of performance because, as discused in the benchmark model section, the model can achieve an accuracy of almost %20 by always predicting the most common cost code despite being an obviously poor model. F1-score is a better metric than accuracy.
-The formula for f1-score is:
-![Source: https://towardsdatascience.com/accuracy-precision-recall-or-f1-331fb37c5cb9](https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png)
+This imbalance makes accuracy  poor measure of performance because, as discused in the benchmark model section, the model can achieve an accuracy of almost %20 by always predicting the most common cost code despite being an obviously poor model. F1-score is a better metric than accuracy.  
+The formula for f1-score is:  
+![Source: https://towardsdatascience.com/accuracy-precision-recall-or-f1-331fb37c5cb9](https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png)  
 *Source: https://towardsdatascience.com/accuracy-precision-recall-or-f1-331fb37c5cb9*
 
-By using the f1-score we get a balance between precision and recall that better reflects the performance of the model when compared to accuracy. 
+By using the f1-score we get a balance between precision and recall that better reflects the performance of the model when compared to accuracy.   
 
-Fbeta-score is another metric that could be usefull, however this metric is used to weight either precision or recall higher than the other. This would be used if one metric was more important than the other. Eg. Recall is more important if the cost of a false negative is higher than the cost of a false positive. In the case of this model, since we are suggesting cost codes to an end-user, the cost of a false positive is the same as a false negative.
+Fbeta-score is another metric that could be usefull, however this metric is used to weight either precision or recall higher than the other. This would be used if one metric was more important than the other. Eg. Recall is more important if the cost of a false negative is higher than the cost of a false positive. In the case of this model, since we are suggesting cost codes to an end-user, the cost of a false positive is the same as a false negative.  
 
-As a result, I will use F1-score as a metric to evaluate the models performance.
+As a result, I will use F1-score as the main metric to evaluate the model's performance but will also use recall and precision individually for referance.
 
-*In this section, propose at least one evaluation metric that can be used to quantify the performance of both the benchmark model and the solution model. The evaluation metric(s) you propose should be appropriate given the context of the data, the problem statement, and the intended solution. Describe how the evaluation metric(s) are derived and provide an example of their mathematical representations (if applicable). Complex evaluation metrics should be clearly defined and quantifiable (can be expressed in mathematical or logical terms).*
 
 ### Project Design
 _(approx. 1 page)_
+
+
 
 *In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might be required before being used, or which algorithms will be considered for your implementation. The workflow and discussion that you provide should align with the qualities of the previous sections. Additionally, you are encouraged to include small visualizations, pseudocode, or diagrams to aid in describing the project design, but it is not required. The discussion should clearly outline your intended workflow of the capstone project.*
 
