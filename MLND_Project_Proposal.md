@@ -7,8 +7,10 @@ dan_kelly@telus.net
 
 ### Domain Background
 
-I currently work for a Construction Management company.
-One critical function of a Construction Management company is creating and tracking the budget of a construction project during the entire lifecycle of the construction project. During the construction of the project, the budget information may be used by developers/clients to track the performance of the architect, construction management team, and subcontractors. It can also be used to identify when a project may go over budget and require additional financing from their lender.
+I currently work for a Construction Management company and one critical function of a Construction Management company is creating and tracking the budget of a construction project during the entire lifecycle of the construction project. 
+
+
+During the construction of the project, the budget information may be used by developers/clients to track the performance of the architect, construction management team, and subcontractors. It can also be used to identify when a project may go over budget and require additional financing from their lender.
 
 By breaking down the project budget into detailed sections like concrete, appliances, windows, etc. you can identify potential performance issues with individual subcontractors, products, or design elements and take steps to correct or mitigate them moving forward.
 
@@ -20,6 +22,13 @@ For consistency, an organization will define a master list of every possible cos
 
 The projects that my company manages range in budget from between $1,000,000 and $200,000,000 with between 100 and 900 cost codes depending on their size and scope.
 
+The project that I am proposing is to predict the budget category (Cost Code) that is associated with purchase orders created during a construction project. 
+This project requires evaluating both text description and accompanying numerical data of a purchase order item to predict its category. This classification problem is similar to classifying bank transactions, this paper reviews some techniques for addressing this problem: [Automatic Classification of Bank
+Transactions](https://brage.bibsys.no/xmlui/bitstream/handle/11250/2456871/17699_FULLTEXT.pdf?sequence=1&isAllowed=y)
+
+*Source: Olav Eirik Ek Folkestad, Erlend Emil Nøtsund Vollset. "Automatic Classification of Bank Transactions." June 2017. Norwegian University of Science and Technology Department of Computer Science.*
+
+This paper, however, did not include any numerical transaction data in the prediction, nor did it explore using an ensemble of multiple models as I will.
 
 ### Problem Statement
 
@@ -31,7 +40,9 @@ This process cannot feasibly be accomplished by a one-to-one mapping of products
 
 I propose that one way to reduce the amount of time and the expense of choosing the correct cost code for an cost is to implement a predictive model that will use the data that is present on a purchase order (The vendor name, product description, cost, etc.) to predict what the associated cost code should be for each item on a purchase order.
 
-Using this prediction, I could present the end-user with a top 5 suggestions for the cost code that a purchases order item should belong to, therefore, reducing the amount of they need to spend looking for the correct code and increasing the accuracy of their cost coding.
+Using this prediction, I could present the end-user with a top 5 suggestions for the cost code that a purchases order item should belong to, therefore, reducing the amount of they need to spend looking for the correct code and increasing the accuracy of their cost coding. 
+
+
 
 
 ### Datasets and Inputs
@@ -40,7 +51,40 @@ The [dataset](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master
 
 As previously mentioned the raw export contains over 39,000 records, however through some data exploration, documented in [this workbook](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/PO_Dataset_Exploration.ipynb), I found that there were some records that would not be helpful for achieving an accurate model. For example, there were some items with negative cost amounts which would correspond with credits that we had received from a supplier for items. These records are not relevant to the purchase of new items.
 
-The [clean dataset](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/clean_data/Clean_PO_Dataset.csv) that I created as a result of the data exploration and cleaning resulted in a file containing approximately 28,000 records.
+The [clean dataset](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/clean_data/Clean_PO_Dataset.csv) that I created as a result of the data exploration and cleaning resulted in a file containing approximately 28,000 records. The dataset has both numerical data fields and text.
+
+As noted in the data exploration workbook, this is an unbalanced dataset with a few cost codes being used much more than others. This creates a problem where just randomly splitting the dataset into training, test, and validation sets could introduce a significant amount of bias. I will mitigate this by using the stratifying feature of sklearn's train_test_split and specifying the Cost Code column. This will maintain the ratio of codes relative to each other in each of the datasets.
+
+Because splitting the data will reduce the number of samples I have for training, I can use SMOTE (Synthetic Minority Oversampling TEchnique) to generate more data points based on the existing information, giving my model more data to train with.
+
+![Smote](https://raw.githubusercontent.com/rafjaa/machine_learning_fecib/master/src/static/img/smote.png)
+
+*Source: https://www.kaggle.com/rafjaa/resampling-strategies-for-imbalanced-datasets
+
+
+There are 9 features in this dataset, plus the variable that I want to predict. I will be using 7 of the features:
+
+![Dataset description screenshot](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Dataset%20Description.png)
+
+- **Company #** This is used internally to identify which internal company the project is associated with. It is not relevant to the prediction and will not be used.  
+
+- **Purchase Order** This is the purchase order number, the format is *project_number-###* where the project number is a unique number for each project, then the next 3 digits are the purchase order number. Each project starts at purchase order 001 and increments for each purchase order until the project is complete. This field could be useful if I strip off the project number and just look at the purchase order number. Low purchase order numbers would happen at the beginning of the project and higher numbers would be near the end of the project. This could give information on what stage the project is in when the purchase order is made, and subsequently, have some correlation with which cost code should be selected. 
+
+- **Item** This feature defines which item this record was on the purchase order, as purchase orders may contain multiple products. It is not useful for this prediction.
+
+- **Vendor** This is the name of the vendor who sold the item on the purchase order. I will use one-hot encoding for this nominal data.
+
+- **Description** This is a text field that contains the description of the item purchased. This should be the most important feature in the data. I will have to do further research, but I will either convert this field to a vector using [word2vec](https://skymind.ai/wiki/word2vec) or I will create a separate model to predict the cost code based only on this field, then feed that prediction into another model that includes the other data.
+
+- **Unit of Measure** This feature tells us how the units of each item are measured. Most commonly LS - lump sum or EA - each. I will one-hot encode this feature.
+
+- **Units** How many of these items were ordered. I will use this feature without any modification
+
+- **Unit Cost** How much each unit ordered costs. I will use this feature without any modification
+
+- **Cost** This is the total cost of the line item (Units * Unit Cost). I will use this feature without any modification
+
+- **Cost Code** This is the variable that my model will predict and will be used for training.
 
 
 ### Solution Statement
