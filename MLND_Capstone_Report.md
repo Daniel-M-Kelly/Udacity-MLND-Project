@@ -1,6 +1,7 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Project
-Daniel Kelly 
+Daniel Kelly  
+Dan_kelly@telus.net  
 June 8th, 2019
 
 ## I. Definition
