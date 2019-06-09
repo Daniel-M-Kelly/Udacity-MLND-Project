@@ -1,5 +1,5 @@
 # Machine Learning Engineer Nanodegree
-## Capstone Project
+## Capstone Project : Predicting Budget Cost Codes Based on Purchase Order Information
 Daniel Kelly  
 Dan_kelly@telus.net  
 June 8th, 2019
@@ -50,8 +50,6 @@ This process cannot feasibly be accomplished by a one-to-one mapping of products
 
 I propose that one way to reduce the amount of time and the expense of choosing the correct cost code for an cost is to implement a predictive model that will use the data that is present on a purchase order (The vendor name, product description, cost, etc.) to predict what the associated cost code should be for each item on a purchase order.
 
-Using this prediction, I could present the end-user with a top 5 suggestions for the cost code that a purchases order item should belong to, therefore, reducing the amount of they need to spend looking for the correct code and increasing the accuracy of their cost coding. 
-
 ### Metrics
 In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
 - _Are the metrics you’ve chosen to measure the performance of your models clearly discussed and defined?_
@@ -71,7 +69,7 @@ By using the f1-score we get a balance between precision and recall that better 
 
 Fbeta-score is another metric that could be useful, however, this metric is used to weight either precision or recall higher than the other. This would be used if one metric was more important than the other. Eg. Recall is more important if the cost of a false negative is higher than the cost of a false positive. In the case of this model, since we are suggesting cost codes to an end-user, the cost of a false positive is the same as a false negative.  
 
-As a result, I will use F1-score as the main metric to evaluate the model's performance but will also use recall and precision individually for reference.
+As a result, F1-score is the metric I have used to evaluate the model's performance but with recall and precision individually for reference.
 
 ## II. Analysis
 _(approx. 2-4 pages)_
