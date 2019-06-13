@@ -67,7 +67,6 @@ Fbeta-score is another metric that could be useful, however, this metric is used
 As a result, F1-score is the metric I have used to evaluate the model's performance but with recall and precision individually for reference.
 
 ## II. Analysis
-_(approx. 2-4 pages)_
 
 ### Data Exploration
 
@@ -220,7 +219,13 @@ In this section, you will need to provide some form of visualization that emphas
 - _Have you visualized a relevant or important quality about the problem, dataset, input data, or results?_
 - _Is the visualization thoroughly analyzed and discussed?_
 - _If a plot is provided, are the axes, title, and datum clearly defined?_
+
 ---
+The table below shows some examples of predictions from my model and the actual cost codes.
+![Example predictions](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Example%20Predictions%20.png)
+
+I think this example demonstrate why getting a high accuracy of the prediction on this dataset is difficult. There are some items and descriptions that could apply to multiple cost codes. For example the Fuel Surchage on a concrete delevery would have the same description but could apply to any of several concrete related cost codes. As I mention later in the improvements section, if each line item is taken out of the context of the PO and evaluated by itself, there are instances where there is not enough information to predict which cost code an item belongs to. And again, the "Polarcon Accelerating - Bronze" is a product that is added to concrete to speed its curing time. This product could be used in multiple concrete related cost codes.
+I think these items demonstrate that an above 50% accuracy rate for the model is in-fact impressive, and if it does not give the end-user the exact cost code to use, it suggests one that is close.
 
 ### Reflection
 ---
@@ -231,21 +236,22 @@ In this section, you will summarize the entire end-to-end problem solution and d
 - _Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?_
 ---
 
-
 As I suspected, I found the most difficult part of this project was figuring out how to deal with text based data and numerical and categorical data. Most of the resources I found for dealing with text based data were sentiment analysis based and used only text information. For example, in this paper which addresses a similar problem - classifying products based on their description and other informaiton - they simply treated features that could be categorical, like brand, as text and included it as a word. http://cs229.stanford.edu/proj2011/LinShankar-Applying%20Machine%20Learning%20to%20Product%20Categorization.pdf 
 
-One thing that suprised me was that the classifiers trained on the dataset that had been augmented using SMOTE performed worse than the classifiers trained on the base dataset. I beleive this was due to SMOTE causing overfitting. I noticed that the f1 score of the training set for the classifiers trained on the SMOTE dataset was much higher than the f1 score of the testing dataset. 
+One thing that suprised me was that the classifiers trained on the dataset that had been augmented using SMOTE performed worse than the classifiers trained on the base dataset. I beleive this was due to SMOTE causing overfitting. I noticed that the f1 score of the training set for the classifiers trained on the SMOTE dataset was much higher than the f1 score of the testing dataset.
 
 When considering this project I was originally hoping to achieve an accuracy close to 75%, and was slightly disapointed to only achieve ~50% accuracy. However when looking more closely at the data I think this is a good result. Some of the cost codes possibly overlap eachother in their use or are confusing and may be frequently miscoded by end-users. One example is the cost codes "01-52-22 field office supplies" and "01-52-23 field supplies" these codes are very similar and possibly mis-used. So taking this into context I think 50% is a good result, and if you consider the cost of suggesting an incorrect cost code is so low, I think that even at 50% accuracy, the prediction still has value. Lastly, my model significantly beats the benchmark model's accuracy of 15%.
 
-Below are some examples of predictions from my model and the actual cost codes.
-![Example predictions](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Example%20Predictions%20.png)
+
 
 ### Improvement
 
-There are a couple areas where I think I could improve this project.
-The first is the way that I handled stacking the two different models. I believe that it is possible to create a pipline and use feature unions to process the text and numeric and categorical data separately then pass them to a final classifier as shown in this post https://www.kaggle.com/metadist/work-like-a-pro-with-pipelines-and-feature-unions. By better using pipeline and stacking functionality I could improve the accuracy of the model. However I did not have the time to fully research and understand this technique enough to be confident implementing it.
+There are a few areas where I think I could improve this project:
 
-The second area that I think could be improved on is the second classifier that I used. My research showed that XGBoost is generally one of the highest performing classifiers. I did manage to get XGBoost working, however I found that the time it took to run was excessive and I could not properly tune its parameters. I believe the problem with using XGBoost is because of the number of features in the dataset that are created when one-hot-encoding the vendors feature. When I tried label encoding the vendors feature XGBoost ran at an acceptible speed, however all of the classifiers prediction performance dropped unacceptably low.
+The first is the way that I handled stacking the two different models. I believe that it is possible to create a pipline and use feature unions to process the text and numeric and categorical data separately then pass them to a final classifier as shown in this post https://www.kaggle.com/metadist/work-like-a-pro-with-pipelines-and-feature-unions. By better using pipeline and stacking functionality I could improve the accuracy of the model. It would also make testing multiple classifiers easier, and tuning hyperparameters. However I did not have the time to fully research and understand this technique enough to be confident implementing it.
+
+The second area that I think could be improved on is the second classifier that I used. My research showed that XGBoost is generally one of the highest performing classifiers. I did manage to get XGBoost working, however I found that the time it took to run was excessive and I could not properly tune its parameters. I believe the problem with using XGBoost is because of the number of features in the dataset that are created when one-hot-encoding the vendors feature. When I tried label encoding the vendors feature XGBoost ran at an acceptible speed, however all of the classifiers prediction performance dropped unacceptably low. With more time, I would have liked to get XGBoost performing better so I could fully evaluate its performance and possibly increase the accruacy of my model. Another option would have been to try using the LightGBM classifier which is similar to XGBoost and is also supposed to produce great results. This post has a good comparison of XGBoost and LightGBM. https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/
+
+Finally, it may be possible to improve the accuracy of the predictions by taking into consideration other items on a PO. One PO may have several items on it that are related. For example, a concrete purchase order may have 3 items: 1 - the concrete material itself, 2 - a fuel surcharge for the delivery of the concrete, 3 - a disposal fee for leftover concrete. The first item, the concrete material, may be a specific mix that has information in its description that indicates it is for a concrete footing and, therefore, should be associated with cost code "03-31-40 concrete material footings". The other two items, the fuel surcharg and disposal fee are generic and could apply to any one of many concrete cost codes, however when taken into context with the other item on the PO should also go to the "03-31-40 concrete material footings" cost code. 
 
 Overall I'm sure there is room for improvement of my final result, however this project demonstrated the proof of concept that a machine learning model can use the information in a purchase order to make useful predictions on what the cost code of a purchase order item should be.
