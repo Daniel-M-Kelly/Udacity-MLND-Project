@@ -8,11 +8,6 @@ June 8th, 2019
 _(approx. 1-2 pages)_
 
 ### Project Overview
----
-In this section, look to provide a high-level overview of the project in layman’s terms. Questions to ask yourself when writing this section:
-- _Has an overview of the project been provided, such as the problem domain, project origin, and related datasets or input data?_
-- _Has enough background information been given so that an uninformed reader would understand the problem domain and following problem statement?_
----
 I currently work for a Construction Management company and one critical function of a Construction Management company is creating and tracking the budget of a construction project during the entire lifecycle of the construction project. 
 
 
@@ -28,22 +23,18 @@ For consistency, an organization will define a master list of every possible cos
 
 The projects that my company manages range in budget from between $1,000,000 and $200,000,000 with between 100 and 900 cost codes depending on their size and scope.
 
-The project that I am proposing is to predict the budget category (Cost Code) that is associated with purchase orders created during a construction project. 
-This project requires evaluating both text description and accompanying numerical data of a purchase order item to predict its category. This classification problem is similar to classifying bank transactions, this paper reviews some techniques for addressing this problem: [Automatic Classification of Bank
+In this project I created a machine learning model to predict the budget category (Cost Code) that is associated with purchase orders (POs) created during a construction project. 
+This project requires evaluating both text description and accompanying numerical data of a PO  item to predict its category. This classification problem is similar to classifying bank transactions, this paper reviews some techniques for addressing this problem: [Automatic Classification of Bank
 Transactions](https://brage.bibsys.no/xmlui/bitstream/handle/11250/2456871/17699_FULLTEXT.pdf?sequence=1&isAllowed=y)
 
 *Source: Olav Eirik Ek Folkestad, Erlend Emil Nøtsund Vollset. "Automatic Classification of Bank Transactions." June 2017. Norwegian University of Science and Technology Department of Computer Science.*
 
 This paper, however, did not include any numerical transaction data in the prediction, nor did it explore using an ensemble of multiple models as I will.
 
+The dataset that I used for this project consisted of an export of all the purchase order items from my company's ERP system SQL database. The raw CSV file can be found [here](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/raw_data/PO_Dataset.csv). I also used an export of the master list of cost codes and their description, found [here](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/raw_data/Code_Master_list.csv). This raw dataset contains over 39,000 records.
+
 
 ### Problem Statement
----
-In this section, you will want to clearly define the problem that you are trying to solve, including the strategy (outline of tasks) you will use to achieve the desired solution. You should also thoroughly discuss what the intended solution will be for this problem. Questions to ask yourself when writing this section:
-- _Is the problem statement clearly defined? Will the reader understand what you are expecting to solve?_
-- _Have you thoroughly discussed how you will attempt to solve the problem?_
-- _Is an anticipated solution clearly defined? Will the reader understand what results you are looking for?_
----
 
 Currently, Project Coordinators on the construction site must review and assign a cost code to each item on a purchase order so it can be accounted for in the correct location of the construction project's budget. The Project Manager then reviews and confirms or modifies the correct cost code is selected for an item before committing it to the budget.
 
@@ -51,7 +42,11 @@ This is a time consuming and therefore expensive process for both the Project Co
 
 This process cannot feasibly be accomplished by a one-to-one mapping of products to cost codes because products are continuously added or changed, different projects may use different vendors, vendors are continuously being added, one product may be associated with different cost codes depending on how it is used, and many other factors.
 
-I propose that one way to reduce the amount of time and the expense of choosing the correct cost code for an cost is to implement a predictive model that will use the data that is present on a purchase order (The vendor name, product description, cost, etc.) to predict what the associated cost code should be for each item on a purchase order.
+I propose that one way to reduce the amount of time and the expense of choosing the correct cost code for an cost is to implement a predictive model that will use the data that is present on a purchase order (The vendor name, product description, cost, etc.) to predict what the associated cost code should be used for each item on a purchase order.
+This solution will use two models. The first model will be used to predict the associated cost code of an item based on the description of the item. Then this prediction made by the first model will be added as another feature to the existing categorical and numerical features (Unit Cost, Vendor name, etc.) The dataset including the new feature from the first model will then be fed into a second model optimized to make predictions on numerical and categorical data. Using two models for the two different types of data will allow me to select the best classifier for each type of data and creates a simple form of ensemble stacking.
+
+The output of this solution will be a prediction of the correct cost code that the purchase order item should be associated with.
+
 
 ### Metrics
 
@@ -79,7 +74,6 @@ _(approx. 2-4 pages)_
 In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
 - _If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?_
 - _If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?_
-- _If a dataset is **not** present for this problem, has discussion been made about the input space or input data for your problem?_
 - _Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)_
 ---
 
@@ -102,24 +96,23 @@ There are 9 features in this dataset, plus the variable that I want to predict. 
 
 - **Company #** This is used internally to identify which internal company the project is associated with. It is not relevant to the prediction and will not be used.  
 
-- **Purchase Order** This is the purchase order number, the format is *project_number-###* where the project number is a unique number for each project, then the next 3 digits are the purchase order number. Each project starts at purchase order 001 and increments for each purchase order until the project is complete. This field could be useful if I strip off the project number and just look at the purchase order number. Low purchase order numbers would happen at the beginning of the project and higher numbers would be near the end of the project. This could give information on what stage the project is in when the purchase order is made, and subsequently, have some correlation with which cost code should be selected. 
+- **Purchase Order** This is the purchase order number, this is not relevant to the prediction.
 
 - **Item** This feature defines which item this record was on the purchase order, as purchase orders may contain multiple products. It is not useful for this prediction.
 
 - **Vendor** This is the name of the vendor who sold the item on the purchase order. I will use one-hot encoding for this nominal data.
 
-- **Description** This is a text field that contains the description of the item purchased. This should be the most important feature in the data. I will have to do further research, but I will either convert this field to a vector using [word2vec](https://skymind.ai/wiki/word2vec) or I will create a separate model to predict the cost code based only on this field, then feed that prediction into another model that includes the other data.
+- **Description** This is a text field that contains the description of the item purchased. This should be the most important feature in the data. 
 
 - **Unit of Measure** This feature tells us how the units of each item are measured. Most commonly LS - lump sum or EA - each. I will one-hot encode this feature.
 
-- **Units** How many of these items were ordered. I will use this feature without any modification
+- **Units** How many of these items were ordered. I will use this feature after normalizing it. 
 
-- **Unit Cost** How much each unit ordered costs. I will use this feature without any modification
+- **Unit Cost** How much each unit ordered costs. I will use this feature after normalizing it.
 
-- **Cost** This is the total cost of the line item (Units * Unit Cost). I will use this feature without any modification
+- **Cost** This is the total cost of the line item (Units * Unit Cost). I will use this feature after normalizing it.
 
-- **Cost Code** This is the variable that my model will predict and will be used for training.
-
+- **Cost Code** This is the variable that my model will predict and will be used for training. There are 905 unique cost codes in the master list, however only 354 are used in the purchase orders in the dataset. 
 
 
 ### Exploratory Visualization
@@ -129,6 +122,35 @@ In this section, you will need to provide some form of visualization that summar
 - _Is the visualization thoroughly analyzed and discussed?_
 - _If a plot is provided, are the axes, title, and datum clearly defined?_
 ---
+
+
+This dataset is very unbalanced, the average number of times a cost code is used is 111, but the median is 6.5. This means that there are a few cost codes that are used many more times than the others. For example, 03-31-43 concrete material - above grade verticals is used 5570 times.
+
+The following graphic shows the ten most used cost codes.
+
+![Cost Code Counts](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Cost%20Code%20Counts.png)
+
+Furthermore, there are a small number of very high value POs, or POs with a large number of Units that skew the data.
+The following table shows, for example, that the Units feature has a maximum value of over 100,000 while the 75th percentile is under 11. 
+
+![Units and Costs](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Units%20and%20costs.png)
+
+These POs are outliers and will be removed.
+
+The following figure shows the correlation between the numerical and categorical features in the dataset.
+
+![Correlation Matrix](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Correlation.png)
+
+This shows us that the Vendor is the most clostly correlated variable with the cost code, followed by the overall cost of the item. Intuitively, the vendor having a high correlation with the cost code makes sense. For the most part, vendors each sell a certain type of product related to its function. For example a vendor called "Advanced Safety Supplies" sells mostly safety related equipment that would be budgeted to a "safety supplies" cost code. 
+
+The cost and unit cost being closely correlated also makes sense, because the cost of a line item is just a multiple of the unit cost. 
+
+What I found suprising was that the unit cost of an item was not very closely correlated to the cost code. I would have expected the unit cost to be very closely related to the particular item being purchased, which would then correspond to a particular cost code. It could be that product prices have changed over the years, or with different vendors. It's also possible that many products have similar prices, or simply that end users did not bother to put in the unit cost and just entered the total cost of the line item.
+
+Looking at the text data in the Description feature, 
+
+Note that I did not remove stop-words from this dataset in exploration or in the training. This is because there is some research to suggest that removing stopwords can have a negative affect on classification performance. http://www.lrec-conf.org/proceedings/lrec2014/pdf/292_Paper.pdf 
+
 
 ### Algorithms and Techniques
 
