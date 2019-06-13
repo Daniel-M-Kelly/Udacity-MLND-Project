@@ -70,12 +70,6 @@ As a result, F1-score is the metric I have used to evaluate the model's performa
 _(approx. 2-4 pages)_
 
 ### Data Exploration
----
-In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
-- _If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?_
-- _If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?_
-- _Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)_
----
 
 The [dataset](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/raw_data/PO_Dataset.csv) that I will use for this project is a CSV list of purchase order items that I have exported from the SQL server database of my company's ERP system and obtained permission to use. This file contains over 39,000 examples of purchase order items, their accompanying information and their corresponding cost codes. These purchase order items have been previously entered into the company's ERP system and had their cost codes selected manually over the course of over 5 years and several construction projects. This labelled data will be split up and used as the training, validation, and test sets for the model. 
 
@@ -114,17 +108,10 @@ There are 9 features in this dataset, plus the variable that I want to predict. 
 
 - **Cost Code** This is the variable that my model will predict and will be used for training. There are 905 unique cost codes in the master list, however only 354 are used in the purchase orders in the dataset. 
 
+This dataset is very unbalanced, the average number of times a cost code is used is 111, but the median is 6.5. This means that there are a few cost codes that are used many more times than the others. For example, 03-31-43 concrete material - above grade verticals is used 5570 times.
+
 
 ### Exploratory Visualization
----
-In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant characteristic or feature about the dataset or input data?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
----
-
-
-This dataset is very unbalanced, the average number of times a cost code is used is 111, but the median is 6.5. This means that there are a few cost codes that are used many more times than the others. For example, 03-31-43 concrete material - above grade verticals is used 5570 times.
 
 The following graphic shows the ten most used cost codes.
 
@@ -147,7 +134,13 @@ The cost and unit cost being closely correlated also makes sense, because the co
 
 What I found suprising was that the unit cost of an item was not very closely correlated to the cost code. I would have expected the unit cost to be very closely related to the particular item being purchased, which would then correspond to a particular cost code. It could be that product prices have changed over the years, or with different vendors. It's also possible that many products have similar prices, or simply that end users did not bother to put in the unit cost and just entered the total cost of the line item.
 
-Looking at the text data in the Description feature, 
+Looking at the text data in the Description feature, we can see that the majority of PO descriptions have between 2 and 6 words in them.
+
+![Word Count](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Count.png)
+
+And the most frequently used words are:
+
+![Word Frequency](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Frequency.png)
 
 Note that I did not remove stop-words from this dataset in exploration or in the training. This is because there is some research to suggest that removing stopwords can have a negative affect on classification performance. http://www.lrec-conf.org/proceedings/lrec2014/pdf/292_Paper.pdf 
 
@@ -163,12 +156,6 @@ In this section, you will need to discuss the algorithms and techniques you inte
 
 
 ### Benchmark
-
----
-In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
-- _Has some result or value been provided that acts as a benchmark for measuring performance?_
-- _Is it clear how this result or value was obtained (whether by data or by hypothesis)?_
----
 
 Currently, the processes for selecting cost codes for a purchase order items is entirely manual. We do not have statistics for how accurate the initial cost coding is, or how often Project Managers change cost codes when they are reviewing them.
 Additionally, we also have no documented data on relationships between the information on a purchase order and the cost codes. 
@@ -244,11 +231,18 @@ In this section, you will summarize the entire end-to-end problem solution and d
 - _Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?_
 ---
 
-### Improvement
----
-In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
-- _Are there further improvements that could be made on the algorithms or techniques you used in this project?_
-- _Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?_
-- _If you used your final solution as the new benchmark, do you think an even better solution exists?_
----
 
+As I suspected, I found the most difficult part of this project was figuring out how to deal with text based data and numerical and categorical data. Most of the resources I found for dealing with text based data were sentiment analysis based and used only text information. For example, in this paper which addresses a similar problem - classifying products based on their description and other informaiton - they simply treated features that could be categorical, like brand, as text and included it as a word. http://cs229.stanford.edu/proj2011/LinShankar-Applying%20Machine%20Learning%20to%20Product%20Categorization.pdf 
+
+One thing that suprised me was that the classifiers trained on the dataset that had been augmented using SMOTE performed worse than the classifiers trained on the base dataset. I beleive this was due to SMOTE causing overfitting. I noticed that the f1 score of the training set for the classifiers trained on the SMOTE dataset was much higher than the f1 score of the testing dataset. 
+
+When considering this project I was originally hoping to achieve an accuracy close to 75%, and was slightly disapointed to only achieve ~50% accuracy. However when looking more closely at the data I think this is a good result. Some of the cost codes possibly overlap eachother in their use or are confusing and may be frequently miscoded by end-users. One example is the cost codes "01-52-22 field office supplies" and "01-52-23 field supplies" these codes are very similar and possibly mis-used. So taking this into context I think 50% is a good result, and if you consider the cost of suggesting an incorrect cost code is so low, I think that even at 50% accuracy, the prediction still has value. Lastly, my model significantly beats the benchmark model's accuracy of 15%.
+
+### Improvement
+
+There are a couple areas where I think I could improve this project.
+The first is the way that I handled stacking the two different models. I believe that it is possible to create a pipline and use feature unions to process the text and numeric and categorical data separately then pass them to a final classifier as shown in this post https://www.kaggle.com/metadist/work-like-a-pro-with-pipelines-and-feature-unions. By better using pipeline and stacking functionality I could improve the accuracy of the model. However I did not have the time to fully research and understand this technique enough to be confident implementing it.
+
+The second area that I think could be improved on is the second classifier that I used. My research showed that XGBoost is generally one of the highest performing classifiers. I did manage to get XGBoost working, however I found that the time it took to run was excessive and I could not properly tune its parameters. I believe the problem with using XGBoost is because of the number of features in the dataset that are created when one-hot-encoding the vendors feature. When I tried label encoding the vendors feature XGBoost ran at an acceptible speed, however all of the classifiers prediction performance dropped unacceptably low.
+
+Overall I'm sure there is room for improvement of my final result, however this project demonstrated the proof of concept that a machine learning model can use the information in a purchase order to make useful predictions on what the cost code of a purchase order item should be.
