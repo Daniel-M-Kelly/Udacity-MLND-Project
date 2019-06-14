@@ -152,8 +152,15 @@ In this section, you will need to discuss the algorithms and techniques you inte
 - _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
 ---
 
-In this projec
+The first set of algorimths that I will test will be for predicting the cost code of the PO item solely on the description text information in the PO. So I will split out the description text of the training and test datasets into new dataframes.
+Then, I will use a pipeline that uses the CountVectorizer and TFIDF feature extraction techniques. The processed text data will then be passed to either a SGDC Classifier, or a Logistic Regression classifier. 
 
+For all three parts of the pipeline I can use a gridsearch to adjust hyperparameter of the feature extractor or classifier.
+After tuning the hyperparameters I will choose the pipeline and classifier that outputs the best F1-score based on the test data.
+I will then use this model to predict a cost code for the training set data, and append the result to that dataset. I will also append the test prediction to the test dataset.
+
+With this new dataset that includes the prediction from the previous model, I will train a KNeighbors classifier and 
+    
 ### Benchmark
 
 Currently, the processes for selecting cost codes for a purchase order items is entirely manual. We do not have statistics for how accurate the initial cost coding is, or how often Project Managers change cost codes when they are reviewing them.
