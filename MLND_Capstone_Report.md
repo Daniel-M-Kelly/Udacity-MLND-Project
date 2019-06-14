@@ -185,16 +185,19 @@ In this section, all of your preprocessing steps will need to be clearly documen
 
 The dataset that I used for this project required several data processing steps that I identified in the [Data Exploration](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/PO_Dataset_Exploration.ipynb) notebook, and implemented in the project notebook.
 
-The first processing step was to convert the Units column from an object to a float. I'm not sure why ERP system would allow text values to be entered into the units field, which should only be the number of units of an item purchased.
+The first processing step was to convert the Units column from an object to a float. I'm not sure why ERP system would allow text values to be entered into the units field, which should only be the number of units of an item purchased.  
 `
-#The Convert the Units column to float  
+# Convert the Units column to float  
 df['Units'] = pd.to_numeric(df['Units'], errors='coerce').fillna(0)  
 df['Units'] = df['Units'].astype('float64')  
-`
-I then dropped any PO items with null values in any of the columns. There were only 21 of them, so it didn't make sense to include them.
-`df.dropna(inplace=True)`
+`  
 
-Next, using a master list of valid cost codes exported from the system, I dropped any PO items that had an invalid cost code. This could possibly occur due to incorrect data entry or if a cost code was made invalid and is no-longer used in POs.
+I then dropped any PO items with null values in any of the columns. There were only 21 of them, so it didn't make sense to include them.
+`
+df.dropna(inplace=True)
+`
+  
+Next, using a master list of valid cost codes exported from the system, I dropped any PO items that had an invalid cost code. This could possibly occur due to incorrect data entry or if a cost code was made invalid and is no-longer used in POs.  
 
 `
 #Read in Master list of valid cost codes  
@@ -204,7 +207,8 @@ df_ml = pd.read_csv('raw_data/Code_Master_list.csv')
 df = df[df['Cost Code'].isin(df_ml['Cost Code'])].dropna()  
 `
 
-Looking at the numerical fields, there were some negative values in the Units, Unit Cost, and Costs fields. These are likely related to credits back to the company, and are not relevant to predicting PO cost codes, so they needed to be removed.
+Looking at the numerical fields, there were some negative values in the Units, Unit Cost, and Costs fields. These are likely related to credits back to the company, and are not relevant to predicting PO cost codes, so they needed to be removed.  
+
 `
 #Update dataset to exclude rows with Units, Unit Cost, or Costs that are negative.  
 df = df[(df[['Units','Unit Cost','Cost']] >= 0).all(axis=1)]  
@@ -222,8 +226,8 @@ df_90 = df_90[df_90['Unit Cost'] < df_90['Unit Cost'].quantile(.90)]
 Finally, it is a best practice to scale numerical values between 1 and 0, so I used sklearns MinMaxScaler() to scale the Units, Unit Cost, and Costs features.
 
 `
-# It's a good practice to scale numerical data  
-# Initialize a scaler, then apply it to the features  
+#It's a good practice to scale numerical data  
+#Initialize a scaler, then apply it to the features  
 scaler = MinMaxScaler()   
 numerical = ['Units','Unit Cost','Cost']  
 
@@ -233,21 +237,21 @@ df_90[numerical] = scaler.fit_transform(df_90[numerical])
 We'll need cost codes with atleast 2 examples in the database to have atleast one example in both the training and testing datasets. So drop any codes with a count fewer than 2.
 
 `
-# When splitting for training and testing later, we'll need a minimum of 2 examples of each cost code.  
-# Assign cost code to a variable  
+#When splitting for training and testing later, we'll need a minimum of 2 examples of each cost code.  
+#Assign cost code to a variable  
 df_count = df_90['Cost Code'].value_counts()  
 
 #New dataframe only includes lines with cost codes with a count of 2 or greater  
 df_90 = df_90[~df_90['Cost Code'].isin(df_count[df_count <= 2].index)]
 `
 
-Next, the categorical features Vendor and Unit of Measure need to be dealt with. I'll use one-hot-encoding for these features.
+Next, the categorical features Vendor and Unit of Measure need to be dealt with. I'll use one-hot-encoding for these features.  
 `
 #One Hot Encode categorical features  
 categorical = ['Vendor', 'Unit of Measure']  
 df_90 = pd.get_dummies(df_90, columns = categorical )  
-`
-The target variable, "Cost Code" needs to be encoded as well. Label encoding makes sense here.
+`  
+The target variable, "Cost Code" needs to be encoded as well. Label encoding makes sense here.  
 `
 #Numerically encode cost codes.  
 le = LabelEncoder()  
@@ -255,7 +259,7 @@ cost_code = df_90['Cost Code']
 df_90['Cost Code Encoded'] = le.fit_transform(cost_code)  
 `
 
-Drop features that are irrelevant to the prediction.
+Drop features that are irrelevant to the prediction.  
 `
 #drop features I won't be using
 df_90 = df_90.drop(['Company #','Purchase Order', 'Item'], axis = 1)
