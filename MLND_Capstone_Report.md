@@ -187,12 +187,12 @@ The dataset that I used for this project required several data processing steps 
 
 The first processing step was to convert the Units column from an object to a float. I'm not sure why ERP system would allow text values to be entered into the units field, which should only be the number of units of an item purchased.  
 `
-# Convert the Units column to float  
+#Convert the Units column to float  
 df['Units'] = pd.to_numeric(df['Units'], errors='coerce').fillna(0)  
 df['Units'] = df['Units'].astype('float64')  
 `  
 
-I then dropped any PO items with null values in any of the columns. There were only 21 of them, so it didn't make sense to include them.
+I then dropped any PO items with null values in any of the columns. There were only 21 of them, so it didn't make sense to include them.  
 `
 df.dropna(inplace=True)
 `
@@ -210,17 +210,17 @@ df = df[df['Cost Code'].isin(df_ml['Cost Code'])].dropna()
 Looking at the numerical fields, there were some negative values in the Units, Unit Cost, and Costs fields. These are likely related to credits back to the company, and are not relevant to predicting PO cost codes, so they needed to be removed.  
 
 `
-#Update dataset to exclude rows with Units, Unit Cost, or Costs that are negative.  
+#Update dataset to exclude rows with Units, Unit Cost, or Costs that are negative.    
 df = df[(df[['Units','Unit Cost','Cost']] >= 0).all(axis=1)]  
 `
 
 Next, looking at the description of the data in the Units, Unit Cost, and Costs fields, we can see that there are a few outliers with very large values that are skewing the data. So by dropping the the records in the top 10% of these fields, we get a more representational dataset.
 
 `
-#Create a new dataframe that takes only the 90th quartile of data from the 3 numerical columns.   
-df_90 = df[df['Cost'] < df['Cost'].quantile(.90)]   
-df_90 = df_90[df_90['Units'] < df_90['Units'].quantile(.90)]   
-df_90 = df_90[df_90['Unit Cost'] < df_90['Unit Cost'].quantile(.90)]   
+#Create a new dataframe that takes only the 90th quartile of data from the 3 numerical columns.  
+df_90 = df[df['Cost'] < df['Cost'].quantile(.90)]  
+df_90 = df_90[df_90['Units'] < df_90['Units'].quantile(.90)]  
+df_90 = df_90[df_90['Unit Cost'] < df_90['Unit Cost'].quantile(.90)]  
 `
 
 Finally, it is a best practice to scale numerical values between 1 and 0, so I used sklearns MinMaxScaler() to scale the Units, Unit Cost, and Costs features.
