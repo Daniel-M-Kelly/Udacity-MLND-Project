@@ -187,9 +187,9 @@ The dataset that I used for this project required several data processing steps 
 
 The first processing step was to convert the Units column from an object to a float. I'm not sure why ERP system would allow text values to be entered into the units field, which should only be the number of units of an item purchased.  
 
-`#Convert the Units column to float  
-df['Units'] = pd.to_numeric(df['Units'], errors='coerce').fillna(0)  
-df['Units'] = df['Units'].astype('float64')`  
+`#Convert the Units column to float`  
+`df['Units'] = pd.to_numeric(df['Units'], errors='coerce').fillna(0)`  
+`df['Units'] = df['Units'].astype('float64')`  
 
 I then dropped any PO items with null values in any of the columns. There were only 21 of them, so it didn't make sense to include them.  
 
@@ -198,11 +198,11 @@ I then dropped any PO items with null values in any of the columns. There were o
   
 Next, using a master list of valid cost codes exported from the system, I dropped any PO items that had an invalid cost code. This could possibly occur due to incorrect data entry or if a cost code was made invalid and is no-longer used in POs.  
 
-`#Read in Master list of valid cost codes  
-df_ml = pd.read_csv('raw_data/Code_Master_list.csv')  
+`#Read in Master list of valid cost codes ` 
+`df_ml = pd.read_csv('raw_data/Code_Master_list.csv')`
 
-#Drop rows where the cost code is not in the master list  
-df = df[df['Cost Code'].isin(df_ml['Cost Code'])].dropna()`
+`#Drop rows where the cost code is not in the master list`  
+`df = df[df['Cost Code'].isin(df_ml['Cost Code'])].dropna()`
 
 Looking at the numerical fields, there were some negative values in the Units, Unit Cost, and Costs fields. These are likely related to credits back to the company, and are not relevant to predicting PO cost codes, so they needed to be removed.  
 
