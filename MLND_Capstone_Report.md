@@ -153,13 +153,17 @@ In this section, you will need to discuss the algorithms and techniques you inte
 ---
 
 The first set of algorimths that I will test will be for predicting the cost code of the PO item solely on the description text information in the PO. So I will split out the description text of the training and test datasets into new dataframes.
-Then, I will use a pipeline that uses the CountVectorizer and TFIDF feature extraction techniques. The processed text data will then be passed to either a SGDC Classifier, or a Logistic Regression classifier. 
+Then, I will use a pipeline that uses the CountVectorizer and TFIDF feature extraction techniques. The processed text data will then be passed to either a SGDC Classifier, Logistic Regression classifier, or Multinomial Naive Bayes classifier. I chose these classifiers based on recommendations found on the internet. https://www.ritchieng.com/machine-learning-multinomial-naive-bayes-vectorization/
 
 For all three parts of the pipeline I can use a gridsearch to adjust hyperparameter of the feature extractor or classifier.
 After tuning the hyperparameters I will choose the pipeline and classifier that outputs the best F1-score based on the test data.
 I will then use this model to predict a cost code for the training set data, and append the result to that dataset. I will also append the test prediction to the test dataset.
 
-With this new dataset that includes the prediction from the previous model, I will train a KNeighbors classifier and 
+With this new dataset that includes the prediction from the previous model, I will then train two additional models, a Random Forest Classifier, and KNeigbors Classifier, with hyperparameters tuned with a gridsearch.
+
+I will then use the SMOTE technique to attempt to minimize the affect of the imbalance in the dataset. SMOTE will synthetically generate more datapoints for the minority classes and increase the size of the training data set. SMOTE will not be applied to the testing dataset. I will then train a second set of Random Forest and KNeighbors classifiers witht he SMOTE enhanced dataset to compare how they perform to the original dataset.
+
+The combination of algorithms that product the highest F1, recall, precision, and accuracy scores will be chosen as the solution to the problem.
     
 ### Benchmark
 
