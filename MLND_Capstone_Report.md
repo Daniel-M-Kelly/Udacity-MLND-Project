@@ -183,6 +183,117 @@ In this section, all of your preprocessing steps will need to be clearly documen
 - _If no preprocessing is needed, has it been made clear why?_
 ---
 
+The dataset that I used for this project required several data processing steps that I identified in the [Data Exploration](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/PO_Dataset_Exploration.ipynb) notebook, and implemented in the project notebook.
+
+The first processing step was to convert the Units column from an object to a float. I'm not sure why ERP system would allow text values to be entered into the units field, which should only be the number of units of an item purchased.
+`
+#The Convert the Units column to float  
+df['Units'] = pd.to_numeric(df['Units'], errors='coerce').fillna(0)  
+df['Units'] = df['Units'].astype('float64')  
+`
+I then dropped any PO items with null values in any of the columns. There were only 21 of them, so it didn't make sense to include them.
+`df.dropna(inplace=True)`
+
+Next, using a master list of valid cost codes exported from the system, I dropped any PO items that had an invalid cost code. This could possibly occur due to incorrect data entry or if a cost code was made invalid and is no-longer used in POs.
+
+`
+#Read in Master list of valid cost codes  
+df_ml = pd.read_csv('raw_data/Code_Master_list.csv')  
+
+#Drop rows where the cost code is not in the master list  
+df = df[df['Cost Code'].isin(df_ml['Cost Code'])].dropna()  
+`
+
+Looking at the numerical fields, there were some negative values in the Units, Unit Cost, and Costs fields. These are likely related to credits back to the company, and are not relevant to predicting PO cost codes, so they needed to be removed.
+`
+#Update dataset to exclude rows with Units, Unit Cost, or Costs that are negative.  
+df = df[(df[['Units','Unit Cost','Cost']] >= 0).all(axis=1)]  
+`
+
+Next, looking at the description of the data in the Units, Unit Cost, and Costs fields, we can see that there are a few outliers with very large values that are skewing the data. So by dropping the the records in the top 10% of these fields, we get a more representational dataset.
+
+`
+#Create a new dataframe that takes only the 90th quartile of data from the 3 numerical columns.   
+df_90 = df[df['Cost'] < df['Cost'].quantile(.90)]   
+df_90 = df_90[df_90['Units'] < df_90['Units'].quantile(.90)]   
+df_90 = df_90[df_90['Unit Cost'] < df_90['Unit Cost'].quantile(.90)]   
+`
+
+Finally, it is a best practice to scale numerical values between 1 and 0, so I used sklearns MinMaxScaler() to scale the Units, Unit Cost, and Costs features.
+
+`
+# It's a good practice to scale numerical data  
+# Initialize a scaler, then apply it to the features  
+scaler = MinMaxScaler()   
+numerical = ['Units','Unit Cost','Cost']  
+
+df_90[numerical] = scaler.fit_transform(df_90[numerical])  
+`
+
+We'll need cost codes with atleast 2 examples in the database to have atleast one example in both the training and testing datasets. So drop any codes with a count fewer than 2.
+
+`
+# When splitting for training and testing later, we'll need a minimum of 2 examples of each cost code.  
+# Assign cost code to a variable  
+df_count = df_90['Cost Code'].value_counts()  
+
+#New dataframe only includes lines with cost codes with a count of 2 or greater  
+df_90 = df_90[~df_90['Cost Code'].isin(df_count[df_count <= 2].index)]
+`
+
+Next, the categorical features Vendor and Unit of Measure need to be dealt with. I'll use one-hot-encoding for these features.
+`
+#One Hot Encode categorical features  
+categorical = ['Vendor', 'Unit of Measure']  
+df_90 = pd.get_dummies(df_90, columns = categorical )  
+`
+The target variable, "Cost Code" needs to be encoded as well. Label encoding makes sense here.
+`
+#Numerically encode cost codes.  
+le = LabelEncoder()  
+cost_code = df_90['Cost Code']  
+df_90['Cost Code Encoded'] = le.fit_transform(cost_code)  
+`
+
+Drop features that are irrelevant to the prediction.
+`
+#drop features I won't be using
+df_90 = df_90.drop(['Company #','Purchase Order', 'Item'], axis = 1)
+`
+
+Separate the target variable from the features that will be used to predict it.
+
+`
+#Separate the target variable from the features  
+cost_codes = df['Cost Code Encoded']  
+features = df.drop(['Cost Code','Cost Code Encoded'], axis=1)  
+`
+
+Now I split the data into the the training and test sets using sklearns train test split. 80% of the data will be in the training set, and 20% will be in the testing set. The stratify parameter will ensure that the same ratio of cost codes will be included in each set.
+`
+#Use sklearn train test split to split the data into training and testing sets.   
+#Testing set is 20% of total dataset size.  
+#Stratify the data so we don't introduce bias in the sets.  
+
+X_train, X_test, y_train, y_test = train_test_split(features,  
+                                                    cost_codes,  
+                                                    test_size = 0.2,  
+                                                    stratify = cost_codes  
+                                                   )  
+`
+
+Lastly, for use in the two separate models, I need to extract the Description feature from the training and test sets so they can be used separately from the other features.
+
+`
+#Split X_train and X_test text Descriptions for use in sepearate model.  
+X_train_desc = X_train['Description'].copy()  
+X_train = X_train.drop('Description', axis=1)  
+
+X_test_desc = X_test['Description'].copy()  
+X_test = X_test.drop('Description', axis=1)  
+`
+
+With those steps, the data pre-processing is complete. Further processing and feature extraction of the text data in the description feature will be done in the pipeline described in the implementation section.
 
 ### Implementation
 ---
