@@ -5,7 +5,6 @@ Dan_kelly@telus.net
 June 8th, 2019
 
 ## I. Definition
-_(approx. 1-2 pages)_
 
 ### Project Overview
 I currently work for a Construction Management company and one critical function of a Construction Management company is creating and tracking the budget of a construction project during the entire lifecycle of the construction project. 
@@ -64,7 +63,7 @@ By using the f1-score we get a balance between precision and recall that better 
 
 Fbeta-score is another metric that could be useful, however, this metric is used to weight either precision or recall higher than the other. This would be used if one metric was more important than the other. Eg. Recall is more important if the cost of a false negative is higher than the cost of a false positive. In the case of this model, since we are suggesting cost codes to an end-user, the cost of a false positive is the same as a false negative.  
 
-As a result, F1-score is the metric I have used to evaluate the model's performance but with recall and precision individually for reference.
+As a result, F1-score is the metric I have used to evaluate the models performance but with recall and precision individually for reference.
 
 ## II. Analysis
 
@@ -153,6 +152,7 @@ In this section, you will need to discuss the algorithms and techniques you inte
 - _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
 ---
 
+In this projec
 
 ### Benchmark
 
@@ -202,12 +202,20 @@ In this section, the final model and any supporting qualities should be evaluate
 ---
 
 ### Justification
----
-In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
-- _Are the final results found stronger than the benchmark result reported earlier?_
-- _Have you thoroughly analyzed and discussed the final solution?_
-- _Is the final solution significant enough to have solved the problem?_
----
+
+RF - Random Forest Classifier
+KN - K Neighbors Classifer
+RF_res - Random Forest Classifier with Smote enhanced Dataset
+KN_res - K Neighbors Classifer with Smote enhanced Dataset
+![Classifier Comparison](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Classifier_Comparison.png)
+
+The figure above compares the accuracy, F1-score, precision, and recall of the final alogrithms that I used in my solution when run against the test set of data.
+
+From this, we can see that the accuracy of all the models performed significantly better than the benchmark model's accuracy of 15%. 
+
+The final solution of using the Logistic Regression algorithms output combined with a Random Forest classifier produced the best results when looking at the accuracy, precision, and recall metrics, and matched using the KNeighbors classifier for F1-Score. 
+
+When taking into consideration the nature of the problem, which is to suggest a cost code to an end user who will simply accept or reject the suggestion. I think I can safely argue that my solution to the problem provides enough value to be considered to have solved the problem. In addition, due the nature of the data available in a PO there are some instances where there just is not enough information in the PO to more accurately predict the cost code, or the correct code to use may be subjective. 
 
 
 ## V. Conclusion
@@ -234,7 +242,7 @@ In summary, the solution that I arrived at for this problem involved the followi
 
 As I suspected, I found the most difficult part of this project was figuring out how to deal with text based data and numerical and categorical data. Most of the resources I found for dealing with text based data were sentiment analysis based and used only text information. For example, in this paper which addresses a similar problem - classifying products based on their description and other informaiton - they simply treated features that could be categorical, like brand, as text and included it as a word. http://cs229.stanford.edu/proj2011/LinShankar-Applying%20Machine%20Learning%20to%20Product%20Categorization.pdf 
 
-One thing that suprised me was that the classifiers trained on the dataset that had been augmented using SMOTE performed worse than the classifiers trained on the base dataset. I beleive this was due to SMOTE causing overfitting. I noticed that the f1 score of the training set for the classifiers trained on the SMOTE dataset was much higher than the f1 score of the testing dataset.
+Again, the most unexpected result was that the classifiers trained on the dataset that had been augmented using SMOTE performed worse than the classifiers trained on the base dataset. I beleive this was due to SMOTE causing overfitting. I noticed that the f1 score of the training set for the classifiers trained on the SMOTE dataset was much higher than the f1 score of the testing dataset indicating overfitting.
 
 When considering this project I was originally hoping to achieve an accuracy close to 75%, and was slightly disapointed to only achieve ~50% accuracy. However when looking more closely at the data I think this is a good result. Some of the cost codes possibly overlap eachother in their use or are confusing and may be frequently miscoded by end-users. One example is the cost codes "01-52-22 field office supplies" and "01-52-23 field supplies" these codes are very similar and possibly mis-used. So taking this into context I think 50% is a good result, and if you consider the cost of suggesting an incorrect cost code is so low, I think that even at 50% accuracy, the prediction still has value. Lastly, my model significantly beats the benchmark model's accuracy of 15%.
 
