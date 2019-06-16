@@ -145,13 +145,6 @@ Note that I did not remove stop-words from this dataset in exploration or in the
 
 ### Algorithms and Techniques
 
----
-In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
-- _Are the algorithms you will use, including any default variables/parameters in the project clearly defined?_
-- _Are the techniques to be used thoroughly discussed and justified?_
-- _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
----
-
 The first set of algorimths that I will test will be for predicting the cost code of the PO item solely on the description text information in the PO. So I will split out the description text of the training and test datasets into new dataframes.
 Then, I will use a pipeline that uses the CountVectorizer and TFIDF feature extraction techniques. The processed text data will then be passed to either a SGDC Classifier, Logistic Regression classifier, or Multinomial Naive Bayes classifier. I chose these classifiers based on recommendations found on the internet. https://www.ritchieng.com/machine-learning-multinomial-naive-bayes-vectorization/
 
@@ -173,15 +166,8 @@ Therefore, without any additional data on what the correlation is between a cost
 
 
 ## III. Methodology
-_(approx. 3-5 pages)_
 
 ### Data Preprocessing
----
-In this section, all of your preprocessing steps will need to be clearly documented, if any were necessary. From the previous section, any of the abnormalities or characteristics that you identified about the dataset will be addressed and corrected here. Questions to ask yourself when writing this section:
-- _If the algorithms chosen require preprocessing steps like feature selection or feature transformations, have they been properly documented?_
-- _Based on the **Data Exploration** section, if there were abnormalities or characteristics that needed to be addressed, have they been properly corrected?_
-- _If no preprocessing is needed, has it been made clear why?_
----
 
 The dataset that I used for this project required several data processing steps that I identified in the [Data Exploration](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/PO_Dataset_Exploration.ipynb) notebook, and implemented in the project notebook.
 
