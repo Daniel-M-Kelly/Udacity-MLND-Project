@@ -297,6 +297,52 @@ In this section, you will need to discuss the process of improvement you made up
 - _Are intermediate and final solutions clearly reported as the process is improved?_
 ---
 
+There were several techniques that I used to attempt to refine the solution further. As mentioned previously, I attempted to use multiple combinations of models to achieve the highest performance.
+
+Furthermore, I used a Gridesearch on each algorithm to find the hyper-parameters that produced the best results with this dataset. Below is an example of the code I used to do this:
+
+`
+RF_clf = RandomForestClassifier(random_state=42)  
+
+parameters = {'max_depth': [50,100,200],  
+              'min_samples_split': [1,2,3],  
+              'min_samples_leaf': [1,2,3],  
+              'n_estimators': [10,100,1000]  
+             }  
+
+RF_CV = GridSearchCV(RF_clf, parameters, scoring = 'f1_weighted', n_jobs=4, cv = 5, verbose = 5)  
+
+RF_CV.fit(X_train, y_train)  
+print('Best score and parameter combination = ')  
+print(RF_CV.best_score_)      
+print(RF_CV.best_params_)   
+
+
+RF_y_pred = RF_CV.predict(X_test)  
+`
+
+The most complex refinement technique that I employed was to attempt using the SMOTE over-sampling technique to minimize the affect of having imbalanced classes. https://imbalanced-learn.readthedocs.io/en/stable/over_sampling.html
+
+As noted in the data exploration phase of this project, there are a relative few number of cost codes that are used significantly more than the others. The most used code appeared 5570 times in the dataset, the average code 111 times, and the median was  6.5.
+
+This means there is a very imbalanced dataset, and this can skew the results of a machine learning algorithm and decrease the accuracy of the model.
+
+One method to combat this is to use SMOTE (Synthetic Minority Over-Sampling TEchnique). SMOTE uses a K Nearest neighbors method to synthetically create more examples of the minority classes in the data based on the existing data in the dataset.
+
+After installing the imblearn package and importing SMOTE using the following code:
+`from imblearn.over_sampling import SMOTE`
+
+I then created a new enhanced training set that included more samples.
+
+`sm = SMOTE(random_state=42)`
+`X_train_res, y_train_res = sm.fit_sample(X_train,y_train.ravel())`
+
+This increased the training data from 22,349 samples to 380,995 
+
+
+
+
+
 ## IV. Results
 _(approx. 2-3 pages)_
 
