@@ -282,37 +282,69 @@ Lastly, for use in the two separate models, I need to extract the Description fe
 With those steps, the data pre-processing is complete. Further processing and feature extraction of the text data in the description feature will be done in the pipeline described in the implementation section.
 
 ### Implementation
----
-In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
-- _Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?_
-- _Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?_
-- _Was there any part of the coding process (e.g., writing complicated functions) that should be documented?_
----
+
+In general, the implementation of this project was relatively simple once the data processing was completed.
+There were basically three parts: Train and test a couple classifiers to predict the Cost Code value based on the PO description text. Then choose the best model, combine its output with the original training set, then test another set of classifiers to predict the cost code based on the first models prediciton, and the additional numerical and categorical data.
+Finally, the last part was to try using SMOTE to augment the number of samples in the data and eliminate bias introduced by the imbalanced dataset, which I will discuss in the refinement section.
+
+As previously noted, I began by creating a pipeline for the first classifier I wanted to test; the SGD Classifier 
+The input to this pipeline is the PO description text.
+
+`SGDC_pipeline = Pipeline([('vect', CountVectorizer()),`
+                `('tfidf', TfidfTransformer()),`
+                `('clf', SGDClassifier(random_state=42, tol = 1e-3)),`
+               `])`
+
+The I then vectorize the text, splitting it into terms that are passed to the Tfidf transformer to get the Tfidf values for the terms. Lastly, this data is passed to the classifer for training or prediction.
+
+I also used GridSearchCV to iterate through hyperparameters for all three components of the pipeline.
+
+`parameters = {`
+`     'clf__loss':['hinge','log'],`
+`     'clf__penalty':['l1','l2'],`
+`     'clf__alpha':[1e-3,1e-4],`
+`     'clf__max_iter':[15,20,25],`
+`     'vect__ngram_range':[(1,1),(1,2)],`
+`     'tfidf__use_idf':[True,False]`
+`}`
+
+I then configured grid search to use the pipeline and the parameter list to find the best combination of hyperparamters based on the weighed F1-Score and executed it.
+
+`SGDC_CV = GridSearchCV(SGDC_pipeline, parameters, scoring = 'f1_weighted', n_jobs=4, cv = 5, verbose = 5)`
+`SGDC_CV.fit(X_train_desc, y_train)`
+
+The next step was to have the trained model predict the values of the testing dataset and print a classification report to get a summary of the accuarcy, precision, recall, and f1-score
+`SGDC_y_pred = SGDC_CV.predict(X_test_desc)`
+`print(classification_report(y_test, SGDC_y_pred))`
+
+I then repeated these steps for the Logrithmic Regression Classifier, and the Multinomial Naive Bayes Classifier, and chose the algorithm and hyperparameters that produced the highest F1-Score, Precision, and Recall for the next step.
+
+Next, I added the predicted values from the best performing classifier to the training and test set of data that still included the numerical and categorical features.
+
+`X_train['Desc Pred'] = LR_CV.predict(X_train_desc)`
+`X_test['Desc Pred'] = LR_CV.predict(X_test_desc)`
+
+The next step was to train and test a couple algorithms on this new dataset. I chose a Random Forest classifier and K Neighbors classifier to test, and again used a gridsearch to find the optimum hyperparameters. The code below was used for the random forest classifier and is very similar to what was used for the KNeighbors classifier.
+
+`RF_clf = RandomForestClassifier(random_state=42)`
+
+`parameters = {'max_depth': [10,50,100],`
+              `'min_samples_split': [1,2,3],`
+              `'min_samples_leaf': [1,2,3],`
+              `'n_estimators': [100, 500, 700, 1000]`
+             `}`
+
+`RF_CV = GridSearchCV(RF_clf, parameters, scoring = 'f1_weighted', n_jobs=4, cv = 5, verbose = 5)`
+
+`RF_CV.fit(X_train, y_train)`
+`print(classification_report(y_test, RF_y_pred))`
+
+
+
 
 ### Refinement
 
-There were several techniques that I used to attempt to refine the solution further. As mentioned previously, I attempted to use multiple combinations of models to achieve the highest performance.
-
-Furthermore, I used a Gridesearch on each algorithm to find the hyper-parameters that produced the best results with this dataset. Below is an example of the code I used to do this:
-
-`RF_clf = RandomForestClassifier(random_state=42)`  
-
-`parameters = {'max_depth': [50,100,200],`  
-              `'min_samples_split': [1,2,3],`  
-              `'min_samples_leaf': [1,2,3],`  
-              `'n_estimators': [10,100,1000]`  
-             `}`  
-
-`RF_CV = GridSearchCV(RF_clf, parameters, scoring = 'f1_weighted', n_jobs=4, cv = 5, verbose = 5)`  
-
-`RF_CV.fit(X_train, y_train)`  
-`print('Best score and parameter combination = ')`  
-`print(RF_CV.best_score_)`      
-`print(RF_CV.best_params_)`   
-
-
-`RF_y_pred = RF_CV.predict(X_test)  
-`
+There were several techniques that I used to attempt to refine the solution further. As mentioned previously, I attempted to use multiple combinations of models to achieve the highest performance. And I also used grid searches on each algorithm to find the hyper-parameters that produced the best results with this dataset. 
 
 The most complex refinement technique that I employed was to attempt using the SMOTE over-sampling technique to minimize the affect of having imbalanced classes. https://imbalanced-learn.readthedocs.io/en/stable/over_sampling.html
 
@@ -332,6 +364,17 @@ I then created a new enhanced training set that included more samples.
 
 This increased the training data from 22,349 samples to 380,995 and there is now 3318 examples of each code.
 
+I then re-trained the Random Forest and K Neighbors classifiers using the new dataset. Example code:
+
+`KN_clf_res = KNeighborsClassifier(n_neighbors=10, weights = 'distance', n_jobs = 4)`
+
+`KN_clf_res.fit(X_train_res, y_train_res)`
+`KN_y_pred_res = KN_clf_res.predict(X_test)`
+
+`print(classification_report(y_test, KN_y_pred_res))`
+
+The results were dissapointing, all metrics for both models decreased using the SMOTE augmented dataset (a comparison of all the results is visually represented in the results section). 
+Comparing the F1 Score of the model on the training set, versus on the testing set confirmed my suspicion that the model was overfitting. The weighted F1 Score for the K Neighbors algorithm using the SMOTE training set was 0.976, and on the testing set it was only 0.48. I suspect the overfitting is a result of there not being enough samples of some of the classes to create an accurate representation of that class.
 
 
 ## IV. Results
