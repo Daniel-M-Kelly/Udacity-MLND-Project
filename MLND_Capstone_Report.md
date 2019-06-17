@@ -290,35 +290,28 @@ In this section, the process for which metrics, algorithms, and techniques that 
 ---
 
 ### Refinement
----
-In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
-- _Has an initial solution been found and clearly reported?_
-- _Is the process of improvement clearly documented, such as what techniques were used?_
-- _Are intermediate and final solutions clearly reported as the process is improved?_
----
 
 There were several techniques that I used to attempt to refine the solution further. As mentioned previously, I attempted to use multiple combinations of models to achieve the highest performance.
 
 Furthermore, I used a Gridesearch on each algorithm to find the hyper-parameters that produced the best results with this dataset. Below is an example of the code I used to do this:
 
-`
-RF_clf = RandomForestClassifier(random_state=42)  
+`RF_clf = RandomForestClassifier(random_state=42)`  
 
-parameters = {'max_depth': [50,100,200],  
-              'min_samples_split': [1,2,3],  
-              'min_samples_leaf': [1,2,3],  
-              'n_estimators': [10,100,1000]  
-             }  
+`parameters = {'max_depth': [50,100,200],`  
+              `'min_samples_split': [1,2,3],`  
+              `'min_samples_leaf': [1,2,3],`  
+              `'n_estimators': [10,100,1000]`  
+             `}`  
 
-RF_CV = GridSearchCV(RF_clf, parameters, scoring = 'f1_weighted', n_jobs=4, cv = 5, verbose = 5)  
+`RF_CV = GridSearchCV(RF_clf, parameters, scoring = 'f1_weighted', n_jobs=4, cv = 5, verbose = 5)`  
 
-RF_CV.fit(X_train, y_train)  
-print('Best score and parameter combination = ')  
-print(RF_CV.best_score_)      
-print(RF_CV.best_params_)   
+`RF_CV.fit(X_train, y_train)`  
+`print('Best score and parameter combination = ')`  
+`print(RF_CV.best_score_)`      
+`print(RF_CV.best_params_)`   
 
 
-RF_y_pred = RF_CV.predict(X_test)  
+`RF_y_pred = RF_CV.predict(X_test)  
 `
 
 The most complex refinement technique that I employed was to attempt using the SMOTE over-sampling technique to minimize the affect of having imbalanced classes. https://imbalanced-learn.readthedocs.io/en/stable/over_sampling.html
@@ -337,9 +330,7 @@ I then created a new enhanced training set that included more samples.
 `sm = SMOTE(random_state=42)`
 `X_train_res, y_train_res = sm.fit_sample(X_train,y_train.ravel())`
 
-This increased the training data from 22,349 samples to 380,995 
-
-
+This increased the training data from 22,349 samples to 380,995 and there is now 3318 examples of each code.
 
 
 
@@ -354,6 +345,9 @@ In this section, the final model and any supporting qualities should be evaluate
 - _Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?_
 - _Can results found from the model be trusted?_
 ---
+
+I was quite suprised by the results of this project. Particuarly, I was expecting to see an improvement in the predictive performance of the algorithms once SMOTE had been applied to the dataset to decrease the affect of the imbalanced in classes.
+
 
 ### Justification
 
