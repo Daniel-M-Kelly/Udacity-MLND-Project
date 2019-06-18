@@ -41,9 +41,6 @@ This process cannot feasibly be accomplished by a one-to-one mapping of products
 
 I propose that one way to reduce the amount of time and the expense of choosing the correct cost code for an cost is to implement a predictive model that will use the data that is present on a purchase order (The vendor name, product description, cost, etc.) to predict what the associated cost code should be used for each item on a purchase order.
 
-~~This solution will use two models: 
-The first model will be used to predict the associated cost code of an item based on the description of the item. Then this prediction made by the first model will be added as another feature to the existing categorical and numerical features (Unit Cost, Vendor name, etc.) The dataset including the new feature from the first model will then be fed into a second model optimized to make predictions on numerical and categorical data. Using two models for the two different types of data will allow me to select the best classifier for each type of data and creates a simple form of ensemble stacking.~~
-
 The solution that I propose includes the following:
   - Preprocess the data
     - Discard outliers and null values
@@ -55,7 +52,7 @@ The solution that I propose includes the following:
     - Make a prediction based on the text features using either a SVM, Naive Bayes, or Logistic Regression classifier
   - Predict the cost code based on numerical/categorical features + the prediction from the text data
     - Append the prediction from the text feature to the numerical/categorical feature dataset
-    - Predict the cost code using either a Random Forest, or KNeighbors classifier.
+    - Predict the cost code using either a Random Forest, or KNeighbors classifier.  
     
 The output of this solution will be a prediction of the correct cost code that the purchase order item should be associated with.
 
