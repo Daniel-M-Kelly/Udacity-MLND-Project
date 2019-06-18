@@ -55,6 +55,7 @@ The solution that I propose includes the following:
     - Predict the cost code using either a Random Forest, or KNeighbors classifier.  
     
 The output of this solution will be a prediction of the correct cost code that the purchase order item should be associated with.
+To arrive at the optimal solution, when training the algorithms I will use gridsearch to tune the algorthim's hyperparameters. I will also use SMOTE to reduce the effect of the imbalanced classes in the dataset by synthetically creating more data points and balancing the amount of data for each class.
 
 There are several characteristics of this dataset that have shaped my proposed solution to this problem. The first characteristic is that there are text, numeric, and categorical features that make up each sample. While categorical features can be encoded (either through one hot encoding or label encoding) and then included with the numeric features for training and prediction, text data needs to be heavily pre-processed and handled differently. While it is possible to vectorize the text and include it as a single feature with the other features, then use one algorithm to make a prediction, this method does not take advantage of the fact that different algorithms can have higher performance on different sets of data or data types.
 Secondly, the solution I propose uses stacking two different algorithms which generally provides a higher performance than using a single algorithm.<sup>1</sup> http://blog.kaggle.com/2016/12/27/a-kagglers-guide-to-model-stacking-in-practice/
