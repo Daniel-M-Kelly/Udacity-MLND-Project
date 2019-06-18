@@ -55,7 +55,7 @@ The conclusion of my findings is that the dataset is very unbalanced. The most u
 This imbalance makes accuracy poor measure of performance because, as discussed in the benchmark model section, the model can achieve an accuracy of almost %15 by always predicting the most common cost code despite being an obviously poor model. This makes F1-score a better metric for the performance of this model than accuracy.  
 The formula for f1-score is:  
 
-<sub>Figure 1. F1 Metric Equation. Source<sup>2</sup></sub>
+<sub>Figure 1. F1 Metric Equation. Source<sup>2</sup></sub>  
 <img src="https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png" width="25%">
 
 By using the f1-score we get a balance between precision and recall that better reflects the performance of the model when compared to accuracy.   
@@ -149,7 +149,8 @@ Looking at the text data in the Description feature (figure 7), we can see that 
     
 And the most frequently used words (figure 8) are:
   
-<sub>Figure 8. Most Commonly User words in the Description Feature</sub>
+<sub>Figure 8. Most Commonly User words in the Description Feature</sub>  
+
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Frequency.png" width="50%">
   
   
@@ -428,7 +429,8 @@ KN - K Neighbors Classifier
 RF_res - Random Forest Classifier with Smote enhanced Dataset  
 KN_res - K Neighbors Classifier with Smote enhanced Dataset  
 
-<sub>Figure 9. Classifier Score Comparison</sub>
+<sub>Figure 9. Classifier Score Comparison</sub>  
+
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Classifier_Comparison.png" width="75%">
 
 
