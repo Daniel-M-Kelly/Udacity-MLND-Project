@@ -80,11 +80,12 @@ Because splitting the data will reduce the number of samples I have for training
 
 <img src="https://raw.githubusercontent.com/rafjaa/machine_learning_fecib/master/src/static/img/smote.png" width="75%">
 
-*Source<sup>3</sup>
+<sub>* Figure 2. Synthetic Minority Oversampling TEchnique (SMOTE). Source<sup>3</sup>*</sub>
 
 
 There are 9 features in this dataset, plus the variable that I want to predict. I will be using 7 of the features:
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Dataset%20Description.png" width="100%">
+<sub>* Figure 3. PO Dataset Head Output</sub>
 
 - **Company #** This is used internally to identify which internal company the project is associated with. It is not relevant to the prediction and will not be used.  
 
@@ -114,17 +115,20 @@ This dataset is very unbalanced, the average number of times a cost code is used
 The following graphic shows the ten most used cost codes.
   
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Cost%20Code%20Counts.png" width="50%">
+<sub>* Figure 4. Most Used Codes in PO Dataset </sub>
   
 Furthermore, there are a small number of very high-value POs or POs with a large number of Units that skew the data.
 The following table shows, for example, that the Units feature has a maximum value of over 100,000 while the 75th percentile is under 11. 
 
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Units%20and%20costs.png" width="50%">
+<sub>* Figure 5. Description of Numerical and Categorical Features</sub>
   
 These POs are outliers and will be removed.
 
-The following figure shows the correlation between the numerical and categorical features in the dataset.
+The figure 6 shows the correlation between the numerical and categorical features in the dataset.
 
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Correlation.png" width="75%">
+<sub>* Figure 6. Correlation Matrix of Numerical and Categorical Features</sub>
   
 This shows us that the Vendor is the most closely correlated variable with the cost code, followed by the overall cost of the item. Intuitively, the vendor having a high correlation with the cost code makes sense. For the most part, vendors each sell a certain type of product related to its function. For example, a vendor called "Advanced Safety Supplies" sells mostly safety-related equipment that would be budgeted to a "safety supplies" cost code. 
 
@@ -132,13 +136,15 @@ The cost and unit cost being closely correlated also makes sense, because the co
 
 What I found surprising was that the unit cost of an item was not very closely correlated to the cost code. I would have expected the unit cost to be very closely related to the particular item being purchased, which would then correspond to a particular cost code. It could be that product prices have changed over the years, or with different vendors. It's also possible that many products have similar prices, or simply that end users did not bother to put in the unit cost and just entered the total cost of the line item.
 
-Looking at the text data in the Description feature, we can see that the majority of PO descriptions have between 2 and 6 words in them.
+Looking at the text data in the Description feature (figure 7), we can see that the majority of PO descriptions have between 2 and 6 words in them.
   
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Count.png" width="75%">
+<sub>* Figure 7. Word Usage Distribution from Description Feature</sub>
   
-And the most frequently used words are:
+And the most frequently used words (figure 8) are:
   
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Frequency.png" width="50%">
+<sub>* Figure 8. Most Commonly User words in the Description Feature</sub>
   
 Note that I did not remove stop-words from this dataset in exploration or in the training. This is because there is some research to suggest that removing stopwords can have a negative effect on classification performance.<sup>4</sup> 
 
@@ -410,11 +416,13 @@ Then taking that prediction and adding it to the remaining categorical training 
 
 Overall, combining the Logistic Regression and Random Forest models increased the F1-score from 0.46 and 0.44 respectively to a combined 0.50.
 
-RF - Random Forest Classifier
-KN - K Neighbors Classifier
-RF_res - Random Forest Classifier with Smote enhanced Dataset
-KN_res - K Neighbors Classifier with Smote enhanced Dataset
+RF - Random Forest Classifier  
+KN - K Neighbors Classifier  
+RF_res - Random Forest Classifier with Smote enhanced Dataset  
+KN_res - K Neighbors Classifier with Smote enhanced Dataset  
+
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Classifier_Comparison.png" width="75%">
+<sub>* Figure 9. Classifier Score Comparison</sub>
 
 The figure above compares the accuracy, F1-score, precision, and recall of the final algorithms that I used in my solution when run against the test set of data.
 The final solution of using the Logistic Regression algorithms output combined with a Random Forest classifier produced the best results when looking at the accuracy, precision, and recall metrics, and matched using the KNeighbors classifier for F1-Score. 
@@ -438,6 +446,7 @@ In addition, due to the nature of the data available in a PO, there are some ins
 The table below shows some examples of predictions from my model and the actual cost codes.  
 
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Example%20Predictions%20.png" width="75%">
+<sub>* Figure 10. Prediction Ouput Comparison Table</sub>
 
 I think this example demonstrates why getting a high accuracy of the prediction on this dataset is difficult. There are some items and descriptions that could apply to multiple cost codes. For example, the Fuel Surcharge on a concrete delivery would have the same description but could apply to any of several concrete related cost codes. As I mention later in the improvements section, if each line item is taken out of the context of the PO and evaluated by itself, there are instances where there is not enough information to predict which cost code an item belongs to. And again, the "Polarcon Accelerating - Bronze" is a product that is added to concrete to speed its curing time. This product could be used in multiple concrete related cost codes.
 I think these items demonstrate that an above 50% accuracy rate for the model is in-fact impressive, and if it does not give the end-user the exact cost code to use, it suggests one that is close.
