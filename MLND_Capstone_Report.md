@@ -446,9 +446,9 @@ In addition, due to the nature of the data available in a PO, there are some ins
 The table below shows some examples of predictions from my model and the actual cost codes.  
 
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Example%20Predictions%20.png" width="75%">
-<sub>*Figure 10. Prediction Ouput Comparison Table</sub>  
-
-
+*<sub>Figure 10. Prediction Ouput Comparison Table</sub>  
+  
+  
 I think this example demonstrates why getting a high accuracy of the prediction on this dataset is difficult. There are some items and descriptions that could apply to multiple cost codes. For example, the Fuel Surcharge on a concrete delivery would have the same description but could apply to any of several concrete related cost codes. As I mention later in the improvements section, if each line item is taken out of the context of the PO and evaluated by itself, there are instances where there is not enough information to predict which cost code an item belongs to. And again, the "Polarcon Accelerating - Bronze" is a product that is added to concrete to speed its curing time. This product could be used in multiple concrete related cost codes.
 I think these items demonstrate that an above 50% accuracy rate for the model is in-fact impressive, and if it does not give the end-user the exact cost code to use, it suggests one that is close.
 
