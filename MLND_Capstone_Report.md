@@ -57,7 +57,7 @@ The conclusion of my findings is that the dataset is very unbalanced. The most u
 This imbalance makes accuracy poor measure of performance because, as discussed in the benchmark model section, the model can achieve an accuracy of almost %15 by always predicting the most common cost code despite being an obviously poor model. This makes F1-score a better metric for hte performance of this model than accuracy.  
 The formula for f1-score is:  
 
-<img src="https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png" width="75%">
+<img src="https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png" width="25%">
 
 *Source: https://towardsdatascience.com/accuracy-precision-recall-or-f1-331fb37c5cb9*
 
@@ -85,7 +85,7 @@ Because splitting the data will reduce the number of samples I have for training
 
 
 There are 9 features in this dataset, plus the variable that I want to predict. I will be using 7 of the features:
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Dataset%20Description.png" width="75%">
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Dataset%20Description.png" width="100%">
 
 - **Company #** This is used internally to identify which internal company the project is associated with. It is not relevant to the prediction and will not be used.  
 
@@ -114,7 +114,7 @@ This dataset is very unbalanced, the average number of times a cost code is used
 
 The following graphic shows the ten most used cost codes.
   
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Cost%20Code%20Counts.png" width="75%">
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Cost%20Code%20Counts.png" width="50%">
   
 Furthermore, there are a small number of very high value POs, or POs with a large number of Units that skew the data.
 The following table shows, for example, that the Units feature has a maximum value of over 100,000 while the 75th percentile is under 11. 
