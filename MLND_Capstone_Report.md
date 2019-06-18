@@ -1,5 +1,5 @@
 # Machine Learning Engineer Nanodegree
-## Capstone Project : Predicting Budget Cost Codes Based on Purchase Order Information
+## Capstone Project: Predicting Budget Cost Codes Based on Purchase Order Information
 Daniel Kelly  
 Dan_kelly@telus.net  
 June 8th, 2019
@@ -54,7 +54,7 @@ I believe that the best evaluation for this metric is an F1-Score. I based this 
 
 The conclusion of my findings is that the dataset is very unbalanced. The most used cost code appears 4,157 times, whereas the mean usage of a cost code is 97 times with a median of 5.5. This means that there are a small number of codes that are used a large number of times, but most codes are used relatively rarely.  
 
-This imbalance makes accuracy poor measure of performance because, as discussed in the benchmark model section, the model can achieve an accuracy of almost %15 by always predicting the most common cost code despite being an obviously poor model. This makes F1-score a better metric for hte performance of this model than accuracy.  
+This imbalance makes accuracy poor measure of performance because, as discussed in the benchmark model section, the model can achieve an accuracy of almost %15 by always predicting the most common cost code despite being an obviously poor model. This makes F1-score a better metric for the performance of this model than accuracy.  
 The formula for f1-score is:  
 
 <img src="https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png" width="25%">
@@ -65,7 +65,7 @@ By using the f1-score we get a balance between precision and recall that better 
 
 Fbeta-score is another metric that could be useful, however, this metric is used to weight either precision or recall higher than the other. This would be used if one metric was more important than the other. Eg. Recall is more important if the cost of a false negative is higher than the cost of a false positive. In the case of this model, since we are suggesting cost codes to an end-user, the cost of a false positive is the same as a false negative.  
 
-As a result, F1-score is the metric I have used to evaluate the models performance but with recall and precision individually for reference.
+As a result, F1-score is the metric I have used to evaluate the model's performance but with recall and precision individually for reference.
 
 ## II. Analysis
 
@@ -105,7 +105,7 @@ There are 9 features in this dataset, plus the variable that I want to predict. 
 
 - **Cost** This is the total cost of the line item (Units * Unit Cost). I will use this feature after normalizing it.
 
-- **Cost Code** This is the variable that my model will predict and will be used for training. There are 905 unique cost codes in the master list, however only 354 are used in the purchase orders in the dataset. 
+- **Cost Code** This is the variable that my model will predict and will be used for training. There are 905 unique cost codes in the master list, however, only 354 are used in the purchase orders in the dataset. 
 
 This dataset is very unbalanced, the average number of times a cost code is used is 111, but the median is 6.5. This means that there are a few cost codes that are used many more times than the others. For example, 03-31-43 concrete material - above grade verticals is used 5570 times.
 
@@ -116,7 +116,7 @@ The following graphic shows the ten most used cost codes.
   
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Cost%20Code%20Counts.png" width="50%">
   
-Furthermore, there are a small number of very high value POs, or POs with a large number of Units that skew the data.
+Furthermore, there are a small number of very high-value POs or POs with a large number of Units that skew the data.
 The following table shows, for example, that the Units feature has a maximum value of over 100,000 while the 75th percentile is under 11. 
 
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Units%20and%20costs.png" width="50%">
@@ -127,11 +127,11 @@ The following figure shows the correlation between the numerical and categorical
 
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Correlation.png" width="75%">
   
-This shows us that the Vendor is the most clostly correlated variable with the cost code, followed by the overall cost of the item. Intuitively, the vendor having a high correlation with the cost code makes sense. For the most part, vendors each sell a certain type of product related to its function. For example a vendor called "Advanced Safety Supplies" sells mostly safety related equipment that would be budgeted to a "safety supplies" cost code. 
+This shows us that the Vendor is the most closely correlated variable with the cost code, followed by the overall cost of the item. Intuitively, the vendor having a high correlation with the cost code makes sense. For the most part, vendors each sell a certain type of product related to its function. For example, a vendor called "Advanced Safety Supplies" sells mostly safety-related equipment that would be budgeted to a "safety supplies" cost code. 
 
 The cost and unit cost being closely correlated also makes sense, because the cost of a line item is just a multiple of the unit cost. 
 
-What I found suprising was that the unit cost of an item was not very closely correlated to the cost code. I would have expected the unit cost to be very closely related to the particular item being purchased, which would then correspond to a particular cost code. It could be that product prices have changed over the years, or with different vendors. It's also possible that many products have similar prices, or simply that end users did not bother to put in the unit cost and just entered the total cost of the line item.
+What I found surprising was that the unit cost of an item was not very closely correlated to the cost code. I would have expected the unit cost to be very closely related to the particular item being purchased, which would then correspond to a particular cost code. It could be that product prices have changed over the years, or with different vendors. It's also possible that many products have similar prices, or simply that end users did not bother to put in the unit cost and just entered the total cost of the line item.
 
 Looking at the text data in the Description feature, we can see that the majority of PO descriptions have between 2 and 6 words in them.
   
@@ -141,23 +141,23 @@ And the most frequently used words are:
   
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Frequency.png" width="50%">
   
-Note that I did not remove stop-words from this dataset in exploration or in the training. This is because there is some research to suggest that removing stopwords can have a negative affect on classification performance. http://www.lrec-conf.org/proceedings/lrec2014/pdf/292_Paper.pdf 
+Note that I did not remove stop-words from this dataset in exploration or in the training. This is because there is some research to suggest that removing stopwords can have a negative effect on classification performance. http://www.lrec-conf.org/proceedings/lrec2014/pdf/292_Paper.pdf 
 
 
 ### Algorithms and Techniques
 
-The first set of algorimths that I will test will be for predicting the cost code of the PO item solely on the description text information in the PO. So I will split out the description text of the training and test datasets into new dataframes.
-Then, I will use a pipeline that uses the CountVectorizer and TFIDF feature extraction techniques. The processed text data will then be passed to either a SGDC Classifier, Logistic Regression classifier, or Multinomial Naive Bayes classifier. I chose these classifiers based on recommendations found on the internet. https://www.ritchieng.com/machine-learning-multinomial-naive-bayes-vectorization/
+The first set of algorithms that I will test will be for predicting the cost code of the PO item solely on the description text information in the PO. So I will split out the description text of the training and test datasets into new data frames.
+Then, I will use a pipeline that uses CountVectorizer and TFIDF feature extraction techniques. The processed text data will then be passed to either an SGDC Classifier, Logistic Regression classifier, or Multinomial Naive Bayes classifier. I chose these classifiers based on recommendations found on the internet. https://www.ritchieng.com/machine-learning-multinomial-naive-bayes-vectorization/
 
-For all three parts of the pipeline I can use a gridsearch to adjust hyperparameter of the feature extractor or classifier.
+For all three parts of the pipeline, I can use a gridsearch to adjust hyperparameter of the feature extractor or classifier.
 After tuning the hyperparameters I will choose the pipeline and classifier that outputs the best F1-score based on the test data.
 I will then use this model to predict a cost code for the training set data, and append the result to that dataset. I will also append the test prediction to the test dataset.
 
 With this new dataset that includes the prediction from the previous model, I will then train two additional models, a Random Forest Classifier, and KNeigbors Classifier, with hyperparameters tuned with a gridsearch.
 
-I will then use the SMOTE technique to attempt to minimize the affect of the imbalance in the dataset. SMOTE will synthetically generate more datapoints for the minority classes and increase the size of the training data set. SMOTE will not be applied to the testing dataset. I will then train a second set of Random Forest and KNeighbors classifiers witht he SMOTE enhanced dataset to compare how they perform to the original dataset.
+I will then use the SMOTE technique to attempt to minimize the effect of the imbalance in the dataset. SMOTE will synthetically generate more data points for the minority classes and increase the size of the training data set. SMOTE will not be applied to the testing dataset. I will then train the second set of Random Forest and KNeighbors classifiers with he SMOTE enhanced dataset to compare how they perform to the original dataset.
 
-The combination of algorithms that product the highest F1, recall, precision, and accuracy scores will be chosen as the solution to the problem.
+The combination of algorithms that produce the highest F1, recall, precision, and accuracy scores will be chosen as the solution to the problem.
     
 ### Benchmark
 
@@ -172,7 +172,7 @@ Therefore, without any additional data on what the correlation is between a cost
 
 The dataset that I used for this project required several data processing steps that I identified in the [Data Exploration](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/PO_Dataset_Exploration.ipynb) notebook, and implemented in the project notebook.
 
-The first processing step was to convert the Units column from an object to a float. I'm not sure why ERP system would allow text values to be entered into the units field, which should only be the number of units of an item purchased.  
+The first processing step was to convert the Units column from an object to a float. I'm not sure why an ERP system would allow text values to be entered into the units field, which should only be the number of units of an item purchased.  
 
 `#Convert the Units column to float`  
 `df['Units'] = pd.to_numeric(df['Units'], errors='coerce').fillna(0)`  
@@ -182,7 +182,7 @@ I then dropped any PO items with null values in any of the columns. There were o
 
 `df.dropna(inplace=True)`  
 
-Next, using a master list of valid cost codes exported from the system, I dropped any PO items that had an invalid cost code. This could possibly occur due to incorrect data entry or if a cost code was made invalid and is no-longer used in POs.  
+Next, using a master list of valid cost codes exported from the system, I dropped any PO items that had an invalid cost code. This could possibly occur due to incorrect data entry or if a cost code was made invalid and is no longer used in POs.  
 
 `#Read in Master list of valid cost codes `  
 `df_ml = pd.read_csv('raw_data/Code_Master_list.csv')`
@@ -190,14 +190,14 @@ Next, using a master list of valid cost codes exported from the system, I droppe
 `#Drop rows where the cost code is not in the master list`  
 `df = df[df['Cost Code'].isin(df_ml['Cost Code'])].dropna()`
 
-Looking at the numerical fields, there were some negative values in the Units, Unit Cost, and Costs fields. These are likely related to credits back to the company, and are not relevant to predicting PO cost codes, so they needed to be removed.  
+Looking at the numerical fields, there were some negative values in the Units, Unit Cost, and Costs fields. These are likely related to credits back to the company and are not relevant to predicting PO cost codes, so they needed to be removed.  
 
 `
 #Update dataset to exclude rows with Units, Unit Cost, or Costs that are negative.  `  
 `df = df[(df[['Units','Unit Cost','Cost']] >= 0).all(axis=1)]  
 `
 
-Next, looking at the description of the data in the Units, Unit Cost, and Costs fields, we can see that there are a few outliers with very large values that are skewing the data. So by dropping the the records in the top 10% of these fields, we get a more representational dataset.
+Next, looking at the description of the data in the Units, Unit Cost, and Costs fields, we can see that there are a few outliers with very large values that are skewing the data. So by dropping the records in the top 10% of these fields, we get a more representational dataset.
 
 `
 #Create a new dataframe that takes only the 90th quartile of data from the 3 numerical columns.`   
@@ -217,7 +217,7 @@ Finally, it is a best practice to scale numerical values between 1 and 0, so I u
 `df_90[numerical] = scaler.fit_transform(df_90[numerical])    
 `
 
-We'll need cost codes with atleast 10 examples in the database to have atleast one example in both the training and testing datasets and we want enough samples so that the KNeighbors classifier has some data to work with. So drop any codes with a count fewer than 10 samples.
+We'll need cost codes with at least 10 examples in the database to have at least one example in both the training and testing datasets and we want enough samples so that the KNeighbors classifier has some data to work with. So drop any codes with a count fewer than 10 samples.
 
 `
 #When splitting for training and testing later, we'll need a minimum of 10 examples of each cost code.  `  
@@ -258,7 +258,7 @@ Separate the target variable from the features that will be used to predict it.
 `features = df.drop(['Cost Code','Cost Code Encoded'], axis=1)    
 `
 
-Now I split the data into the the training and test sets using sklearns train test split. 80% of the data will be in the training set, and 20% will be in the testing set. The stratify parameter will ensure that the same ratio of cost codes will be included in each set.
+Now I split the data into the training and test sets using sklearn's train test split. 80% of the data will be in the training set, and 20% will be in the testing set. The stratify parameter will ensure that the same ratio of cost codes will be included in each set.
 `
 #Use sklearn train test split to split the data into training and testing sets.`   
 `#Testing set is 20% of total dataset size.`  
@@ -274,7 +274,7 @@ Now I split the data into the the training and test sets using sklearns train te
 Lastly, for use in the two separate models, I need to extract the Description feature from the training and test sets so they can be used separately from the other features.
 
 `
-#Split X_train and X_test text Descriptions for use in sepearate model.`  
+#Split X_train and X_test text Descriptions for use in a separate model.`  
 `X_train_desc = X_train['Description'].copy()`  
 `X_train = X_train.drop('Description', axis=1)`  
 
@@ -287,7 +287,7 @@ With those steps, the data pre-processing is complete. Further processing and fe
 ### Implementation
 
 In general, the implementation of this project was relatively simple once the data processing was completed.
-There were basically three parts: Train and test a couple classifiers to predict the Cost Code value based on the PO description text. Then choose the best model, combine its output with the original training set, then test another set of classifiers to predict the cost code based on the first models prediciton, and the additional numerical and categorical data.
+There were basically three parts: Train and test a couple of classifiers to predict the Cost Code value based on the PO description text. Then choose the best model, combine its output with the original training set, then test another set of classifiers to predict the cost code based on the first model's prediction, and the additional numerical and categorical data.
 Finally, the last part was to try using SMOTE to augment the number of samples in the data and eliminate bias introduced by the imbalanced dataset, which I will discuss in the refinement section.
 
 As previously noted, I began by creating a pipeline for the first classifier I wanted to test; the SGD Classifier 
@@ -298,7 +298,7 @@ The input to this pipeline is the PO description text.
                 `('clf', SGDClassifier(random_state=42, tol = 1e-3)),`  
                `])`
 
-The I then vectorize the text, splitting it into terms that are passed to the Tfidf transformer to get the Tfidf values for the terms. Lastly, this data is passed to the classifer for training or prediction.
+The I then vectorize the text, splitting it into terms that are passed to the Tfidf transformer to get the Tfidf values for the terms. Lastly, this data is passed to the classfier for training or prediction.
 
 I also used GridSearchCV to iterate through hyperparameters for all three components of the pipeline.
 
@@ -311,24 +311,24 @@ I also used GridSearchCV to iterate through hyperparameters for all three compon
 `     'tfidf__use_idf':[True,False]`  
 `}`
 
-I then configured grid search to use the pipeline and the parameter list to find the best combination of hyperparamters based on the weighed F1-Score and executed it.
+I then configured gridsearch to use the pipeline and the parameter list to find the best combination of hyperparameters based on the weighed F1-Score and executed it.
 
 `SGDC_CV = GridSearchCV(SGDC_pipeline, parameters, scoring = 'f1_weighted', n_jobs=4, cv = 5, verbose = 5)`  
 `SGDC_CV.fit(X_train_desc, y_train)`
 
-The next step was to have the trained model predict the values of the testing dataset and print a classification report to get a summary of the accuarcy, precision, recall, and f1-score
+The next step was to have the trained model predict the values of the testing dataset and print a classification report to get a summary of the accuracy, precision, recall, and f1-score
 
 `SGDC_y_pred = SGDC_CV.predict(X_test_desc)`  
 `print(classification_report(y_test, SGDC_y_pred))`  
 
-I then repeated these steps for the Logrithmic Regression Classifier, and the Multinomial Naive Bayes Classifier, and chose the algorithm and hyperparameters that produced the highest F1-Score, Precision, and Recall for the next step.
+I then repeated these steps for the Logistic Regression Classifier, and the Multinomial Naive Bayes Classifier, and chose the algorithm and hyperparameters that produced the highest F1-Score, Precision, and Recall for the next step.
 
 Next, I added the predicted values from the best performing classifier to the training and test set of data that still included the numerical and categorical features.
 
 `X_train['Desc Pred'] = LR_CV.predict(X_train_desc)`  
 `X_test['Desc Pred'] = LR_CV.predict(X_test_desc)`  
 
-The next step was to train and test a couple algorithms on this new dataset. I chose a Random Forest classifier and K Neighbors classifier to test, and again used a gridsearch to find the optimum hyperparameters. The code below was used for the random forest classifier and is very similar to what was used for the KNeighbors classifier.
+The next step was to train and test a couple of algorithms on this new dataset. I chose a Random Forest classifier and K Neighbors classifier to test and again used a gridsearch to find the optimum hyperparameters. The code below was used for the random forest classifier and is very similar to what was used for the KNeighbors classifier.
 
 `RF_clf = RandomForestClassifier(random_state=42)`
 
@@ -348,7 +348,7 @@ The next step was to train and test a couple algorithms on this new dataset. I c
 
 There were several techniques that I used to attempt to refine the solution further. As mentioned previously, I attempted to use multiple combinations of models to achieve the highest performance. And I also used grid searches on each algorithm to find the hyper-parameters that produced the best results with this dataset. 
 
-The most complex refinement technique that I employed was to attempt using the SMOTE over-sampling technique to minimize the affect of having imbalanced classes. https://imbalanced-learn.readthedocs.io/en/stable/over_sampling.html
+The most complex refinement technique that I employed was to attempt using the SMOTE over-sampling technique to minimize the effect of having imbalanced classes. https://imbalanced-learn.readthedocs.io/en/stable/over_sampling.html
 
 As noted in the data exploration phase of this project, there are a relative few number of cost codes that are used significantly more than the others. The most used code appeared 5570 times in the dataset, the average code 111 times, and the median was  6.5.
 
@@ -375,8 +375,8 @@ I then re-trained the Random Forest and K Neighbors classifiers using the new da
 
 `print(classification_report(y_test, KN_y_pred_res))`
 
-The results of applying SMOTE were dissapointing, all metrics for both models decreased using the SMOTE augmented dataset (a comparison of all the results is visually represented in the results section). 
-Comparing the F1 Score of the model on the training set, versus on the testing set confirmed my suspicion that the model was overfitting. The weighted F1 Score for the K Neighbors algorithm using the SMOTE training set was 0.976, and on the testing set it was only 0.48. I suspect the overfitting is a result of there not being enough samples of some of the classes to create an accurate representation of that class.
+The results of applying SMOTE were disappointing, all metrics for both models decreased using the SMOTE augmented dataset (a comparison of all the results is visually represented in the results section). 
+Comparing the F1 Score of the model on the training set, versus on the testing set confirmed my suspicion that the model was overfitting. The weighted F1 Score for the K Neighbors algorithm using the SMOTE training set was 0.976, and on the testing set it, was only 0.48. I suspect the overfitting is a result of there not being enough samples of some of the classes to create an accurate representation of that class.
 
 
 ## IV. Results
@@ -410,15 +410,15 @@ Then taking that prediction and adding it to the remaining categorical training 
 Overall, combining the Logistic Regression and Random Forest models increased the F1-score from 0.46 and 0.44 respectively to a combined 0.50.
 
 RF - Random Forest Classifier
-KN - K Neighbors Classifer
+KN - K Neighbors Classifier
 RF_res - Random Forest Classifier with Smote enhanced Dataset
-KN_res - K Neighbors Classifer with Smote enhanced Dataset
+KN_res - K Neighbors Classifier with Smote enhanced Dataset
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Classifier_Comparison.png" width="75%">
 
-The figure above compares the accuracy, F1-score, precision, and recall of the final alogrithms that I used in my solution when run against the test set of data.
+The figure above compares the accuracy, F1-score, precision, and recall of the final algorithms that I used in my solution when run against the test set of data.
 The final solution of using the Logistic Regression algorithms output combined with a Random Forest classifier produced the best results when looking at the accuracy, precision, and recall metrics, and matched using the KNeighbors classifier for F1-Score. 
 
-One measure I took to check the robustness of the model was to change the pre-processing code to exclude cost codes with fewer than 2 samples, rather than fewer than 10. This changed the training environment and increased the number of samples available to the model, and increased the number of classes from 114 to 223 but only increased the number of samples from 22,349 to 22,739. This meant the model had to be able to predict an additional 109 classes with only an increase of 390 data samples. The result was actually a neglegable increase in accuracy and the same weighted F1-Score. This demonstrates that the model can generalize and does not overfit the existing data.
+One measure I took to check the robustness of the model was to change the pre-processing code to exclude cost codes with fewer than 2 samples, rather than fewer than 10. This changed the training environment and increased the number of samples available to the model, and increased the number of classes from 114 to 223 but only increased the number of samples from 22,349 to 22,739. This meant the model had to be able to predict an additional 109 classes with only an increase of 390 data samples. The result was actually a negligible increase in accuracy and the same weighted F1-Score. This demonstrates that the model can generalize and does not overfit the existing data.
 
 
 ### Justification
@@ -427,7 +427,7 @@ Looking at the visualization in the Results section, we can see that the accurac
 
 When taking into consideration the nature of the problem, which is to suggest a cost code to an end user who will simply accept or reject the suggestion. I think I can safely argue that my solution to the problem provides enough value to be considered to have solved the problem. There is little cost associated with an incorrect suggestion, and even an incorrect suggestion may provide value to an end user by being close to the recommended code. 
 
-In addition, due the nature of the data available in a PO there are some instances where there just is not enough information in the PO to more accurately predict the cost code, or the correct code to use may be subjective, so expecting a very high accuracy rate is not realistic.
+In addition, due to the nature of the data available in a PO, there are some instances where there just is not enough information in the PO to more accurately predict the cost code or the correct code to use may be subjective, so expecting a very high accuracy rate is not realistic.
 
 ## V. Conclusion
 
@@ -437,7 +437,7 @@ The table below shows some examples of predictions from my model and the actual 
 
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Example%20Predictions%20.png" width="75%">
 
-I think this example demonstrate why getting a high accuracy of the prediction on this dataset is difficult. There are some items and descriptions that could apply to multiple cost codes. For example the Fuel Surchage on a concrete delevery would have the same description but could apply to any of several concrete related cost codes. As I mention later in the improvements section, if each line item is taken out of the context of the PO and evaluated by itself, there are instances where there is not enough information to predict which cost code an item belongs to. And again, the "Polarcon Accelerating - Bronze" is a product that is added to concrete to speed its curing time. This product could be used in multiple concrete related cost codes.
+I think this example demonstrates why getting a high accuracy of the prediction on this dataset is difficult. There are some items and descriptions that could apply to multiple cost codes. For example, the Fuel Surcharge on a concrete delivery would have the same description but could apply to any of several concrete related cost codes. As I mention later in the improvements section, if each line item is taken out of the context of the PO and evaluated by itself, there are instances where there is not enough information to predict which cost code an item belongs to. And again, the "Polarcon Accelerating - Bronze" is a product that is added to concrete to speed its curing time. This product could be used in multiple concrete related cost codes.
 I think these items demonstrate that an above 50% accuracy rate for the model is in-fact impressive, and if it does not give the end-user the exact cost code to use, it suggests one that is close.
 
 ### Reflection
@@ -445,26 +445,26 @@ I think these items demonstrate that an above 50% accuracy rate for the model is
 In summary, the solution that I arrived at for this problem involved the following:
 * The first part of the solution was pre-processing the training data. Several of the features had extreme outliers in the data and had to be trimmed down, I also scaled the numerical features and converted the categorical features using one-hot-encoding. The data also contained codes that did not appear enough times to make a good prediction, so I dropped these instances. There were also some irrelevant columns that I dropped. Lastly, I label encoded the target variable.
 
-* I then split the training at test data, making sure to stratify the split so that there was a representational portion of all the cost codes in both the training and test set. Since the dataset is very unbalanced, this helps to reduce and bias that could have been introduced if the data as split randomly.
+* I then split the training at test data, making sure to stratify the split so that there was a representational portion of all the cost codes in both the training and test set. Since the dataset is very unbalanced, this helps to reduce any bias that could have been introduced if the data as split randomly.
 
-* Next I extracted the description text and separated it from the numerical and categorical data and use a pipeline that extracts the features from the text data. The last step in the pipeline is training a logistic regression classifier to predict the cost code value based on the text features. 
+* Next, I extracted the description text and separated it from the numerical and categorical data and use a pipeline that extracts the features from the text data. The last step in the pipeline is training a logistic regression classifier to predict the cost code value based on the text features. 
 
 * I then add the predicted cost code from the first model as a feature into the remaining categorical and numerical dataset. I then trained a random forest classifier to predict the final cost code based on this dataset. 
 
-As I suspected, I found the most difficult part of this project was figuring out how to deal with text based data and numerical and categorical data. Most of the resources I found for dealing with text based data were sentiment analysis based and used only text information. For example, in this paper which addresses a similar problem - classifying products based on their description and other informaiton - they simply treated features that could be categorical, like brand, as text and included it as a word. http://cs229.stanford.edu/proj2011/LinShankar-Applying%20Machine%20Learning%20to%20Product%20Categorization.pdf 
+As I suspected, I found the most difficult part of this project was figuring out how to deal with text-based data and numerical and categorical data. Most of the resources I found for dealing with text-based data were sentiment analysis based and used only text information. For example, in this paper which addresses a similar problem - classifying products based on their description and other information - they simply treated features that could be categorical, like brand, as text and included it as a word. http://cs229.stanford.edu/proj2011/LinShankar-Applying%20Machine%20Learning%20to%20Product%20Categorization.pdf 
 
-Again, the most unexpected result was that the classifiers trained on the dataset that had been augmented using SMOTE performed worse than the classifiers trained on the base dataset. I beleive this was due to SMOTE causing overfitting. I noticed that the f1 score of the training set for the classifiers trained on the SMOTE dataset was much higher than the f1 score of the testing dataset indicating overfitting.
+Again, the most unexpected result was that the classifiers trained on the dataset that had been augmented using SMOTE performed worse than the classifiers trained on the base dataset. I believe this was due to SMOTE causing overfitting. I noticed that the f1 score of the training set for the classifiers trained on the SMOTE dataset was much higher than the f1 score of the testing dataset indicating overfitting.
 
-When considering this project I was originally hoping to achieve an accuracy close to 75%, and was slightly disapointed to only achieve ~50% accuracy. However when looking more closely at the data I think this is a good result. Some of the cost codes possibly overlap eachother in their use or are confusing and may be frequently miscoded by end-users. One example is the cost codes "01-52-22 field office supplies" and "01-52-23 field supplies" these codes are very similar and possibly mis-used. So taking this into context I think 50% is a good result, and if you consider the cost of suggesting an incorrect cost code is so low, I think that even at 50% accuracy, the prediction still has value. Lastly, my model significantly beats the benchmark model's accuracy of 15%.
+When considering this project I was originally hoping to achieve an accuracy score close to 75% and was slightly disappointed to only achieve ~50% accuracy. However, when looking more closely at the data I think this is a good result. Some of the cost codes possibly overlap each other in their use or are confusing and may be frequently miscoded by end-users. One example is the cost codes "01-52-22 field office supplies" and "01-52-23 field supplies" these codes are very similar and possibly misused. So taking this into context I think 50% is a good result, and if you consider the cost of suggesting an incorrect cost code is so low, I think that even at 50% accuracy, the prediction still has value. Lastly, my model significantly beats the benchmark model's accuracy of 15%.
 
 ### Improvement
 
 There are a few areas where I think I could improve this project:
 
-The first is the way that I handled stacking the two different models. I believe that it is possible to create a pipline and use feature unions to process the text and numeric and categorical data separately then pass them to a final classifier as shown in this post https://www.kaggle.com/metadist/work-like-a-pro-with-pipelines-and-feature-unions. By better using pipeline and stacking functionality I could improve the accuracy of the model. It would also make testing multiple classifiers easier, and tuning hyperparameters. However I did not have the time to fully research and understand this technique enough to be confident implementing it.
+The first is the way that I handled stacking the two different models. I believe that it is possible to create a pipeline and use feature unions to process the text and numeric and categorical data separately then pass them to a final classifier as shown in this post https://www.kaggle.com/metadist/work-like-a-pro-with-pipelines-and-feature-unions. By better-using pipeline and stacking functionality, I could improve the accuracy of the model. It would also make testing multiple classifiers easier, and tuning hyperparameters. However, I did not have the time to fully research and understand this technique enough to be confident in implementing it.
 
-The second area that I think could be improved on is the second classifier that I used. My research showed that XGBoost is generally one of the highest performing classifiers. I did manage to get XGBoost working, however I found that the time it took to run was excessive and I could not properly tune its parameters. I believe the problem with using XGBoost is because of the number of features in the dataset that are created when one-hot-encoding the vendors feature. When I tried label encoding the vendors feature XGBoost ran at an acceptible speed, however all of the classifiers prediction performance dropped unacceptably low. With more time, I would have liked to get XGBoost performing better so I could fully evaluate its performance and possibly increase the accruacy of my model. Another option would have been to try using the LightGBM classifier which is similar to XGBoost and is also supposed to produce great results. This post has a good comparison of XGBoost and LightGBM. https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/
+The second area that I think could be improved on is the second classifier that I used. My research showed that XGBoost is generally one of the highest performing classifiers. I did manage to get XGBoost working, however, I found that the time it took to run was excessive and I could not properly tune its parameters. I believe the problem with using XGBoost is because of the number of features in the dataset that are created when one-hot-encoding the vendors feature. When I tried label encoding the vendors feature XGBoost ran at an acceptable speed, however all of the classifiers prediction performance dropped unacceptably low. With more time, I would have liked to get XGBoost performing better so I could fully evaluate its performance and possibly increase the accuracy of my model. Another option would have been to try using the LightGBM classifier which is similar to XGBoost and is also supposed to produce great results. This post has a good comparison of XGBoost and LightGBM. https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/
 
-It may also be possible to improve the accuracy of the predictions by taking into consideration other items on a PO. One PO may have several items on it that are related. For example, a concrete purchase order may have 3 items: 1 - the concrete material itself, 2 - a fuel surcharge for the delivery of the concrete, 3 - a disposal fee for leftover concrete. The first item, the concrete material, may be a specific mix that has information in its description that indicates it is for a concrete footing and, therefore, should be associated with cost code "03-31-40 concrete material footings". The other two items, the fuel surcharg and disposal fee are generic and could apply to any one of many concrete cost codes, however when taken into context with the other item on the PO should also go to the "03-31-40 concrete material footings" cost code. 
+It may also be possible to improve the accuracy of the predictions by taking into consideration other items on a PO. One PO may have several items on it that are related. For example, a concrete purchase order may have 3 items: 1 - the concrete material itself, 2 - a fuel surcharge for the delivery of the concrete, 3 - a disposal fee for leftover concrete. The first item, the concrete material, may be a specific mix that has information in its description that indicates it is for a concrete footing and, therefore, should be associated with cost code "03-31-40 concrete material footings". The other two items, the fuel surcharge and disposal fee are generic and could apply to any one of many concrete cost codes, however when taken into context with the other item on the PO should also go to the "03-31-40 concrete material footings" cost code. 
 
-Overall I'm sure there is room for improvement of my final result, however this project demonstrated the proof of concept that a machine learning model can use the information in a purchase order to make useful predictions on what the cost code of a purchase order item should be.
+Overall I'm sure there is room for improvement of my final result, however, this project demonstrated the proof of concept that a machine learning model can use the information in a purchase order to make useful predictions on what the cost code of a purchase order item should be.
