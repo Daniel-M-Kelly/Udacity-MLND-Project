@@ -40,9 +40,28 @@ This is a time consuming and therefore expensive process for both the Project Co
 This process cannot feasibly be accomplished by a one-to-one mapping of products to cost codes because products are continuously added or changed, different projects may use different vendors, vendors are continuously being added, one product may be associated with different cost codes depending on how it is used, and many other factors.
 
 I propose that one way to reduce the amount of time and the expense of choosing the correct cost code for an cost is to implement a predictive model that will use the data that is present on a purchase order (The vendor name, product description, cost, etc.) to predict what the associated cost code should be used for each item on a purchase order.
-This solution will use two models. The first model will be used to predict the associated cost code of an item based on the description of the item. Then this prediction made by the first model will be added as another feature to the existing categorical and numerical features (Unit Cost, Vendor name, etc.) The dataset including the new feature from the first model will then be fed into a second model optimized to make predictions on numerical and categorical data. Using two models for the two different types of data will allow me to select the best classifier for each type of data and creates a simple form of ensemble stacking.
 
+~~This solution will use two models: 
+The first model will be used to predict the associated cost code of an item based on the description of the item. Then this prediction made by the first model will be added as another feature to the existing categorical and numerical features (Unit Cost, Vendor name, etc.) The dataset including the new feature from the first model will then be fed into a second model optimized to make predictions on numerical and categorical data. Using two models for the two different types of data will allow me to select the best classifier for each type of data and creates a simple form of ensemble stacking.~~
+
+The solution that I propose includes the following:
+  - Preprocess the data
+    - Discard outliers and null values
+    - Normalize numerical data
+    - One hot encode Categorical data
+  - Predict the cost code based on the text data
+    - Split text from numerical/categorical features
+    - Extract features from text data using CountVectorizer and TFIDF
+    - Make a prediction based on the text features using either a SVM, Naive Bayes, or Logistic Regression classifier
+  - Predict the cost code based on numerical/categorical features + the prediction from the text data
+    - Append the prediction from the text feature to the numerical/categorical feature dataset
+    - Predict the cost code using either a Random Forest, or KNeighbors classifier.
+    
 The output of this solution will be a prediction of the correct cost code that the purchase order item should be associated with.
+
+There are several characteristics of this dataset that have shaped my proposed solution to this problem. The first characteristic is that there are text, numeric, and categorical features that make up each sample. While categorical features can be encoded (either through one hot encoding or label encoding) and then included with the numeric features for training and prediction, text data needs to be heavily pre-processed and handled differently. While it is possible to vectorize the text and include it as a single feature with the other features, then use one algorithm to make a prediction, this method does not take advantage of the fact that different algorithms can have higher performance on different sets of data or data types.
+Secondly, the solution I propose uses stacking two different algorithms which generally provides a higher performance than using a single algorithm.<sup>1</sup> http://blog.kaggle.com/2016/12/27/a-kagglers-guide-to-model-stacking-in-practice/
+For these reasons, I believe my solution of stacking two algorithms, each chosen and optimized for their respective types of features, is a good fit for this problem.
 
 
 ### Metrics
