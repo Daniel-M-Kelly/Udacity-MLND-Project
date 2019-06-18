@@ -83,8 +83,7 @@ Because splitting the data will reduce the number of samples I have for training
 
 
 There are 9 features in this dataset, plus the variable that I want to predict. I will be using 7 of the features:
-
-![Dataset description screenshot](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Dataset%20Description.png)
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Dataset%20Description.png" width="50%">
 
 - **Company #** This is used internally to identify which internal company the project is associated with. It is not relevant to the prediction and will not be used.  
 
@@ -117,14 +116,14 @@ The following graphic shows the ten most used cost codes.
   
 Furthermore, there are a small number of very high value POs, or POs with a large number of Units that skew the data.
 The following table shows, for example, that the Units feature has a maximum value of over 100,000 while the 75th percentile is under 11. 
-  
-![Units and Costs](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Units%20and%20costs.png)
+
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Units%20and%20costs.png" width="50%">
   
 These POs are outliers and will be removed.
 
 The following figure shows the correlation between the numerical and categorical features in the dataset.
-  
-![Correlation Matrix](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Correlation.png)
+
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Correlation.png" width="50%">
   
 This shows us that the Vendor is the most clostly correlated variable with the cost code, followed by the overall cost of the item. Intuitively, the vendor having a high correlation with the cost code makes sense. For the most part, vendors each sell a certain type of product related to its function. For example a vendor called "Advanced Safety Supplies" sells mostly safety related equipment that would be budgeted to a "safety supplies" cost code. 
 
@@ -134,11 +133,11 @@ What I found suprising was that the unit cost of an item was not very closely co
 
 Looking at the text data in the Description feature, we can see that the majority of PO descriptions have between 2 and 6 words in them.
   
-![Word Count](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Count.png)
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Count.png" width="50%">
   
 And the most frequently used words are:
   
-![Word Frequency](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Frequency.png)
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Frequency.png" width="50%">
   
 Note that I did not remove stop-words from this dataset in exploration or in the training. This is because there is some research to suggest that removing stopwords can have a negative affect on classification performance. http://www.lrec-conf.org/proceedings/lrec2014/pdf/292_Paper.pdf 
 
@@ -434,6 +433,7 @@ In addition, due the nature of the data available in a PO there are some instanc
 The table below shows some examples of predictions from my model and the actual cost codes.  
 
 ![Example predictions](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Example%20Predictions%20.png)
+
 
 I think this example demonstrate why getting a high accuracy of the prediction on this dataset is difficult. There are some items and descriptions that could apply to multiple cost codes. For example the Fuel Surchage on a concrete delevery would have the same description but could apply to any of several concrete related cost codes. As I mention later in the improvements section, if each line item is taken out of the context of the PO and evaluated by itself, there are instances where there is not enough information to predict which cost code an item belongs to. And again, the "Polarcon Accelerating - Bronze" is a product that is added to concrete to speed its curing time. This product could be used in multiple concrete related cost codes.
 I think these items demonstrate that an above 50% accuracy rate for the model is in-fact impressive, and if it does not give the end-user the exact cost code to use, it suggests one that is close.
