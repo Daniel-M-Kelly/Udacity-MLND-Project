@@ -55,9 +55,8 @@ The conclusion of my findings is that the dataset is very unbalanced. The most u
 This imbalance makes accuracy poor measure of performance because, as discussed in the benchmark model section, the model can achieve an accuracy of almost %15 by always predicting the most common cost code despite being an obviously poor model. This makes F1-score a better metric for the performance of this model than accuracy.  
 The formula for f1-score is:  
 
-<img src="https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png" width="25%">
-
 <sub>Figure 1. F1 Metric Equation. Source<sup>2</sup></sub>
+<img src="https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png" width="25%">
 
 By using the f1-score we get a balance between precision and recall that better reflects the performance of the model when compared to accuracy.   
 
@@ -78,14 +77,15 @@ As noted in the data exploration workbook, this is an unbalanced dataset with a 
 
 Because splitting the data will reduce the number of samples I have for training, I can use SMOTE (Synthetic Minority Oversampling TEchnique) to generate more data points based on the existing information, giving my model more data to train with.
 
-<img src="https://raw.githubusercontent.com/rafjaa/machine_learning_fecib/master/src/static/img/smote.png" width="75%">
-
 <sub>Figure 2. Synthetic Minority Oversampling TEchnique (SMOTE). Source<sup>3</sup></sub>
+<img src="https://raw.githubusercontent.com/rafjaa/machine_learning_fecib/master/src/static/img/smote.png" width="75%">
 
 
 There are 9 features in this dataset, plus the variable that I want to predict. I will be using 7 of the features:
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Dataset%20Description.png" width="100%">
+
 <sub>Figure 3. PO Dataset Head Output</sub>
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Dataset%20Description.png" width="100%">
+
 
 - **Company #** This is used internally to identify which internal company the project is associated with. It is not relevant to the prediction and will not be used.  
 
@@ -114,23 +114,25 @@ This dataset is very unbalanced, the average number of times a cost code is used
 
 The following graphic shows the ten most used cost codes.
   
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Cost%20Code%20Counts.png" width="50%">
 <sub>Figure 4. Most Used Codes in PO Dataset </sub>  
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Cost%20Code%20Counts.png" width="50%">
+
 
 
 Furthermore, there are a small number of very high-value POs or POs with a large number of Units that skew the data.
 The following table shows, for example, that the Units feature has a maximum value of over 100,000 while the 75th percentile is under 11. 
 
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Units%20and%20costs.png" width="50%">
 <sub>Figure 5. Description of Numerical and Categorical Features</sub>  
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Units%20and%20costs.png" width="50%">
+
   
 These POs are outliers and will be removed.
 
 The figure 6 shows the correlation between the numerical and categorical features in the dataset.
   
   
+<sub>Figure 6. Correlation Matrix of Numerical and Categorical Features</sub> 
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Correlation.png" width="75%">
-<sub>Figure 6. Correlation Matrix of Numerical and Categorical Features</sub>  
 
 
 This shows us that the Vendor is the most closely correlated variable with the cost code, followed by the overall cost of the item. Intuitively, the vendor having a high correlation with the cost code makes sense. For the most part, vendors each sell a certain type of product related to its function. For example, a vendor called "Advanced Safety Supplies" sells mostly safety-related equipment that would be budgeted to a "safety supplies" cost code. 
@@ -141,14 +143,14 @@ What I found surprising was that the unit cost of an item was not very closely c
 
 Looking at the text data in the Description feature (figure 7), we can see that the majority of PO descriptions have between 2 and 6 words in them.
   
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Count.png" width="75%">
 <sub>Figure 7. Word Usage Distribution from Description Feature</sub>
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Count.png" width="75%">
     
     
 And the most frequently used words (figure 8) are:
   
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Frequency.png" width="50%">
 <sub>Figure 8. Most Commonly User words in the Description Feature</sub>
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Frequency.png" width="50%">
   
   
 Note that I did not remove stop-words from this dataset in exploration or in the training. This is because there is some research to suggest that removing stopwords can have a negative effect on classification performance.<sup>4</sup> 
@@ -426,8 +428,9 @@ KN - K Neighbors Classifier
 RF_res - Random Forest Classifier with Smote enhanced Dataset  
 KN_res - K Neighbors Classifier with Smote enhanced Dataset  
 
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Classifier_Comparison.png" width="75%">
 <sub>Figure 9. Classifier Score Comparison</sub>
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Classifier_Comparison.png" width="75%">
+
 
 The figure above compares the accuracy, F1-score, precision, and recall of the final algorithms that I used in my solution when run against the test set of data.
 The final solution of using the Logistic Regression algorithms output combined with a Random Forest classifier produced the best results when looking at the accuracy, precision, and recall metrics, and matched using the KNeighbors classifier for F1-Score. 
@@ -450,10 +453,8 @@ In addition, due to the nature of the data available in a PO, there are some ins
 
 The table below shows some examples of predictions from my model and the actual cost codes.  
 
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Example%20Predictions%20.png" width="75%">
 <sub>Figure 10. Prediction Ouput Comparison Table</sub>  
-  
-  
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Example%20Predictions%20.png" width="75%">
   
   
 I think this example demonstrates why getting a high accuracy of the prediction on this dataset is difficult. There are some items and descriptions that could apply to multiple cost codes. For example, the Fuel Surcharge on a concrete delivery would have the same description but could apply to any of several concrete related cost codes. As I mention later in the improvements section, if each line item is taken out of the context of the PO and evaluated by itself, there are instances where there is not enough information to predict which cost code an item belongs to. And again, the "Polarcon Accelerating - Bronze" is a product that is added to concrete to speed its curing time. This product could be used in multiple concrete related cost codes.
