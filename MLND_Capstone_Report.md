@@ -456,6 +456,7 @@ In addition, due to the nature of the data available in a PO, there are some ins
 The table below shows some examples of predictions from my model and the actual cost codes.  
 
 <sub>Figure 10. Prediction Ouput Comparison Table</sub>  
+
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Example%20Predictions%20.png" width="75%">
   
   
