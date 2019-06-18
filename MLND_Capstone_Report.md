@@ -378,16 +378,34 @@ Comparing the F1 Score of the model on the training set, versus on the testing s
 
 
 ## IV. Results
-_(approx. 2-3 pages)_
 
 ### Model Evaluation and Validation
----
-In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). Questions to ask yourself when writing this section:
-- _Is the final model reasonable and aligning with solution expectations? Are the final parameters of the model appropriate?_
-- _Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?_
-- _Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?_
-- _Can results found from the model be trusted?_
----
+
+The final solution that I found performed the best was the following pipeline and parameters for predicing the cost code of a PO based on the text of the description.
+`pipeline = Pipeline([('vect', CountVectorizer()),`
+                `('tfidf', TfidfTransformer()),`
+                `('clf', LogisticRegression(random_state=42,multi_class='multinomial')),`
+               `])`
+               
+`parameters = {`
+`    'clf__C':[20],`
+`    'clf__solver':['saga'],`
+`    'clf__max_iter':[100],`
+`    'clf__tol': [1e-3],`
+`    'vect__ngram_range':[(1,2)],`
+`    'tfidf__use_idf':[True]`
+`}`
+
+Then taking that prediction and adding it to the remaining categorical training and test sets, the Random Forest classifier performed best with the following parameters.
+
+`RF_clf = RandomForestClassifier(random_state=42)`
+`parameters = {'max_depth': [100],`
+              `'min_samples_split': [2],`
+              `'min_samples_leaf': [2],`
+              `'n_estimators': [700]`
+             `}`
+
+Overall, combining the Logistic Regression and Random Forest models increased the F1-score from 0.46 and 0.44 respectively to a combined 0.50.
 
 RF - Random Forest Classifier
 KN - K Neighbors Classifer
