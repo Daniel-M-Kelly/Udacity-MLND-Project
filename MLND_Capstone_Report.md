@@ -467,13 +467,23 @@ It may also be possible to improve the accuracy of the predictions by taking int
 Overall I'm sure there is room for improvement of my final result, however, this project demonstrated the proof of concept that a machine learning model can use the information in a purchase order to make useful predictions on what the cost code of a purchase order item should be.
 
 
-### References
-1 - Olav Eirik Ek Folkestad, Erlend Emil Nøtsund Vollset. "[Automatic Classification of Bank Transactions.](https://brage.bibsys.no/xmlui/bitstream/handle/11250/2456871/17699_FULLTEXT.pdf?sequence=1&isAllowed=y)" June 2017. Norwegian University of Science and Technology Department of Computer Science.*
+### References  
+
+1 - Olav Eirik Ek Folkestad, Erlend Emil Nøtsund Vollset. "[Automatic Classification of Bank Transactions.](https://brage.bibsys.no/xmlui/bitstream/handle/11250/2456871/17699_FULLTEXT.pdf?sequence=1&isAllowed=y)" June 2017. Norwegian University of Science and Technology Department of Computer Science.  
+
 2 - https://towardsdatascience.com/accuracy-precision-recall-or-f1-331fb37c5cb9
+
 3 - https://www.kaggle.com/rafjaa/resampling-strategies-for-imbalanced-datasets
-4 - http://www.lrec-conf.org/proceedings/lrec2014/pdf/292_Paper.pdf 
+
+4 - http://www.lrec-conf.org/proceedings/lrec2014/pdf/292_Paper.pdf
+
 5 - https://www.ritchieng.com/machine-learning-multinomial-naive-bayes-vectorization/
+
 6 - https://imbalanced-learn.readthedocs.io/en/stable/over_sampling.html
+
 7 - http://cs229.stanford.edu/proj2011/LinShankar-Applying%20Machine%20Learning%20to%20Product%20Categorization.pdf 
+
 8 - https://www.kaggle.com/metadist/work-like-a-pro-with-pipelines-and-feature-unions
+
 9 - https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/
+
