@@ -56,7 +56,9 @@ The conclusion of my findings is that the dataset is very unbalanced. The most u
 
 This imbalance makes accuracy poor measure of performance because, as discussed in the benchmark model section, the model can achieve an accuracy of almost %15 by always predicting the most common cost code despite being an obviously poor model. This makes F1-score a better metric for hte performance of this model than accuracy.  
 The formula for f1-score is:  
-![Source: https://towardsdatascience.com/accuracy-precision-recall-or-f1-331fb37c5cb9](https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png)  
+
+<img src="https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png" width="75%">
+
 *Source: https://towardsdatascience.com/accuracy-precision-recall-or-f1-331fb37c5cb9*
 
 By using the f1-score we get a balance between precision and recall that better reflects the performance of the model when compared to accuracy.   
@@ -77,13 +79,13 @@ As noted in the data exploration workbook, this is an unbalanced dataset with a 
 
 Because splitting the data will reduce the number of samples I have for training, I can use SMOTE (Synthetic Minority Oversampling TEchnique) to generate more data points based on the existing information, giving my model more data to train with.
 
-![Smote](https://raw.githubusercontent.com/rafjaa/machine_learning_fecib/master/src/static/img/smote.png)
+<img src="https://raw.githubusercontent.com/rafjaa/machine_learning_fecib/master/src/static/img/smote.png" width="75%">
 
 *Source: https://www.kaggle.com/rafjaa/resampling-strategies-for-imbalanced-datasets
 
 
 There are 9 features in this dataset, plus the variable that I want to predict. I will be using 7 of the features:
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Dataset%20Description.png" width="100%">
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Dataset%20Description.png" width="75%">
 
 - **Company #** This is used internally to identify which internal company the project is associated with. It is not relevant to the prediction and will not be used.  
 
