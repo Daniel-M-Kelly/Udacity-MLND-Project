@@ -112,15 +112,13 @@ This dataset is very unbalanced, the average number of times a cost code is used
 
 ### Exploratory Visualization
 
-The following graphic shows the ten most used cost codes.
+The figure 4 shows the ten most used cost codes.
   
 <sub>Figure 4. Most Used Codes in PO Dataset </sub>  
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Cost%20Code%20Counts.png" width="50%">
 
-
-
 Furthermore, there are a small number of very high-value POs or POs with a large number of Units that skew the data.
-The following table shows, for example, that the Units feature has a maximum value of over 100,000 while the 75th percentile is under 11. 
+The figure 5 shows, for example, that the Units feature has a maximum value of over 100,000 while the 75th percentile is under 11. 
 
 <sub>Figure 5. Description of Numerical and Categorical Features</sub>  
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Units%20and%20costs.png" width="50%">
@@ -135,19 +133,19 @@ The figure 6 shows the correlation between the numerical and categorical feature
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Correlation.png" width="75%">
 
 
-This shows us that the Vendor is the most closely correlated variable with the cost code, followed by the overall cost of the item. Intuitively, the vendor having a high correlation with the cost code makes sense. For the most part, vendors each sell a certain type of product related to its function. For example, a vendor called "Advanced Safety Supplies" sells mostly safety-related equipment that would be budgeted to a "safety supplies" cost code. 
+The correlation matrix fig 6. shows us that the Vendor is the most closely correlated variable with the cost code, followed by the overall cost of the item. Intuitively, the vendor having a high correlation with the cost code makes sense. For the most part, vendors each sell a certain type of product related to its function. For example, a vendor called "Advanced Safety Supplies" sells mostly safety-related equipment that would be budgeted to a "safety supplies" cost code. 
 
 The cost and unit cost being closely correlated also makes sense, because the cost of a line item is just a multiple of the unit cost. 
 
 What I found surprising was that the unit cost of an item was not very closely correlated to the cost code. I would have expected the unit cost to be very closely related to the particular item being purchased, which would then correspond to a particular cost code. It could be that product prices have changed over the years, or with different vendors. It's also possible that many products have similar prices, or simply that end users did not bother to put in the unit cost and just entered the total cost of the line item.
 
-Looking at the text data in the Description feature (figure 7), we can see that the majority of PO descriptions have between 2 and 6 words in them.
+Looking at the text data in the Description feature (fig. 7), we can see that the majority of PO descriptions have between 2 and 6 words in them.
   
 <sub>Figure 7. Word Usage Distribution from Description Feature</sub>
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Count.png" width="75%">
     
     
-And the most frequently used words (figure 8) are:
+And the most frequently used words (fig. 8) are:
   
 <sub>Figure 8. Most Commonly User words in the Description Feature</sub>  
 
