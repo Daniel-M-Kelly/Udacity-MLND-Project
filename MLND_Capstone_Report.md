@@ -57,7 +57,7 @@ The formula for f1-score is:
 
 <img src="https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png" width="25%">
 
-<sub>Figure 1. F1 Metric Equation. Source<sup>2</sup>*</sub>
+<sub>Figure 1. F1 Metric Equation. Source<sup>2</sup></sub>
 
 By using the f1-score we get a balance between precision and recall that better reflects the performance of the model when compared to accuracy.   
 
@@ -80,7 +80,7 @@ Because splitting the data will reduce the number of samples I have for training
 
 <img src="https://raw.githubusercontent.com/rafjaa/machine_learning_fecib/master/src/static/img/smote.png" width="75%">
 
-<sub>Figure 2. Synthetic Minority Oversampling TEchnique (SMOTE). Source<sup>3</sup>*</sub>
+<sub>Figure 2. Synthetic Minority Oversampling TEchnique (SMOTE). Source<sup>3</sup></sub>
 
 
 There are 9 features in this dataset, plus the variable that I want to predict. I will be using 7 of the features:
@@ -115,21 +115,24 @@ This dataset is very unbalanced, the average number of times a cost code is used
 The following graphic shows the ten most used cost codes.
   
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Cost%20Code%20Counts.png" width="50%">
-<sub>Figure 4. Most Used Codes in PO Dataset </sub>
-  
+<sub>Figure 4. Most Used Codes in PO Dataset </sub>  
+
+
 Furthermore, there are a small number of very high-value POs or POs with a large number of Units that skew the data.
 The following table shows, for example, that the Units feature has a maximum value of over 100,000 while the 75th percentile is under 11. 
 
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Units%20and%20costs.png" width="50%">
-<sub>Figure 5. Description of Numerical and Categorical Features</sub>
+<sub>Figure 5. Description of Numerical and Categorical Features</sub>  
   
 These POs are outliers and will be removed.
 
 The figure 6 shows the correlation between the numerical and categorical features in the dataset.
-
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Correlation.png" width="75%">
-<sub>Figure 6. Correlation Matrix of Numerical and Categorical Features</sub>
   
+  
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Correlation.png" width="75%">
+<sub>Figure 6. Correlation Matrix of Numerical and Categorical Features</sub>  
+
+
 This shows us that the Vendor is the most closely correlated variable with the cost code, followed by the overall cost of the item. Intuitively, the vendor having a high correlation with the cost code makes sense. For the most part, vendors each sell a certain type of product related to its function. For example, a vendor called "Advanced Safety Supplies" sells mostly safety-related equipment that would be budgeted to a "safety supplies" cost code. 
 
 The cost and unit cost being closely correlated also makes sense, because the cost of a line item is just a multiple of the unit cost. 
@@ -140,11 +143,13 @@ Looking at the text data in the Description feature (figure 7), we can see that 
   
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Count.png" width="75%">
 <sub>Figure 7. Word Usage Distribution from Description Feature</sub>
-  
+    
+    
 And the most frequently used words (figure 8) are:
   
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Frequency.png" width="50%">
 <sub>Figure 8. Most Commonly User words in the Description Feature</sub>
+  
   
 Note that I did not remove stop-words from this dataset in exploration or in the training. This is because there is some research to suggest that removing stopwords can have a negative effect on classification performance.<sup>4</sup> 
 
