@@ -57,7 +57,7 @@ The formula for f1-score is:
 
 <img src="https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png" width="25%">
 
-*Source<sup>2</sup>*
+<sub>*Figure 1. F1 Metric Equation. Source<sup>2</sup>*</sub>
 
 By using the f1-score we get a balance between precision and recall that better reflects the performance of the model when compared to accuracy.   
 
