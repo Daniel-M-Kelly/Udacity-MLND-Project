@@ -216,15 +216,15 @@ Finally, it is a best practice to scale numerical values between 1 and 0, so I u
 `df_90[numerical] = scaler.fit_transform(df_90[numerical])    
 `
 
-We'll need cost codes with atleast 2 examples in the database to have atleast one example in both the training and testing datasets. So drop any codes with a count fewer than 2.
+We'll need cost codes with atleast 10 examples in the database to have atleast one example in both the training and testing datasets and we want enough samples so that the KNeighbors classifier has some data to work with. So drop any codes with a count fewer than 10 samples.
 
 `
-#When splitting for training and testing later, we'll need a minimum of 2 examples of each cost code.  `  
+#When splitting for training and testing later, we'll need a minimum of 10 examples of each cost code.  `  
 `#Assign cost code to a variable  `  
 `df_count = df_90['Cost Code'].value_counts()`    
 
-`#New dataframe only includes lines with cost codes with a count of 2 or greater`  
-`df_90 = df_90[~df_90['Cost Code'].isin(df_count[df_count <= 2].index)]  
+`#New dataframe only includes lines with cost codes with a count of 10 or greater`  
+`df_90 = df_90[~df_90['Cost Code'].isin(df_count[df_count <= 10].index)]  
 `
 
 Next, the categorical features Vendor and Unit of Measure need to be dealt with. I'll use one-hot-encoding for these features.  
@@ -373,7 +373,7 @@ I then re-trained the Random Forest and K Neighbors classifiers using the new da
 
 `print(classification_report(y_test, KN_y_pred_res))`
 
-The results were dissapointing, all metrics for both models decreased using the SMOTE augmented dataset (a comparison of all the results is visually represented in the results section). 
+The results of applying SMOTE were dissapointing, all metrics for both models decreased using the SMOTE augmented dataset (a comparison of all the results is visually represented in the results section). 
 Comparing the F1 Score of the model on the training set, versus on the testing set confirmed my suspicion that the model was overfitting. The weighted F1 Score for the K Neighbors algorithm using the SMOTE training set was 0.976, and on the testing set it was only 0.48. I suspect the overfitting is a result of there not being enough samples of some of the classes to create an accurate representation of that class.
 
 
@@ -389,11 +389,6 @@ In this section, the final model and any supporting qualities should be evaluate
 - _Can results found from the model be trusted?_
 ---
 
-I was quite suprised by the results of this project. Particuarly, I was expecting to see an improvement in the predictive performance of the algorithms once SMOTE had been applied to the dataset to decrease the affect of the imbalanced in classes.
-
-
-### Justification
-
 RF - Random Forest Classifier
 KN - K Neighbors Classifer
 RF_res - Random Forest Classifier with Smote enhanced Dataset
@@ -401,13 +396,18 @@ KN_res - K Neighbors Classifer with Smote enhanced Dataset
 ![Classifier Comparison](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Classifier_Comparison.png)
 
 The figure above compares the accuracy, F1-score, precision, and recall of the final alogrithms that I used in my solution when run against the test set of data.
-
-From this, we can see that the accuracy of all the models performed significantly better than the benchmark model's accuracy of 15%. 
-
 The final solution of using the Logistic Regression algorithms output combined with a Random Forest classifier produced the best results when looking at the accuracy, precision, and recall metrics, and matched using the KNeighbors classifier for F1-Score. 
 
-When taking into consideration the nature of the problem, which is to suggest a cost code to an end user who will simply accept or reject the suggestion. I think I can safely argue that my solution to the problem provides enough value to be considered to have solved the problem. In addition, due the nature of the data available in a PO there are some instances where there just is not enough information in the PO to more accurately predict the cost code, or the correct code to use may be subjective. 
+One measure I took to check the robustness of the model was to change the pre-processing code to exclude cost codes with fewer than 2 samples, rather than fewer than 10. This changed the training environment and increased the number of samples available to the model, and increased the number of classes from 114 to 223 but only increased the number of samples from 22,349 to 22,739. This meant the model had to be able to predict an additional 109 classes with only an increase of 390 data samples. The result was actually a neglegable increase in accuracy and the same weighted F1-Score. This demonstrates that the model can generalize and does not overfit the existing data.
 
+
+### Justification
+
+Looking at the visualization in the Results section, we can see that the accuracy of all the models performed significantly better than the benchmark model's accuracy of 15%, with the most accurate model having a 52% accuracy rate.
+
+When taking into consideration the nature of the problem, which is to suggest a cost code to an end user who will simply accept or reject the suggestion. I think I can safely argue that my solution to the problem provides enough value to be considered to have solved the problem. There is little cost associated with an incorrect suggestion, and even an incorrect suggestion may provide value to an end user by being close to the recommended code. 
+
+In addition, due the nature of the data available in a PO there are some instances where there just is not enough information in the PO to more accurately predict the cost code, or the correct code to use may be subjective, so expecting a very high accuracy rate is not realistic.
 
 ## V. Conclusion
 
@@ -445,6 +445,6 @@ The first is the way that I handled stacking the two different models. I believe
 
 The second area that I think could be improved on is the second classifier that I used. My research showed that XGBoost is generally one of the highest performing classifiers. I did manage to get XGBoost working, however I found that the time it took to run was excessive and I could not properly tune its parameters. I believe the problem with using XGBoost is because of the number of features in the dataset that are created when one-hot-encoding the vendors feature. When I tried label encoding the vendors feature XGBoost ran at an acceptible speed, however all of the classifiers prediction performance dropped unacceptably low. With more time, I would have liked to get XGBoost performing better so I could fully evaluate its performance and possibly increase the accruacy of my model. Another option would have been to try using the LightGBM classifier which is similar to XGBoost and is also supposed to produce great results. This post has a good comparison of XGBoost and LightGBM. https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/
 
-Finally, it may be possible to improve the accuracy of the predictions by taking into consideration other items on a PO. One PO may have several items on it that are related. For example, a concrete purchase order may have 3 items: 1 - the concrete material itself, 2 - a fuel surcharge for the delivery of the concrete, 3 - a disposal fee for leftover concrete. The first item, the concrete material, may be a specific mix that has information in its description that indicates it is for a concrete footing and, therefore, should be associated with cost code "03-31-40 concrete material footings". The other two items, the fuel surcharg and disposal fee are generic and could apply to any one of many concrete cost codes, however when taken into context with the other item on the PO should also go to the "03-31-40 concrete material footings" cost code. 
+It may also be possible to improve the accuracy of the predictions by taking into consideration other items on a PO. One PO may have several items on it that are related. For example, a concrete purchase order may have 3 items: 1 - the concrete material itself, 2 - a fuel surcharge for the delivery of the concrete, 3 - a disposal fee for leftover concrete. The first item, the concrete material, may be a specific mix that has information in its description that indicates it is for a concrete footing and, therefore, should be associated with cost code "03-31-40 concrete material footings". The other two items, the fuel surcharg and disposal fee are generic and could apply to any one of many concrete cost codes, however when taken into context with the other item on the PO should also go to the "03-31-40 concrete material footings" cost code. 
 
 Overall I'm sure there is room for improvement of my final result, however this project demonstrated the proof of concept that a machine learning model can use the information in a purchase order to make useful predictions on what the cost code of a purchase order item should be.
