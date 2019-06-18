@@ -83,7 +83,7 @@ Because splitting the data will reduce the number of samples I have for training
 
 
 There are 9 features in this dataset, plus the variable that I want to predict. I will be using 7 of the features:
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Dataset%20Description.png" width="50%">
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/Dataset%20Description.png" width="100%">
 
 - **Company #** This is used internally to identify which internal company the project is associated with. It is not relevant to the prediction and will not be used.  
 
@@ -112,7 +112,7 @@ This dataset is very unbalanced, the average number of times a cost code is used
 
 The following graphic shows the ten most used cost codes.
   
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Cost%20Code%20Counts.png" width="50%">
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Cost%20Code%20Counts.png" width="75%">
   
 Furthermore, there are a small number of very high value POs, or POs with a large number of Units that skew the data.
 The following table shows, for example, that the Units feature has a maximum value of over 100,000 while the 75th percentile is under 11. 
@@ -123,7 +123,7 @@ These POs are outliers and will be removed.
 
 The following figure shows the correlation between the numerical and categorical features in the dataset.
 
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Correlation.png" width="50%">
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Correlation.png" width="75%">
   
 This shows us that the Vendor is the most clostly correlated variable with the cost code, followed by the overall cost of the item. Intuitively, the vendor having a high correlation with the cost code makes sense. For the most part, vendors each sell a certain type of product related to its function. For example a vendor called "Advanced Safety Supplies" sells mostly safety related equipment that would be budgeted to a "safety supplies" cost code. 
 
@@ -133,7 +133,7 @@ What I found suprising was that the unit cost of an item was not very closely co
 
 Looking at the text data in the Description feature, we can see that the majority of PO descriptions have between 2 and 6 words in them.
   
-<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Count.png" width="50%">
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Count.png" width="75%">
   
 And the most frequently used words are:
   
@@ -182,7 +182,7 @@ I then dropped any PO items with null values in any of the columns. There were o
 
 Next, using a master list of valid cost codes exported from the system, I dropped any PO items that had an invalid cost code. This could possibly occur due to incorrect data entry or if a cost code was made invalid and is no-longer used in POs.  
 
-`#Read in Master list of valid cost codes ` 
+`#Read in Master list of valid cost codes `  
 `df_ml = pd.read_csv('raw_data/Code_Master_list.csv')`
 
 `#Drop rows where the cost code is not in the master list`  
@@ -231,8 +231,10 @@ Next, the categorical features Vendor and Unit of Measure need to be dealt with.
 #One Hot Encode categorical features`  
 `categorical = ['Vendor', 'Unit of Measure']`  
 `df_90 = pd.get_dummies(df_90, columns = categorical )  
-`  
+`
+
 The target variable, "Cost Code" needs to be encoded as well. Label encoding makes sense here.  
+
 `
 #Numerically encode cost codes. `   
 `le = LabelEncoder()  `  
@@ -261,10 +263,10 @@ Now I split the data into the the training and test sets using sklearns train te
 `#Stratify the data so we don't introduce bias in the sets.`  
 
 `X_train, X_test, y_train, y_test = train_test_split(features,  `  
-                                                   ` cost_codes, `  
-                                                    `test_size = 0.2, `  
-                                                    `stratify = cost_codes `  
-                                                   `)  
+                                                   `  cost_codes, `  
+                                                    ` test_size = 0.2, `  
+                                                    ` stratify = cost_codes `  
+                                                   `  )  
 `
 
 Lastly, for use in the two separate models, I need to extract the Description feature from the training and test sets so they can be used separately from the other features.
@@ -289,56 +291,55 @@ Finally, the last part was to try using SMOTE to augment the number of samples i
 As previously noted, I began by creating a pipeline for the first classifier I wanted to test; the SGD Classifier 
 The input to this pipeline is the PO description text.
 
-`SGDC_pipeline = Pipeline([('vect', CountVectorizer()),`
-                `('tfidf', TfidfTransformer()),`
-                `('clf', SGDClassifier(random_state=42, tol = 1e-3)),`
+`SGDC_pipeline = Pipeline([('vect', CountVectorizer()),`  
+                `('tfidf', TfidfTransformer()),`  
+                `('clf', SGDClassifier(random_state=42, tol = 1e-3)),`  
                `])`
 
 The I then vectorize the text, splitting it into terms that are passed to the Tfidf transformer to get the Tfidf values for the terms. Lastly, this data is passed to the classifer for training or prediction.
 
 I also used GridSearchCV to iterate through hyperparameters for all three components of the pipeline.
 
-`parameters = {`
-`     'clf__loss':['hinge','log'],`
-`     'clf__penalty':['l1','l2'],`
-`     'clf__alpha':[1e-3,1e-4],`
-`     'clf__max_iter':[15,20,25],`
-`     'vect__ngram_range':[(1,1),(1,2)],`
-`     'tfidf__use_idf':[True,False]`
+`parameters = {`  
+`     'clf__loss':['hinge','log'],`  
+`     'clf__penalty':['l1','l2'],`  
+`     'clf__alpha':[1e-3,1e-4],`  
+`     'clf__max_iter':[15,20,25],`  
+`     'vect__ngram_range':[(1,1),(1,2)],`  
+`     'tfidf__use_idf':[True,False]`  
 `}`
 
 I then configured grid search to use the pipeline and the parameter list to find the best combination of hyperparamters based on the weighed F1-Score and executed it.
 
-`SGDC_CV = GridSearchCV(SGDC_pipeline, parameters, scoring = 'f1_weighted', n_jobs=4, cv = 5, verbose = 5)`
+`SGDC_CV = GridSearchCV(SGDC_pipeline, parameters, scoring = 'f1_weighted', n_jobs=4, cv = 5, verbose = 5)`  
 `SGDC_CV.fit(X_train_desc, y_train)`
 
 The next step was to have the trained model predict the values of the testing dataset and print a classification report to get a summary of the accuarcy, precision, recall, and f1-score
-`SGDC_y_pred = SGDC_CV.predict(X_test_desc)`
-`print(classification_report(y_test, SGDC_y_pred))`
+
+`SGDC_y_pred = SGDC_CV.predict(X_test_desc)`  
+`print(classification_report(y_test, SGDC_y_pred))`  
 
 I then repeated these steps for the Logrithmic Regression Classifier, and the Multinomial Naive Bayes Classifier, and chose the algorithm and hyperparameters that produced the highest F1-Score, Precision, and Recall for the next step.
 
 Next, I added the predicted values from the best performing classifier to the training and test set of data that still included the numerical and categorical features.
 
-`X_train['Desc Pred'] = LR_CV.predict(X_train_desc)`
-`X_test['Desc Pred'] = LR_CV.predict(X_test_desc)`
+`X_train['Desc Pred'] = LR_CV.predict(X_train_desc)`  
+`X_test['Desc Pred'] = LR_CV.predict(X_test_desc)`  
 
 The next step was to train and test a couple algorithms on this new dataset. I chose a Random Forest classifier and K Neighbors classifier to test, and again used a gridsearch to find the optimum hyperparameters. The code below was used for the random forest classifier and is very similar to what was used for the KNeighbors classifier.
 
 `RF_clf = RandomForestClassifier(random_state=42)`
 
-`parameters = {'max_depth': [10,50,100],`
-              `'min_samples_split': [1,2,3],`
-              `'min_samples_leaf': [1,2,3],`
-              `'n_estimators': [100, 500, 700, 1000]`
+`parameters = {'max_depth': [10,50,100],`  
+              `'min_samples_split': [1,2,3],`  
+              `'min_samples_leaf': [1,2,3],`  
+              `'n_estimators': [100, 500, 700, 1000]`  
              `}`
 
 `RF_CV = GridSearchCV(RF_clf, parameters, scoring = 'f1_weighted', n_jobs=4, cv = 5, verbose = 5)`
 
-`RF_CV.fit(X_train, y_train)`
+`RF_CV.fit(X_train, y_train)`  
 `print(classification_report(y_test, RF_y_pred))`
-
-
 
 
 ### Refinement
@@ -353,12 +354,12 @@ This means there is a very imbalanced dataset, and this can skew the results of 
 
 One method to combat this is to use SMOTE (Synthetic Minority Over-Sampling TEchnique). SMOTE uses a K Nearest neighbors method to synthetically create more examples of the minority classes in the data based on the existing data in the dataset.
 
-After installing the imblearn package and importing SMOTE using the following code:
+After installing the imblearn package and importing SMOTE using the following code:  
 `from imblearn.over_sampling import SMOTE`
 
 I then created a new enhanced training set that included more samples.
 
-`sm = SMOTE(random_state=42)`
+`sm = SMOTE(random_state=42)`  
 `X_train_res, y_train_res = sm.fit_sample(X_train,y_train.ravel())`
 
 This increased the training data from 22,349 samples to 380,995 and there is now 3318 examples of each code.
@@ -367,7 +368,7 @@ I then re-trained the Random Forest and K Neighbors classifiers using the new da
 
 `KN_clf_res = KNeighborsClassifier(n_neighbors=10, weights = 'distance', n_jobs = 4)`
 
-`KN_clf_res.fit(X_train_res, y_train_res)`
+`KN_clf_res.fit(X_train_res, y_train_res)`  
 `KN_y_pred_res = KN_clf_res.predict(X_test)`
 
 `print(classification_report(y_test, KN_y_pred_res))`
@@ -380,28 +381,28 @@ Comparing the F1 Score of the model on the training set, versus on the testing s
 
 ### Model Evaluation and Validation
 
-The final solution that I found performed the best was the following pipeline and parameters for predicing the cost code of a PO based on the text of the description.
-`pipeline = Pipeline([('vect', CountVectorizer()),`
-                `('tfidf', TfidfTransformer()),`
-                `('clf', LogisticRegression(random_state=42,multi_class='multinomial')),`
-               `])`
+The final solution that I found performed the best was the following pipeline and parameters for predicing the cost code of a PO based on the text of the description.  
+`pipeline = Pipeline([('vect', CountVectorizer()),`  
+                `('tfidf', TfidfTransformer()),`  
+                `('clf', LogisticRegression(random_state=42,multi_class='multinomial')),`  
+               `])`  
                
-`parameters = {`
-`    'clf__C':[20],`
-`    'clf__solver':['saga'],`
-`    'clf__max_iter':[100],`
-`    'clf__tol': [1e-3],`
-`    'vect__ngram_range':[(1,2)],`
-`    'tfidf__use_idf':[True]`
+`parameters = {`  
+`    'clf__C':[20],`  
+`    'clf__solver':['saga'],`  
+`    'clf__max_iter':[100],`  
+`    'clf__tol': [1e-3],`  
+`    'vect__ngram_range':[(1,2)],`  
+`    'tfidf__use_idf':[True]`  
 `}`
 
 Then taking that prediction and adding it to the remaining categorical training and test sets, the Random Forest classifier performed best with the following parameters.
 
-`RF_clf = RandomForestClassifier(random_state=42)`
-`parameters = {'max_depth': [100],`
-              `'min_samples_split': [2],`
-              `'min_samples_leaf': [2],`
-              `'n_estimators': [700]`
+`RF_clf = RandomForestClassifier(random_state=42)`  
+`parameters = {'max_depth': [100],`  
+              `'min_samples_split': [2],`  
+              `'min_samples_leaf': [2],`  
+              `'n_estimators': [700]`  
              `}`
 
 Overall, combining the Logistic Regression and Random Forest models increased the F1-score from 0.46 and 0.44 respectively to a combined 0.50.
@@ -410,7 +411,7 @@ RF - Random Forest Classifier
 KN - K Neighbors Classifer
 RF_res - Random Forest Classifier with Smote enhanced Dataset
 KN_res - K Neighbors Classifer with Smote enhanced Dataset
-![Classifier Comparison](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Classifier_Comparison.png)
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Classifier_Comparison.png" width="75%">
 
 The figure above compares the accuracy, F1-score, precision, and recall of the final alogrithms that I used in my solution when run against the test set of data.
 The final solution of using the Logistic Regression algorithms output combined with a Random Forest classifier produced the best results when looking at the accuracy, precision, and recall metrics, and matched using the KNeighbors classifier for F1-Score. 
@@ -432,8 +433,7 @@ In addition, due the nature of the data available in a PO there are some instanc
 
 The table below shows some examples of predictions from my model and the actual cost codes.  
 
-![Example predictions](https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Example%20Predictions%20.png)
-
+<img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Example%20Predictions%20.png" width="75%">
 
 I think this example demonstrate why getting a high accuracy of the prediction on this dataset is difficult. There are some items and descriptions that could apply to multiple cost codes. For example the Fuel Surchage on a concrete delevery would have the same description but could apply to any of several concrete related cost codes. As I mention later in the improvements section, if each line item is taken out of the context of the PO and evaluated by itself, there are instances where there is not enough information to predict which cost code an item belongs to. And again, the "Polarcon Accelerating - Bronze" is a product that is added to concrete to speed its curing time. This product could be used in multiple concrete related cost codes.
 I think these items demonstrate that an above 50% accuracy rate for the model is in-fact impressive, and if it does not give the end-user the exact cost code to use, it suggests one that is close.
