@@ -7,6 +7,7 @@ June 8th, 2019
 ## I. Definition
 
 ### Project Overview
+
 I currently work for a Construction Management company and one critical function of a Construction Management company is creating and tracking the budget of a construction project during the entire lifecycle of the construction project. 
 
 
@@ -63,6 +64,7 @@ By using the f1-score we get a balance between precision and recall that better 
 Fbeta-score is another metric that could be useful, however, this metric is used to weight either precision or recall higher than the other. This would be used if one metric was more important than the other. Eg. Recall is more important if the cost of a false negative is higher than the cost of a false positive. In the case of this model, since we are suggesting cost codes to an end-user, the cost of a false positive is the same as a false negative.  
 
 As a result, F1-score is the metric I have used to evaluate the model's performance but with recall and precision individually for reference.
+
 
 ## II. Analysis
 
@@ -155,7 +157,8 @@ With this new dataset that includes the prediction from the previous model, I wi
 I will then use the SMOTE technique to attempt to minimize the effect of the imbalance in the dataset. SMOTE will synthetically generate more data points for the minority classes and increase the size of the training data set. SMOTE will not be applied to the testing dataset. I will then train the second set of Random Forest and KNeighbors classifiers with he SMOTE enhanced dataset to compare how they perform to the original dataset.
 
 The combination of algorithms that produce the highest F1, recall, precision, and accuracy scores will be chosen as the solution to the problem.
-    
+ 
+ 
 ### Benchmark
 
 Currently, the processes for selecting cost codes for a purchase order items is entirely manual. We do not have statistics for how accurate the initial cost coding is, or how often Project Managers change cost codes when they are reviewing them.
@@ -280,6 +283,7 @@ Lastly, for use in the two separate models, I need to extract the Description fe
 `
 
 With those steps, the data pre-processing is complete. Further processing and feature extraction of the text data in the description feature will be done in the pipeline described in the implementation section.
+
 
 ### Implementation
 
@@ -426,6 +430,7 @@ When taking into consideration the nature of the problem, which is to suggest a 
 
 In addition, due to the nature of the data available in a PO, there are some instances where there just is not enough information in the PO to more accurately predict the cost code or the correct code to use may be subjective, so expecting a very high accuracy rate is not realistic.
 
+
 ## V. Conclusion
 
 ### Free-Form Visualization
@@ -436,6 +441,7 @@ The table below shows some examples of predictions from my model and the actual 
 
 I think this example demonstrates why getting a high accuracy of the prediction on this dataset is difficult. There are some items and descriptions that could apply to multiple cost codes. For example, the Fuel Surcharge on a concrete delivery would have the same description but could apply to any of several concrete related cost codes. As I mention later in the improvements section, if each line item is taken out of the context of the PO and evaluated by itself, there are instances where there is not enough information to predict which cost code an item belongs to. And again, the "Polarcon Accelerating - Bronze" is a product that is added to concrete to speed its curing time. This product could be used in multiple concrete related cost codes.
 I think these items demonstrate that an above 50% accuracy rate for the model is in-fact impressive, and if it does not give the end-user the exact cost code to use, it suggests one that is close.
+
 
 ### Reflection
 
@@ -454,6 +460,7 @@ Again, the most unexpected result was that the classifiers trained on the datase
 
 When considering this project I was originally hoping to achieve an accuracy score close to 75% and was slightly disappointed to only achieve ~50% accuracy. However, when looking more closely at the data I think this is a good result. Some of the cost codes possibly overlap each other in their use or are confusing and may be frequently miscoded by end-users. One example is the cost codes "01-52-22 field office supplies" and "01-52-23 field supplies" these codes are very similar and possibly misused. So taking this into context I think 50% is a good result, and if you consider the cost of suggesting an incorrect cost code is so low, I think that even at 50% accuracy, the prediction still has value. Lastly, my model significantly beats the benchmark model's accuracy of 15%.
 
+
 ### Improvement
 
 There are a few areas where I think I could improve this project:
@@ -469,21 +476,22 @@ Overall I'm sure there is room for improvement of my final result, however, this
 
 ### References  
 
-1 - Olav Eirik Ek Folkestad, Erlend Emil Nøtsund Vollset. "[Automatic Classification of Bank Transactions.](https://brage.bibsys.no/xmlui/bitstream/handle/11250/2456871/17699_FULLTEXT.pdf?sequence=1&isAllowed=y)" June 2017. Norwegian University of Science and Technology Department of Computer Science.  
+1 - Olav Eirik Ek Folkestad, E. E. (2017, June). Automatic Classification of Bank Transactions. Retrieved from Norwegian University of Science and Technology Department of Computer Science: https://brage.bibsys.no/xmlui/bitstream/handle/11250/2456871/17699_FULLTEXT.pdf?sequence=1&isAllowed=y  
 
-2 - https://towardsdatascience.com/accuracy-precision-recall-or-f1-331fb37c5cb9
+2 - Shung, K. P. (2018, March 15). Accuracy, Precision, Recall or F1? Retrieved from Towards Data Science: https://towardsdatascience.com/accuracy-precision-recall-or-f1-331fb37c5cb9
 
-3 - https://www.kaggle.com/rafjaa/resampling-strategies-for-imbalanced-datasets
+3 - Alencar, R. (2017). Resampling strategies for imbalanced datasets. Retrieved from Kaggle.com: https://www.kaggle.com/rafjaa/resampling-strategies-for-imbalanced-datasets/notebook?scriptVersionId=1745745
 
-4 - http://www.lrec-conf.org/proceedings/lrec2014/pdf/292_Paper.pdf
+4 - Hassan Saif, M. F. (n.d.). On Stopwords, Filtering and Data Sparsity for Sentiment Analysis of Twitter. Retrieved from lrec-conf.org: http://www.lrec-conf.org/proceedings/lrec2014/pdf/292_Paper.pdf
 
-5 - https://www.ritchieng.com/machine-learning-multinomial-naive-bayes-vectorization/
+5 - Vectorization, Multinomial Naive Bayes Classifier and Evaluation. (n.d.). Retrieved from ritchieng.com: https://www.ritchieng.com/machine-learning-multinomial-naive-bayes-vectorization/
 
-6 - https://imbalanced-learn.readthedocs.io/en/stable/over_sampling.html
+6 - G. Lemaitre, F. N. (n.d.). Over-Sampling. Retrieved from imbalanced-learn: https://imbalanced-learn.readthedocs.io/en/stable/over_sampling.html
 
-7 - http://cs229.stanford.edu/proj2011/LinShankar-Applying%20Machine%20Learning%20to%20Product%20Categorization.pdf 
+7 - Sushant Shankar, I. L. (2011). Applying Machine Learning to Product Categorization. Department of Computer Science, Stanford University. Retrieved from http://cs229.stanford.edu/proj2011/LinShankar-Applying%20Machine%20Learning%20to%20Product%20Categorization.pdf 
 
-8 - https://www.kaggle.com/metadist/work-like-a-pro-with-pipelines-and-feature-unions
+8 - Trunov, A. (2017). Work like a Pro with Pipelines and Feature Unions. Retrieved from kaggle.com: https://www.kaggle.com/metadist/work-like-a-pro-with-pipelines-and-feature-unions
 
-9 - https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/
+9 - Khandelwal, P. (2017, June 12). Which algorithm takes the crown: Light GBM vs XGBOOST? Retrieved from analyticsvidhya.com: https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/
+
 
