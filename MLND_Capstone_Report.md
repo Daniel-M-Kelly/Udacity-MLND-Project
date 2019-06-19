@@ -174,13 +174,29 @@ Note that I did not remove stop-words from this dataset in exploration or in the
 
 ### Algorithms and Techniques
 
-Synthetic Minority Over-sampling TEchnique (SMOTE)
- - SMOTE is an over-sampling technique used to address imbalanced classes in a dataset, where one class has many more samples in the dataset than others. It uses a datapoint and it's K nearest neighbors to generate new data. Figure 9 contains the pseudo-code that explains how SMOTE works.  
+Algorithms chosen for text classification
+
+Algorithms chosen for numerical and categorical classification
+
+Gridsearch Cross-Validation hyperparameter tuning
+  - Gridsearch is a technique that allows you to specify multiple values for the hyperparameters of an algorithm, it then iterates through every combination of these parameters and outputs the parameters that produce the highest score.
+  - Scoring of the iterations is determined by a scoring metric that you select. In this case, because the metric I chose to evaluate the overall performance of the solution is F1-Score, I also used this to score the iterations in gridsearch.
+  - To minimize overfitting and underfitting, k-fold cross-validation is used to split the training data into groups, hold one group out and test on the rest. Because some of the classes in the PO dataset have only 10 samples (after discarding classes with fewer than 10) I configured the gridsearch to use 5 folds, so each fold would have 2 examples of each class. 
+  - Figure 9 shows how the data is split into groups and training and testing is done in iterations using 5 fold cross- validation.
+  
+ <sub>Figure 9. Cross-Validation</sub>  
  
- <sub>Figure 9. SMOTE pseudo-code. Source</sub>
+ <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/K-FoldCrossValidation.png" width="50%">  
+
+Synthetic Minority Over-sampling TEchnique (SMOTE)
+ - SMOTE is an over-sampling technique used to address imbalanced classes in a dataset, where one class has many more samples in the dataset than others. It uses a datapoint and it's K nearest neighbors to generate new data. Figure 10 contains the pseudo-code that explains how SMOTE works.  
+ 
+ <sub>Figure 10. SMOTE pseudo-code. Source</sub>  
+ 
  <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/SMOTE_pseudo-code.png">  
  
  - I chose to use SMOTE to augment this dataset because, as noted in the dataset exploration, the classes are very imbalanced. The most used cost code has more than 50 times more samples than the average cost code. Using SMOTE balances the classes so they all have similar numbers of samples and one class does note skew the predictions of the algorithm trained on the data.
+ - I installed and used the [imbalanced-learn](https://imbalanced-learn.readthedocs.io/en/stable/index.html) python package which contains the SMOTE module.
  - In practice, using SMOTE is simple; import the module, create new X and y datasets by fitting to the original X and y data.
    `from imblearn.over_sampling import SMOTE`
    `X_resampled, y_resampled = SMOTE().fit_resample(X, y)`
