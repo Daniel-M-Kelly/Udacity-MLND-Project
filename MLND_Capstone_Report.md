@@ -175,8 +175,19 @@ Note that I did not remove stop-words from this dataset in exploration or in the
 ### Algorithms and Techniques
 
 Algorithms chosen for text classification
+- SVM (SGDClassifier)
+- Logistic Regression
+- Naive Bayes
 
 Algorithms chosen for numerical and categorical classification
+- Random Forest ensemble
+  - Generally performs well on most datasets, less susceptible to overfitting because it combines multiple estimators for the final result.
+  - Training and prediction times can be slow, but because the dataset is relatively small and the end use of the model is less sensitive to prediction times, these are not critical issues.
+  - This algorithm may perform better on the dataset than K Nearest Neighbors because it is better able to handle data sets with higher dimensionality.
+- K Nearest Neighbors (KNN)
+  - Simple to understand and  implement, this algorithm has few parameters to tune. KNN does not assume any underlying structure to the data and usually works best with smaller datasets with fewer dimensions, otherwise prediction times can be long.
+  - I wanted to try this algorthim because it is simple and different from the algorithms chosen for text classification, which in theory, is beneficial when stacking models.
+  - Also KNN does not assume any underlying structure to the data, and I am unsure if such a strucutre exists in the dataset for this project.
 
 Gridsearch Cross-Validation hyperparameter tuning
   - Gridsearch is a technique that allows you to specify multiple values for the hyperparameters of an algorithm, it then iterates through every combination of these parameters and outputs the parameters that produce the highest score.
@@ -197,8 +208,10 @@ Synthetic Minority Over-sampling TEchnique (SMOTE)
  
  - I chose to use SMOTE to augment this dataset because, as noted in the dataset exploration, the classes are very imbalanced. The most used cost code has more than 50 times more samples than the average cost code. Using SMOTE balances the classes so they all have similar numbers of samples and one class does note skew the predictions of the algorithm trained on the data.
  - I installed and used the [imbalanced-learn](https://imbalanced-learn.readthedocs.io/en/stable/index.html) python package which contains the SMOTE module.
- - In practice, using SMOTE is simple; import the module, create new X and y datasets by fitting to the original X and y data.
-   `from imblearn.over_sampling import SMOTE`
+ - In practice, using SMOTE is simple; import the module, create new X and y datasets by fitting to the original X and y data.  
+ 
+   `from imblearn.over_sampling import SMOTE`  
+   
    `X_resampled, y_resampled = SMOTE().fit_resample(X, y)`
    
  
