@@ -58,7 +58,7 @@ The output of this solution will be a prediction of the correct cost code that t
 To arrive at the optimal solution, when training the algorithms I will use gridsearch to tune the algorthim's hyperparameters. I will also use SMOTE to reduce the effect of the imbalanced classes in the dataset by synthetically creating more data points and balancing the amount of data for each class.
 
 There are several characteristics of this dataset that have shaped my proposed solution to this problem. The first characteristic is that there are text, numeric, and categorical features that make up each sample. While categorical features can be encoded (either through one hot encoding or label encoding) and then included with the numeric features for training and prediction, text data needs to be heavily pre-processed and handled differently. While it is possible to vectorize the text and include it as a single feature with the other features, then use one algorithm to make a prediction, this method does not take advantage of the fact that different algorithms can have higher performance on different sets of data or data types.
-Secondly, the solution I propose uses stacking two different algorithms which generally provides a higher performance than using a single algorithm.<sup>1</sup> http://blog.kaggle.com/2016/12/27/a-kagglers-guide-to-model-stacking-in-practice/
+Secondly, the solution I propose uses stacking two different algorithms which generally provides a higher performance than using a single algorithm.<sup>2</sup>
 For these reasons, I believe my solution of stacking two algorithms, each chosen and optimized for their respective types of features, is a good fit for this problem.
 
 
@@ -72,7 +72,7 @@ The conclusion of my findings is that the dataset is very unbalanced. The most u
 This imbalance makes accuracy poor measure of performance because, as discussed in the benchmark model section, the model can achieve an accuracy of almost %15 by always predicting the most common cost code despite being an obviously poor model. This makes F1-score a better metric for the performance of this model than accuracy.  
 The formula for f1-score is:  
 
-<sub>Figure 1. F1 Metric Equation. Source<sup>2</sup></sub>  
+<sub>Figure 1. F1 Metric Equation. Source<sup>3</sup></sub>  
 <img src="https://cdn-images-1.medium.com/max/800/1*T6kVUKxG_Z4V5Fm1UXhEIw.png" width="25%">
 
 By using the f1-score we get a balance between precision and recall that better reflects the performance of the model when compared to accuracy.   
@@ -94,7 +94,7 @@ As noted in the data exploration workbook, this is an unbalanced dataset with a 
 
 Because splitting the data will reduce the number of samples I have for training, I can use SMOTE (Synthetic Minority Oversampling TEchnique) to generate more data points based on the existing information, giving my model more data to train with.
 
-<sub>Figure 2. Synthetic Minority Oversampling TEchnique (SMOTE). Source<sup>3</sup></sub>
+<sub>Figure 2. Synthetic Minority Oversampling TEchnique (SMOTE). Source<sup>4</sup></sub>
 <img src="https://raw.githubusercontent.com/rafjaa/machine_learning_fecib/master/src/static/img/smote.png" width="75%">
 
 
@@ -169,13 +169,13 @@ And the most frequently used words (fig. 8) are:
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Word%20Frequency.png" width="50%">
   
   
-Note that I did not remove stop-words from this dataset in exploration or in the training. This is because there is some research to suggest that removing stopwords can have a negative effect on classification performance.<sup>4</sup> 
+Note that I did not remove stop-words from this dataset in exploration or in the training. This is because there is some research to suggest that removing stopwords can have a negative effect on classification performance.<sup>5</sup> 
 
 
 ### Algorithms and Techniques
 
 The first set of algorithms that I will test will be for predicting the cost code of the PO item solely on the description text information in the PO. So I will split out the description text of the training and test datasets into new data frames.
-Then, I will use a pipeline that uses CountVectorizer and TFIDF feature extraction techniques. The processed text data will then be passed to either an SGDC Classifier, Logistic Regression classifier, or Multinomial Naive Bayes classifier. I chose these classifiers based on recommendations found on the internet.<sup>5</sup> 
+Then, I will use a pipeline that uses CountVectorizer and TFIDF feature extraction techniques. The processed text data will then be passed to either an SGDC Classifier, Logistic Regression classifier, or Multinomial Naive Bayes classifier. I chose these classifiers based on recommendations found on the internet.<sup>6</sup> 
 
 For all three parts of the pipeline, I can use a gridsearch to adjust hyperparameter of the feature extractor or classifier.
 After tuning the hyperparameters I will choose the pipeline and classifier that outputs the best F1-score based on the test data.
@@ -378,25 +378,33 @@ The next step was to train and test a couple of algorithms on this new dataset. 
 
 There were several techniques that I used to attempt to refine the solution further. As mentioned previously, I attempted to use multiple combinations of models to achieve the highest performance. And I also used grid searches on each algorithm to find the hyper-parameters that produced the best results with this dataset. 
 
-Tuning LR and pipeline variables Weighted F1 from 40 to 46 accuracy from 44.6 to 49
+I began by using gridsearch to tune the parameters, using 5 folds for cross-validation, and arrived at the following optimal parameters for the following transforms and classifier.
 
+[CountVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html)
+  - ngram_range = (1,2)
+  
+[TfidfVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html)
+  - use_idf = True
 
-    'clf__C':[20],
-    'clf__solver':['saga'],
-    'clf__max_iter':[100],
-    'clf__tol': [1e-3],
-    'vect__ngram_range':[(1,2)],
-    'tfidf__use_idf':[True]
+[LogisticRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html)
+  - C = 20
+  - solver = saga
+  - max_iter = 100
+  - tol = 1e-3
+  
+Tuning the logistic regression and pipeline hyperparameters increased the weighted F1-score from 0.40 to 0.46 accuracy from 44.6% to 49%
 
-Tuning the RF resulted in a minimal gain, accuracy increased from 51.1 to 52.6 weighted average remained the same at 0.50 percision increasted to .57 and recall to .53 from .51 and .51 respectively
+The next refinement step was to tune the hyperparameters of the random forest classifier. The optimal parameters that I found for this dataset are listed below.
 
-parameters = {'max_depth': [100],
-              'min_samples_split': [2],
-              'min_samples_leaf': [2],
-              'n_estimators': [700]
-             }
+[RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html)
+ - max_depth = 100
+ - min_samples_split = 2
+ - min_samples_leaf = 2
+ - n_estimators = 700
+             
+Tuning the random forest classifier's hyperparameters resulted in a minimal gain, accuracy increased from 51.1% to 52.6% the weighted F1-score remained the same at 0.50 precision and recall increased to 0.57 to 0.53 from 0.51 and 0.51 respectively
 
-The most complex refinement technique that I employed was to attempt using the SMOTE over-sampling technique to minimize the effect of having imbalanced classes.<sup>6</sup>
+The most complex refinement technique that I employed was to attempt using the SMOTE over-sampling technique to minimize the effect of having imbalanced classes.<sup>7</sup>
 
 As noted in the data exploration phase of this project, there are a relative few number of cost codes that are used significantly more than the others. The most used code appeared 5570 times in the dataset, the average code 111 times, and the median was  6.5.
 
@@ -508,7 +516,7 @@ In summary, the solution that I arrived at for this problem involved the followi
 
 * I then add the predicted cost code from the first model as a feature into the remaining categorical and numerical dataset. I then trained a random forest classifier to predict the final cost code based on this dataset. 
 
-As I suspected, I found the most difficult part of this project was figuring out how to deal with text-based data and numerical and categorical data. Most of the resources I found for dealing with text-based data were sentiment analysis based and used only text information. For example, in this paper <sup>7</sup> which addresses a similar problem - classifying products based on their description and other information - they simply treated features that could be categorical, like brand, as text and included it as a word. 
+As I suspected, I found the most difficult part of this project was figuring out how to deal with text-based data and numerical and categorical data. Most of the resources I found for dealing with text-based data were sentiment analysis based and used only text information. For example, in this paper <sup>8</sup> which addresses a similar problem - classifying products based on their description and other information - they simply treated features that could be categorical, like brand, as text and included it as a word. 
 
 Again, the most unexpected result was that the classifiers trained on the dataset that had been augmented using SMOTE performed worse than the classifiers trained on the base dataset. I believe this was due to SMOTE causing overfitting. I noticed that the f1 score of the training set for the classifiers trained on the SMOTE dataset was much higher than the f1 score of the testing dataset indicating overfitting.
 
@@ -519,9 +527,9 @@ When considering this project I was originally hoping to achieve an accuracy sco
 
 There are a few areas where I think I could improve this project:
 
-The first is the way that I handled stacking the two different models. I believe that it is possible to create a pipeline and use feature unions to process the text and numeric and categorical data separately then pass them to a final classifier.<sup>8</sup> By better-using pipeline and stacking functionality, I could improve the accuracy of the model. It would also make testing multiple classifiers easier, and tuning hyperparameters. However, I did not have the time to fully research and understand this technique enough to be confident in implementing it.
+The first is the way that I handled stacking the two different models. I believe that it is possible to create a pipeline and use feature unions to process the text and numeric and categorical data separately then pass them to a final classifier.<sup>9</sup> By better-using pipeline and stacking functionality, I could improve the accuracy of the model. It would also make testing multiple classifiers easier, and tuning hyperparameters. However, I did not have the time to fully research and understand this technique enough to be confident in implementing it.
 
-The second area that I think could be improved on is the second classifier that I used. My research showed that XGBoost is generally one of the highest performing classifiers. I did manage to get XGBoost working, however, I found that the time it took to run was excessive and I could not properly tune its parameters. I believe the problem with using XGBoost is because of the number of features in the dataset that are created when one-hot-encoding the vendors feature. When I tried label encoding the vendors feature XGBoost ran at an acceptable speed, however all of the classifiers prediction performance dropped unacceptably low. With more time, I would have liked to get XGBoost performing better so I could fully evaluate its performance and possibly increase the accuracy of my model. Another option would have been to try using the LightGBM classifier which is similar to XGBoost and is also supposed to produce great results.<sup>9</sup> 
+The second area that I think could be improved on is the second classifier that I used. My research showed that XGBoost is generally one of the highest performing classifiers. I did manage to get XGBoost working, however, I found that the time it took to run was excessive and I could not properly tune its parameters. I believe the problem with using XGBoost is because of the number of features in the dataset that are created when one-hot-encoding the vendors feature. When I tried label encoding the vendors feature XGBoost ran at an acceptable speed, however all of the classifiers prediction performance dropped unacceptably low. With more time, I would have liked to get XGBoost performing better so I could fully evaluate its performance and possibly increase the accuracy of my model. Another option would have been to try using the LightGBM classifier which is similar to XGBoost and is also supposed to produce great results.<sup>10</sup> 
 
 It may also be possible to improve the accuracy of the predictions by taking into consideration other items on a PO. One PO may have several items on it that are related. For example, a concrete purchase order may have 3 items: 1 - the concrete material itself, 2 - a fuel surcharge for the delivery of the concrete, 3 - a disposal fee for leftover concrete. The first item, the concrete material, may be a specific mix that has information in its description that indicates it is for a concrete footing and, therefore, should be associated with cost code "03-31-40 concrete material footings". The other two items, the fuel surcharge and disposal fee are generic and could apply to any one of many concrete cost codes, however when taken into context with the other item on the PO should also go to the "03-31-40 concrete material footings" cost code. 
 
@@ -530,23 +538,25 @@ Overall I'm sure there is room for improvement of my final result, however, this
 
 ### References  
 
-1 - Olav Eirik Ek Folkestad, E. E. (2017, June). Automatic Classification of Bank Transactions. Retrieved from Norwegian University of Science and Technology Department of Computer Science: https://brage.bibsys.no/xmlui/bitstream/handle/11250/2456871/17699_FULLTEXT.pdf?sequence=1&isAllowed=y  
+1 - Olav Eirik Ek Folkestad, E. E. (2017, June). Automatic Classification of Bank Transactions. Retrieved from Norwegian University of Science and Technology Department of Computer Science: https://brage.bibsys.no/xmlui/bitstream/handle/11250/2456871/17699_FULLTEXT.pdf?sequence=1&isAllowed=y 
 
-2 - Shung, K. P. (2018, March 15). Accuracy, Precision, Recall or F1? Retrieved from Towards Data Science: https://towardsdatascience.com/accuracy-precision-recall-or-f1-331fb37c5cb9
+2 - Gorman, B. (2016, December 27) A Kaggler's Guide to Model Stacking in Practice. Retrieved from blog.kaggle.com http://blog.kaggle.com/2016/12/27/a-kagglers-guide-to-model-stacking-in-practice/
 
-3 - Alencar, R. (2017). Resampling strategies for imbalanced datasets. Retrieved from Kaggle.com: https://www.kaggle.com/rafjaa/resampling-strategies-for-imbalanced-datasets/notebook?scriptVersionId=1745745
+3 - Shung, K. P. (2018, March 15). Accuracy, Precision, Recall or F1? Retrieved from Towards Data Science: https://towardsdatascience.com/accuracy-precision-recall-or-f1-331fb37c5cb9
 
-4 - Hassan Saif, M. F. (n.d.). On Stopwords, Filtering and Data Sparsity for Sentiment Analysis of Twitter. Retrieved from lrec-conf.org: http://www.lrec-conf.org/proceedings/lrec2014/pdf/292_Paper.pdf
+4 - Alencar, R. (2017). Resampling strategies for imbalanced datasets. Retrieved from Kaggle.com: https://www.kaggle.com/rafjaa/resampling-strategies-for-imbalanced-datasets/notebook?scriptVersionId=1745745
 
-5 - Vectorization, Multinomial Naive Bayes Classifier and Evaluation. (n.d.). Retrieved from ritchieng.com: https://www.ritchieng.com/machine-learning-multinomial-naive-bayes-vectorization/
+5 - Hassan Saif, M. F. (n.d.). On Stopwords, Filtering and Data Sparsity for Sentiment Analysis of Twitter. Retrieved from lrec-conf.org: http://www.lrec-conf.org/proceedings/lrec2014/pdf/292_Paper.pdf
 
-6 - G. Lemaitre, F. N. (n.d.). Over-Sampling. Retrieved from imbalanced-learn: https://imbalanced-learn.readthedocs.io/en/stable/over_sampling.html
+6 - Vectorization, Multinomial Naive Bayes Classifier and Evaluation. (n.d.). Retrieved from ritchieng.com: https://www.ritchieng.com/machine-learning-multinomial-naive-bayes-vectorization/
 
-7 - Sushant Shankar, I. L. (2011). Applying Machine Learning to Product Categorization. Department of Computer Science, Stanford University. Retrieved from http://cs229.stanford.edu/proj2011/LinShankar-Applying%20Machine%20Learning%20to%20Product%20Categorization.pdf 
+7 - G. Lemaitre, F. N. (n.d.). Over-Sampling. Retrieved from imbalanced-learn: https://imbalanced-learn.readthedocs.io/en/stable/over_sampling.html
 
-8 - Trunov, A. (2017). Work like a Pro with Pipelines and Feature Unions. Retrieved from kaggle.com: https://www.kaggle.com/metadist/work-like-a-pro-with-pipelines-and-feature-unions
+8 - Sushant Shankar, I. L. (2011). Applying Machine Learning to Product Categorization. Department of Computer Science, Stanford University. Retrieved from http://cs229.stanford.edu/proj2011/LinShankar-Applying%20Machine%20Learning%20to%20Product%20Categorization.pdf 
 
-9 - Khandelwal, P. (2017, June 12). Which algorithm takes the crown: Light GBM vs XGBOOST? Retrieved from analyticsvidhya.com: https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/
+9 - Trunov, A. (2017). Work like a Pro with Pipelines and Feature Unions. Retrieved from kaggle.com: https://www.kaggle.com/metadist/work-like-a-pro-with-pipelines-and-feature-unions
+
+10 - Khandelwal, P. (2017, June 12). Which algorithm takes the crown: Light GBM vs XGBOOST? Retrieved from analyticsvidhya.com: https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/
 
 
 https://arxiv.org/pdf/1904.08067.pdf
