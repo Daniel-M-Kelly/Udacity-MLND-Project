@@ -174,22 +174,26 @@ Note that I did not remove stop-words from this dataset in exploration or in the
 
 ### Algorithms and Techniques
 
-Algorithms chosen for text classification
-- SVM (SGDClassifier)
-- Logistic Regression
-- Naive Bayes
+# Algorithms chosen for text classification
+- [SGD Classifier](https://scikit-learn.org/stable/modules/sgd.html) 
+  - The Stochastic Gradient Descent classifier that performs similar to Logistic Regression, but is particularly suited to handle data sets with high dimensionality and is commonly used in Natural Language Processing (NLP) and text classification, due to its efficiency. This makes it suitable for the text classification portion of my solution. However, the number of hyperparameters and complexity of tuning the algorithm can present an issue.
+- [Logistic Regression](https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression)
+  - 
+- [Naive Bayes](https://scikit-learn.org/stable/modules/naive_bayes.html#multinomial-naive-bayes)
+  - This algorithm has been used in text classification for decades and serves as a good baseline for this project. It scales easily and and can be implemented quickly. Naive Bayes, while offering competitive performance, is often outperformed by more complex models if they are properly tuned.
+  - Because this is not a binary classification problem, there are multiple classes, I will need to use the Multinomial Naive Bayes classifier.
 
-Algorithms chosen for numerical and categorical classification
-- Random Forest ensemble
+# Algorithms chosen for numerical and categorical classification
+- [Random Forest ensemble](https://scikit-learn.org/stable/modules/ensemble.html#forest)
   - Generally performs well on most datasets, less susceptible to overfitting because it combines multiple estimators for the final result.
   - Training and prediction times can be slow, but because the dataset is relatively small and the end use of the model is less sensitive to prediction times, these are not critical issues.
   - This algorithm may perform better on the dataset than K Nearest Neighbors because it is better able to handle data sets with higher dimensionality.
-- K Nearest Neighbors (KNN)
+- [K Nearest Neighbors (KNN)](https://scikit-learn.org/stable/modules/neighbors.html)
   - Simple to understand and  implement, this algorithm has few parameters to tune. KNN does not assume any underlying structure to the data and usually works best with smaller datasets with fewer dimensions, otherwise prediction times can be long.
   - I wanted to try this algorthim because it is simple and different from the algorithms chosen for text classification, which in theory, is beneficial when stacking models.
   - Also KNN does not assume any underlying structure to the data, and I am unsure if such a strucutre exists in the dataset for this project.
 
-Gridsearch Cross-Validation hyperparameter tuning
+# Gridsearch Cross-Validation hyperparameter tuning
   - Gridsearch is a technique that allows you to specify multiple values for the hyperparameters of an algorithm, it then iterates through every combination of these parameters and outputs the parameters that produce the highest score.
   - Scoring of the iterations is determined by a scoring metric that you select. In this case, because the metric I chose to evaluate the overall performance of the solution is F1-Score, I also used this to score the iterations in gridsearch.
   - To minimize overfitting and underfitting, k-fold cross-validation is used to split the training data into groups, hold one group out and test on the rest. Because some of the classes in the PO dataset have only 10 samples (after discarding classes with fewer than 10) I configured the gridsearch to use 5 folds, so each fold would have 2 examples of each class. 
@@ -199,7 +203,7 @@ Gridsearch Cross-Validation hyperparameter tuning
  
  <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/K-FoldCrossValidation.png" width="50%">  
 
-Synthetic Minority Over-sampling TEchnique (SMOTE)
+# Synthetic Minority Over-sampling TEchnique (SMOTE)
  - SMOTE is an over-sampling technique used to address imbalanced classes in a dataset, where one class has many more samples in the dataset than others. It uses a datapoint and it's K nearest neighbors to generate new data. Figure 10 contains the pseudo-code that explains how SMOTE works.  
  
  <sub>Figure 10. SMOTE pseudo-code. Source</sub>  
@@ -497,12 +501,12 @@ KN - K Neighbors Classifier
 RF_res - Random Forest Classifier with Smote enhanced Dataset  
 KN_res - K Neighbors Classifier with Smote enhanced Dataset  
 
-<sub>Figure 9. Classifier Score Comparison</sub>  
+<sub>Figure 11. Classifier Score Comparison</sub>  
 
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Classifier_Comparison.png" width="75%">
 
 
-The figure above compares the accuracy, F1-score, precision, and recall of the final algorithms that I used in my solution when run against the test set of data.
+Figure 11 compares the accuracy, F1-score, precision, and recall of the final algorithms that I used in my solution when run against the test set of data.
 The final solution of using the Logistic Regression algorithms output combined with a Random Forest classifier produced the best results when looking at the accuracy, precision, and recall metrics, and matched using the KNeighbors classifier for F1-Score. 
 
 One measure I took to check the robustness of the model was to change the pre-processing code to exclude cost codes with fewer than 2 samples, rather than fewer than 10. This changed the training environment and increased the number of samples available to the model, and increased the number of classes from 114 to 223 but only increased the number of samples from 22,349 to 22,739. This meant the model had to be able to predict an additional 109 classes with only an increase of 390 data samples. The result was actually a negligible increase in accuracy and the same weighted F1-Score. This demonstrates that the model can generalize and does not overfit the existing data.
@@ -521,9 +525,9 @@ In addition, due to the nature of the data available in a PO, there are some ins
 
 ### Free-Form Visualization
 
-The table below shows some examples of predictions from my model and the actual cost codes.  
+The Figure 12 shows some examples of predictions from my model and the actual cost codes.  
 
-<sub>Figure 10. Prediction Ouput Comparison Table</sub>  
+<sub>Figure 12. Prediction Ouput Comparison Table</sub>  
 
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Example%20Predictions%20.png" width="75%">
   
@@ -584,8 +588,3 @@ Overall I'm sure there is room for improvement of my final result, however, this
 9 - Trunov, A. (2017). Work like a Pro with Pipelines and Feature Unions. Retrieved from kaggle.com: https://www.kaggle.com/metadist/work-like-a-pro-with-pipelines-and-feature-unions
 
 10 - Khandelwal, P. (2017, June 12). Which algorithm takes the crown: Light GBM vs XGBOOST? Retrieved from analyticsvidhya.com: https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/
-
-
-https://arxiv.org/pdf/1904.08067.pdf
-
-https://arxiv.org/pdf/1106.1813.pdf
