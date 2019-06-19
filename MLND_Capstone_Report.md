@@ -378,6 +378,24 @@ The next step was to train and test a couple of algorithms on this new dataset. 
 
 There were several techniques that I used to attempt to refine the solution further. As mentioned previously, I attempted to use multiple combinations of models to achieve the highest performance. And I also used grid searches on each algorithm to find the hyper-parameters that produced the best results with this dataset. 
 
+Tuning LR and pipeline variables Weighted F1 from 40 to 46 accuracy from 44.6 to 49
+
+
+    'clf__C':[20],
+    'clf__solver':['saga'],
+    'clf__max_iter':[100],
+    'clf__tol': [1e-3],
+    'vect__ngram_range':[(1,2)],
+    'tfidf__use_idf':[True]
+
+Tuning the RF resulted in a minimal gain, accuracy increased from 51.1 to 52.6 weighted average remained the same at 0.50 percision increasted to .57 and recall to .53 from .51 and .51 respectively
+
+parameters = {'max_depth': [100],
+              'min_samples_split': [2],
+              'min_samples_leaf': [2],
+              'n_estimators': [700]
+             }
+
 The most complex refinement technique that I employed was to attempt using the SMOTE over-sampling technique to minimize the effect of having imbalanced classes.<sup>6</sup>
 
 As noted in the data exploration phase of this project, there are a relative few number of cost codes that are used significantly more than the others. The most used code appeared 5570 times in the dataset, the average code 111 times, and the median was  6.5.
