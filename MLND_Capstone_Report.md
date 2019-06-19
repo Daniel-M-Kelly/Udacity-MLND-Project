@@ -49,16 +49,16 @@ The solution that I propose includes the following:
   - Predict the cost code based on the text data
     - Split text from numerical/categorical features
     - Extract features from text data using CountVectorizer and TFIDF
-    - Make a prediction based on the text features using either a SVM, Naive Bayes, or Logistic Regression classifier
+    - Make a prediction based on the text features using either an SVM, Naive Bayes, or Logistic Regression classifier
   - Predict the cost code based on numerical/categorical features + the prediction from the text data
     - Append the prediction from the text feature to the numerical/categorical feature dataset
-    - Predict the cost code using either a Random Forest, or KNeighbors classifier.  
+    - Predict the cost code using either a Random Forest or KNeighbors classifier.  
     
 The output of this solution will be a prediction of the correct cost code that the purchase order item should be associated with.
-To arrive at the optimal solution, when training the algorithms I will use gridsearch to tune the algorthim's hyperparameters. I will also use SMOTE to reduce the effect of the imbalanced classes in the dataset by synthetically creating more data points and balancing the amount of data for each class.
+To arrive at the optimal solution, when training the algorithms I will use gridsearch to tune the algorithm's hyperparameters. I will also use SMOTE to reduce the effect of the imbalanced classes in the dataset by synthetically creating more data points and balancing the amount of data for each class.
 
 There are several characteristics of this dataset that have shaped my proposed solution to this problem. The first characteristic is that there are text, numeric, and categorical features that make up each sample. While categorical features can be encoded (either through one hot encoding or label encoding) and then included with the numeric features for training and prediction, text data needs to be heavily pre-processed and handled differently. While it is possible to vectorize the text and include it as a single feature with the other features, then use one algorithm to make a prediction, this method does not take advantage of the fact that different algorithms can have higher performance on different sets of data or data types.
-Secondly, the solution I propose uses stacking two different algorithms which generally provides a higher performance than using a single algorithm.<sup>2</sup>
+Secondly, the solution I propose uses stacking two different algorithms which generally provides higher performance than using a single algorithm.<sup>2</sup>
 For these reasons, I believe my solution of stacking two algorithms, each chosen and optimized for their respective types of features, is a good fit for this problem.
 
 
@@ -129,13 +129,13 @@ This dataset is very unbalanced, the average number of times a cost code is used
 
 ### Exploratory Visualization
 
-The figure 4 shows the ten most used cost codes.
+Figure 4 shows the ten most used cost codes.
   
 <sub>Figure 4. Most Used Codes in PO Dataset </sub>  
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Cost%20Code%20Counts.png" width="50%">
 
 Furthermore, there are a small number of very high-value POs or POs with a large number of Units that skew the data.
-The figure 5 shows, for example, that the Units feature has a maximum value of over 100,000 while the 75th percentile is under 11. 
+Figure 5 shows, for example, that the Units feature has a maximum value of over 100,000 while the 75th percentile is under 11. 
 
 <sub>Figure 5. Description of Numerical and Categorical Features</sub>  
 <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/Units%20and%20costs.png" width="50%">
@@ -143,7 +143,7 @@ The figure 5 shows, for example, that the Units feature has a maximum value of o
   
 These POs are outliers and will be removed.
 
-The figure 6 shows the correlation between the numerical and categorical features in the dataset.
+Figure 6 shows the correlation between the numerical and categorical features in the dataset.
   
   
 <sub>Figure 6. Correlation Matrix of Numerical and Categorical Features</sub> 
@@ -174,25 +174,25 @@ Note that I did not remove stop-words from this dataset in exploration or in the
 
 ### Algorithms and Techniques
 
-**Algorithms chosen for text classification**
+**Algorithms selected for text classification**
 - [SGD Classifier](https://scikit-learn.org/stable/modules/sgd.html) 
-  - The Stochastic Gradient Descent classifier that performs similar to Logistic Regression, but is particularly suited to handle data sets with high dimensionality and is commonly used in Natural Language Processing (NLP) and text classification, due to its efficiency. This makes it suitable for the text classification portion of my solution. However, the number of hyperparameters and complexity of tuning the algorithm can present an issue.  
+  - The Stochastic Gradient Descent classifier that performs similar to Logistic Regression, but is particularly suited to handle data sets with high dimensionality and is commonly used in Natural Language Processing (NLP) and text classification, due to its efficiency. This makes it suitable for the text classification portion of my solution. However, the number of hyperparameters and the complexity of tuning the algorithm can present an issue.  
 - [Logistic Regression](https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression)
-  - This is a good classifier to use for highly dimensional and sparse datasets, which matches the PO dataset that becomes very sparse when we encode the vendors feature using one hot encoding. It's also simple to understand and less complicated than an SVM
-  - However, logistic regression assumes that the data is linearly seperable, and in the case of this dataset that is not something that i know.
+  - This is a good classifier to use for high dimensional and sparse datasets, which matches the PO dataset that becomes very sparse when we encode the vendors feature using one hot encoding. It's also simple to understand and less complicated than an SVM
+  - However, logistic regression assumes that the data is linearly separable and in the case of this dataset that is not something that I know.
 - [Naive Bayes](https://scikit-learn.org/stable/modules/naive_bayes.html#multinomial-naive-bayes)
-  - This algorithm has been used in text classification for decades and serves as a good baseline for this project. It scales easily and and can be implemented quickly. Naive Bayes, while offering competitive performance, is often outperformed by more complex models if they are properly tuned.
+  - This algorithm has been used in text classification for decades and serves as a good baseline for this project. It scales easily and can be implemented quickly. Naive Bayes, while offering competitive performance, is often outperformed by more complex models if they are properly tuned.
   - Because this is not a binary classification problem, there are multiple classes, I will need to use the Multinomial Naive Bayes classifier.
 
-**Algorithms chosen for numerical and categorical classification**
+**Algorithms selected for numerical and categorical classification**
 - [Random Forest ensemble](https://scikit-learn.org/stable/modules/ensemble.html#forest)
   - Generally performs well on most datasets, less susceptible to overfitting because it combines multiple estimators for the final result.
   - Training and prediction times can be slow, but because the dataset is relatively small and the end use of the model is less sensitive to prediction times, these are not critical issues.
   - This algorithm may perform better on the dataset than K Nearest Neighbors because it is better able to handle data sets with higher dimensionality.
 - [K Nearest Neighbors (KNN)](https://scikit-learn.org/stable/modules/neighbors.html)
-  - Simple to understand and  implement, this algorithm has few parameters to tune. KNN does not assume any underlying structure to the data and usually works best with smaller datasets with fewer dimensions, otherwise prediction times can be long.
-  - I wanted to try this algorthim because it is simple and different from the algorithms chosen for text classification, which in theory, is beneficial when stacking models.
-  - Also KNN does not assume any underlying structure to the data, and I am unsure if such a strucutre exists in the dataset for this project.
+  - Simple to understand and  implement, this algorithm has few parameters to tune. KNN does not assume any underlying structure to the data and usually works best with smaller datasets with fewer dimensions, otherwise, prediction times can be long.
+  - I wanted to try this algorithm because it is simple and different from the algorithms chosen for text classification, which in theory, is beneficial when stacking models.
+  - Also, KNN does not assume any underlying structure to the data, and I am unsure if such a structure exists in the dataset for this project.
 
 **Gridsearch Cross-Validation hyperparameter tuning**
   - Gridsearch is a technique that allows you to specify multiple values for the hyperparameters of an algorithm, it then iterates through every combination of these parameters and outputs the parameters that produce the highest score.
@@ -205,13 +205,13 @@ Note that I did not remove stop-words from this dataset in exploration or in the
  <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/K-FoldCrossValidation.png" width="50%">  
 
 **Synthetic Minority Over-sampling TEchnique (SMOTE)**
- - SMOTE is an over-sampling technique used to address imbalanced classes in a dataset, where one class has many more samples in the dataset than others. It uses a datapoint and it's K nearest neighbors to generate new data. Figure 10 contains the pseudo-code that explains how SMOTE works.  
+ - SMOTE is an over-sampling technique used to address imbalanced classes in a dataset, where one class has many more samples in the dataset than others. It uses a data point and it's K nearest neighbors to generate new data. Figure 10 contains the pseudo-code that explains how SMOTE works.  
  
  <sub>Figure 10. SMOTE pseudo-code. Source</sub>  
  
  <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/SMOTE_pseudo-code.png">  
  
- - I chose to use SMOTE to augment this dataset because, as noted in the dataset exploration, the classes are very imbalanced. The most used cost code has more than 50 times more samples than the average cost code. Using SMOTE balances the classes so they all have similar numbers of samples and one class does note skew the predictions of the algorithm trained on the data.
+ - I chose to use SMOTE to augment this dataset because, as noted in the dataset exploration, the classes are very imbalanced. The most used cost code has more than 50 times more samples than the average cost code. Using SMOTE balances the classes so they all have similar numbers of samples and one class does not skew the predictions of the algorithm trained on the data.
  - I installed and used the [imbalanced-learn](https://imbalanced-learn.readthedocs.io/en/stable/index.html) python package which contains the SMOTE module.
  - In practice, using SMOTE is simple; import the module, create new X and y datasets by fitting to the original X and y data.  
  
@@ -360,7 +360,7 @@ The input to this pipeline is the PO description text.
                 `('clf', SGDClassifier(random_state=42, tol = 1e-3)),`  
                `])`
 
-The I then vectorize the text, splitting it into terms that are passed to the Tfidf transformer to get the Tfidf values for the terms. Lastly, this data is passed to the classfier for training or prediction.
+Then I then vectorize the text, splitting it into terms that are passed to the Tfidf transformer to get the Tfidf values for the terms. Lastly, this data is passed to the classifier for training or prediction.
 
 I also used GridSearchCV to iterate through hyperparameters for all three components of the pipeline.
 
@@ -464,7 +464,7 @@ I then re-trained the Random Forest and K Neighbors classifiers using the new da
 `print(classification_report(y_test, KN_y_pred_res))`
 
 The results of applying SMOTE were disappointing, all metrics for both models decreased using the SMOTE augmented dataset (a comparison of all the results is visually represented in the results section). 
-Comparing the F1 Score of the model on the training set, versus on the testing set confirmed my suspicion that the model was overfitting. The weighted F1 Score for the K Neighbors algorithm using the SMOTE training set was 0.976, and on the testing set it, was only 0.48. I suspect the overfitting is a result of there not being enough samples of some of the classes to create an accurate representation of that class.
+Comparing the F1 Score of the model on the training set, versus on the testing set confirmed my suspicion that the model was overfitting. The weighted F1 Score for the K Neighbors algorithm using the SMOTE training set was 0.976, and on the testing set it was only 0.48. I suspect the overfitting is a result of there not being enough samples of some of the classes to create an accurate representation of that class.
 
 
 ## IV. Results
@@ -526,7 +526,7 @@ In addition, due to the nature of the data available in a PO, there are some ins
 
 ### Free-Form Visualization
 
-The Figure 12 shows some examples of predictions from my model and the actual cost codes.  
+Figure 12 shows some examples of predictions from my model and the actual cost codes.  
 
 <sub>Figure 12. Prediction Ouput Comparison Table</sub>  
 
