@@ -174,7 +174,7 @@ Note that I did not remove stop-words from this dataset in exploration or in the
 
 ### Algorithms and Techniques
 
-# Algorithms chosen for text classification
+**Algorithms chosen for text classification**
 - [SGD Classifier](https://scikit-learn.org/stable/modules/sgd.html) 
   - The Stochastic Gradient Descent classifier that performs similar to Logistic Regression, but is particularly suited to handle data sets with high dimensionality and is commonly used in Natural Language Processing (NLP) and text classification, due to its efficiency. This makes it suitable for the text classification portion of my solution. However, the number of hyperparameters and complexity of tuning the algorithm can present an issue.
 - [Logistic Regression](https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression)
@@ -183,7 +183,7 @@ Note that I did not remove stop-words from this dataset in exploration or in the
   - This algorithm has been used in text classification for decades and serves as a good baseline for this project. It scales easily and and can be implemented quickly. Naive Bayes, while offering competitive performance, is often outperformed by more complex models if they are properly tuned.
   - Because this is not a binary classification problem, there are multiple classes, I will need to use the Multinomial Naive Bayes classifier.
 
-# Algorithms chosen for numerical and categorical classification
+**Algorithms chosen for numerical and categorical classification**
 - [Random Forest ensemble](https://scikit-learn.org/stable/modules/ensemble.html#forest)
   - Generally performs well on most datasets, less susceptible to overfitting because it combines multiple estimators for the final result.
   - Training and prediction times can be slow, but because the dataset is relatively small and the end use of the model is less sensitive to prediction times, these are not critical issues.
@@ -193,7 +193,7 @@ Note that I did not remove stop-words from this dataset in exploration or in the
   - I wanted to try this algorthim because it is simple and different from the algorithms chosen for text classification, which in theory, is beneficial when stacking models.
   - Also KNN does not assume any underlying structure to the data, and I am unsure if such a strucutre exists in the dataset for this project.
 
-# Gridsearch Cross-Validation hyperparameter tuning
+**Gridsearch Cross-Validation hyperparameter tuning**
   - Gridsearch is a technique that allows you to specify multiple values for the hyperparameters of an algorithm, it then iterates through every combination of these parameters and outputs the parameters that produce the highest score.
   - Scoring of the iterations is determined by a scoring metric that you select. In this case, because the metric I chose to evaluate the overall performance of the solution is F1-Score, I also used this to score the iterations in gridsearch.
   - To minimize overfitting and underfitting, k-fold cross-validation is used to split the training data into groups, hold one group out and test on the rest. Because some of the classes in the PO dataset have only 10 samples (after discarding classes with fewer than 10) I configured the gridsearch to use 5 folds, so each fold would have 2 examples of each class. 
@@ -203,7 +203,7 @@ Note that I did not remove stop-words from this dataset in exploration or in the
  
  <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/K-FoldCrossValidation.png" width="50%">  
 
-# Synthetic Minority Over-sampling TEchnique (SMOTE)
+**Synthetic Minority Over-sampling TEchnique (SMOTE)**
  - SMOTE is an over-sampling technique used to address imbalanced classes in a dataset, where one class has many more samples in the dataset than others. It uses a datapoint and it's K nearest neighbors to generate new data. Figure 10 contains the pseudo-code that explains how SMOTE works.  
  
  <sub>Figure 10. SMOTE pseudo-code. Source</sub>  
