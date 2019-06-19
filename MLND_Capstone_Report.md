@@ -549,3 +549,4 @@ Overall I'm sure there is room for improvement of my final result, however, this
 9 - Khandelwal, P. (2017, June 12). Which algorithm takes the crown: Light GBM vs XGBOOST? Retrieved from analyticsvidhya.com: https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/
 
 
+https://arxiv.org/pdf/1904.08067.pdf
