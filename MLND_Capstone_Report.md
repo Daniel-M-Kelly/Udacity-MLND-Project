@@ -176,9 +176,10 @@ Note that I did not remove stop-words from this dataset in exploration or in the
 
 **Algorithms chosen for text classification**
 - [SGD Classifier](https://scikit-learn.org/stable/modules/sgd.html) 
-  - The Stochastic Gradient Descent classifier that performs similar to Logistic Regression, but is particularly suited to handle data sets with high dimensionality and is commonly used in Natural Language Processing (NLP) and text classification, due to its efficiency. This makes it suitable for the text classification portion of my solution. However, the number of hyperparameters and complexity of tuning the algorithm can present an issue.
+  - The Stochastic Gradient Descent classifier that performs similar to Logistic Regression, but is particularly suited to handle data sets with high dimensionality and is commonly used in Natural Language Processing (NLP) and text classification, due to its efficiency. This makes it suitable for the text classification portion of my solution. However, the number of hyperparameters and complexity of tuning the algorithm can present an issue.  
 - [Logistic Regression](https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression)
-  - 
+  - This is a good classifier to use for highly dimensional and sparse datasets, which matches the PO dataset that becomes very sparse when we encode the vendors feature using one hot encoding. It's also simple to understand and less complicated than an SVM
+  - However, logistic regression assumes that the data is linearly seperable, and in the case of this dataset that is not something that i know.
 - [Naive Bayes](https://scikit-learn.org/stable/modules/naive_bayes.html#multinomial-naive-bayes)
   - This algorithm has been used in text classification for decades and serves as a good baseline for this project. It scales easily and and can be implemented quickly. Naive Bayes, while offering competitive performance, is often outperformed by more complex models if they are properly tuned.
   - Because this is not a binary classification problem, there are multiple classes, I will need to use the Multinomial Naive Bayes classifier.
