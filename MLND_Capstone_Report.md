@@ -175,9 +175,11 @@ Note that I did not remove stop-words from this dataset in exploration or in the
 ### Algorithms and Techniques
 
 Synthetic Minority Over-sampling TEchnique (SMOTE)
- - SMOTE is an over-sampling technique used to address imbalanced classes in a dataset, where one class has many more samples in the dataset than others. It uses a datapoint and it's K nearest neighbors to generate new data. Figure 9 contains the pseudo-code that explains how SMOTE works.
+ - SMOTE is an over-sampling technique used to address imbalanced classes in a dataset, where one class has many more samples in the dataset than others. It uses a datapoint and it's K nearest neighbors to generate new data. Figure 9 contains the pseudo-code that explains how SMOTE works.  
+ 
  <sub>Figure 9. SMOTE pseudo-code. Source</sub>
- <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/SMOTE_pseudo-code.png" width="100%">
+ <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/SMOTE_pseudo-code.png">  
+ 
  - I chose to use SMOTE to augment this dataset because, as noted in the dataset exploration, the classes are very imbalanced. The most used cost code has more than 50 times more samples than the average cost code. Using SMOTE balances the classes so they all have similar numbers of samples and one class does note skew the predictions of the algorithm trained on the data.
  - In practice, using SMOTE is simple; import the module, create new X and y datasets by fitting to the original X and y data.
    `from imblearn.over_sampling import SMOTE`
