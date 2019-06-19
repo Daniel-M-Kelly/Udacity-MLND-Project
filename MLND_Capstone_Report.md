@@ -174,19 +174,15 @@ Note that I did not remove stop-words from this dataset in exploration or in the
 
 ### Algorithms and Techniques
 
-The first set of algorithms that I will test will be for predicting the cost code of the PO item solely on the description text information in the PO. So I will split out the description text of the training and test datasets into new data frames.
-Then, I will use a pipeline that uses CountVectorizer and TFIDF feature extraction techniques. The processed text data will then be passed to either an SGDC Classifier, Logistic Regression classifier, or Multinomial Naive Bayes classifier. I chose these classifiers based on recommendations found on the internet.<sup>6</sup> 
-
-For all three parts of the pipeline, I can use a gridsearch to adjust hyperparameter of the feature extractor or classifier.
-After tuning the hyperparameters I will choose the pipeline and classifier that outputs the best F1-score based on the test data.
-I will then use this model to predict a cost code for the training set data, and append the result to that dataset. I will also append the test prediction to the test dataset.
-
-With this new dataset that includes the prediction from the previous model, I will then train two additional models, a Random Forest Classifier, and KNeigbors Classifier, with hyperparameters tuned with a gridsearch.
-
-I will then use the SMOTE technique to attempt to minimize the effect of the imbalance in the dataset. SMOTE will synthetically generate more data points for the minority classes and increase the size of the training data set. SMOTE will not be applied to the testing dataset. I will then train the second set of Random Forest and KNeighbors classifiers with he SMOTE enhanced dataset to compare how they perform to the original dataset.
-
-The combination of algorithms that produce the highest F1, recall, precision, and accuracy scores will be chosen as the solution to the problem.
- 
+Synthetic Minority Over-sampling TEchnique (SMOTE)
+ - SMOTE is an over-sampling technique used to address imbalanced classes in a dataset, where one class has many more samples in the dataset than others. It uses a datapoint and it's K nearest neighbors to generate new data. Figure 9 contains the pseudo-code that explains how SMOTE works.
+ <sub>Figure 9. SMOTE pseudo-code. Source</sub>
+ <img src="https://github.com/Daniel-M-Kelly/Udacity-MLND-Project/blob/master/figures/SMOTE_pseudo-code.png" width="100%">
+ - I chose to use SMOTE to augment this dataset because, as noted in the dataset exploration, the classes are very imbalanced. The most used cost code has more than 50 times more samples than the average cost code. Using SMOTE balances the classes so they all have similar numbers of samples and one class does note skew the predictions of the algorithm trained on the data.
+ - In practice, using SMOTE is simple; import the module, create new X and y datasets by fitting to the original X and y data.
+   `from imblearn.over_sampling import SMOTE`
+   `X_resampled, y_resampled = SMOTE().fit_resample(X, y)`
+   
  
 ### Benchmark
 
@@ -560,3 +556,5 @@ Overall I'm sure there is room for improvement of my final result, however, this
 
 
 https://arxiv.org/pdf/1904.08067.pdf
+
+https://arxiv.org/pdf/1106.1813.pdf
